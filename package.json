@@ -1,0 +1,37 @@
+{
+  "name": "micro-mail",
+  "version": "0.0.1",
+  "description": "micro email api",
+  "scripts": {
+    "start": "./node_modules/.bin/rapptor",
+    "lint": "./node_modules/.bin/eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/firstandthird/micro-mail.git"
+  },
+  "keywords": [
+    "email",
+    "mail",
+    "hapi",
+    "micro",
+    "microservice"
+  ],
+  "author": "First+Third",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/firstandthird/micro-mail/issues"
+  },
+  "homepage": "https://github.com/firstandthird/micro-mail#readme",
+  "dependencies": {
+    "rapptor": "firstandthird/rapptor#v1"
+  },
+  "devDependencies": {
+    "eslint": "^2.2.0",
+    "eslint-config-airbnb": "^6.0.2",
+    "eslint-config-firstandthird": "^1.7.0",
+    "eslint-plugin-react": "^4.0.0",
+    "eslint-plugin-import": "^1.5.0",
+    "eslint-plugin-jsx-a11y": "^1.0.2"
+  }
+}
