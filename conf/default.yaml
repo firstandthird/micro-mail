@@ -1,1 +1,16 @@
-test: 1
+debug: true
+smtp:
+  host: "smtp.mandrillapp.com"
+  user: "myUser"
+  pass: "myPassword"
+  port: "587"
+folders:
+  templates: "/templates"
+  partials: "/partials"
+  helpers: "/helpers"
+# todo: optionally let them use s3 templates:
+# s3:
+#   bucket: process.env.S3_BUCKET,
+# partials: splitIfExists(process.env.PARTIALS),
+# helpers: splitIfExists(process.env.HELPERS),
+#   region: process.env.AWS_REGION
