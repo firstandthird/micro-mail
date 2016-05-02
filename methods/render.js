@@ -1,10 +1,9 @@
 'use strict';
 const handlebars = require('handlebars');
+const _ = require('lodash');
 
 const renderTemplate = (template, data) => {
-  console.log("*&&&&&&&&&&&&&&&&&&")
-  console.log(_.merge(template.details, data));
-  return template.render(_.merge(template.details(data)));
+  return template.render(_.merge(template.details, data));
 };
 
 const renderString = (string, data) => {

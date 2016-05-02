@@ -13,9 +13,7 @@ exports.home = {
         To: <input id="to" name="to" type=email> <br>
         From: <input id="from" name="from" type=email> <br>
         Subject: <input id="subject" name="subject"> <br>
-        Text: <input id="text" name="text"> <br>
         Template: <input id="template" name="template"> <br>
-        Data: <input id="data" name="data"> <br>
         <button> Send </button>
         </form>
         </body>

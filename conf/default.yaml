@@ -1,4 +1,3 @@
-debug: true
 smtp:
   host: "smtp.mandrillapp.com"
   user: "myUser"

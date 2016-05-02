@@ -11,6 +11,7 @@ let Transport = undefined;
 const needsTransport = () => {
   return Transport === undefined;
 };
+
 const initTransport = (smtp) => {
   const key = `smtp://${smtp.user}:${smtp.pass}@${smtp.host}:${smtp.port}`;
   log(['email', 'send'], { message: 'initializing SMTP transport', key });
@@ -24,7 +25,7 @@ module.exports = {
       const config = this.settings.app;
       initTransport(config.smtp);
     }
-    log(['email', 'send'], { message: 'sending email now....' });
+    log(['email', 'send'], { message: 'sending email now....', data: mailObj });
     Transport.sendMail(mailObj, done);
   }
 };

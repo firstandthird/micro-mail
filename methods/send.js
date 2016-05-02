@@ -17,7 +17,6 @@ module.exports = {
             html: opts.text
           });
         }
-        console.log(opts)
         this.methods.getTemplate(opts.template, opts.data, config, (err, template) => {
           if (err) {
             return done(err);

@@ -48,9 +48,7 @@ const loadHelpers = (config, done) => {
 const loadTemplateFromFile = (templateName, config, done) => {
   log([], templateName);
   const fileContents = fs.readFileSync(`./${config.folders.templates}/${templateName}/email.html`, 'utf-8');
-  console.log("getting details!");
   const details = yamlParser.safeLoad(fs.readFileSync(`./${config.folders.templates}/${templateName}/details.yaml`, 'utf-8'));
-  console.log(details)
   GlobalTemplateCache[templateName] = {
     html: fileContents,
     details,
