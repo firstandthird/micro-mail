@@ -1,1 +1,9 @@
-test: 1
+smtp:
+  host: "smtp.mandrillapp.com"
+  user: "myUser"
+  pass: "myPassword"
+  port: "587"
+folders:
+  templates: "/templates"
+  partials: "/partials"
+  helpers: "/helpers"
