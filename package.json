@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "micro email api",
   "scripts": {
-    "start": "./node_modules/.bin/rapptor",
-    "lint": "./node_modules/.bin/eslint ."
+    "start": "rapptor",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -24,13 +24,18 @@
   },
   "homepage": "https://github.com/firstandthird/micro-mail#readme",
   "dependencies": {
-    "rapptor": "firstandthird/rapptor#v1"
+    "async": "2.0.0-rc.4",
+    "rapptor": "firstandthird/rapptor#13332ac",
+    "nodemailer": "2.4.1",
+    "vision": "4.1.0",
+    "inert": "4.0.0",
+    "handlebars": "4.0.5"
   },
   "devDependencies": {
-    "eslint": "^2.2.0",
-    "eslint-config-airbnb": "^6.0.2",
-    "eslint-config-firstandthird": "^1.7.0",
-    "eslint-plugin-react": "^4.0.0",
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb": "^8.0.0",
+    "eslint-config-firstandthird": "^2.0.0",
+    "eslint-plugin-react": "^5.1.1",
     "eslint-plugin-import": "^1.5.0",
     "eslint-plugin-jsx-a11y": "^1.0.2"
   }

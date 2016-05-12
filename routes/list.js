@@ -1,6 +1,6 @@
-exports.home = {
+exports.list = {
   path: '/',
-  method: 'get',
+  method: 'GET',
   handler(request, reply) {
     reply('ok');
   }
