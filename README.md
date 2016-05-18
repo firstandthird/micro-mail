@@ -4,7 +4,7 @@ An app for sending emails.
 
 ### Setup
 
-Clone this repo and `npm install`. In order to work, the rendering engine must be able to find all of your templates. Currently all template files are defaulted to exist in `./templates` with the following structure. Any additional helpers can be installed in `./helpers`. See below.
+Clone this repo and `npm install`. In order to work, the rendering engine must be able to find all of your templates. Currently all template files are defaulted to exist in `./templates`. Any additional helpers can be installed in `./helpers`. See below.
 
 ```
 ./micro-mail
