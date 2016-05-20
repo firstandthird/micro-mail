@@ -33,7 +33,7 @@ module.exports = function(server, transporter, emailData, allDone) {
         return result;
       }, {});
 
-      done(renderedDetails);
+      done(null, renderedDetails);
     },
     content: (done) => {
       if (emailData.template) {
