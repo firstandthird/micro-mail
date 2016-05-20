@@ -1,0 +1,7 @@
+views:
+  engines:
+    html: "handlebars"
+  path: "{{CWD}}/test/emails"
+  partialsPath: "{{CWD}}/test/partials"
+  helpersPath: "{{CWD}}/test/helpers"
+  isCached: false

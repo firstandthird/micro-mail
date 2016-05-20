@@ -1,3 +1,5 @@
+'us strict';
+
 exports.list = {
   path: '/',
   method: 'GET',

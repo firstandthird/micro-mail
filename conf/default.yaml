@@ -1,16 +1,17 @@
+templatePath: "{{CWD}}/templates/emails"
 plugins:
   vision:
   inert:
-  ./plugins/mailer:
-    smtp:
-      host: "{{ENV.SMTP_HOST}}"
-      port: "{{ENV.SMTP_PORT}}"
-      user: "{{ENV.SMTP_USER}}"
-      pass: "{{ENV.SMTP_PASS}}"
+  ./plugins/mandrill:
+    smtpPass: "{{ENV.SMTP_PASS}}"
+emails:
+  defaultDetails:
+    from: 'no-reply@leanin.org'
+    fromName: 'LeanIn.org'
 views:
   engines:
     html: "handlebars"
-  path: "{{CWD}}/emails"
-  partialsPath: "{{CWD}}/partials"
+  path: "{{templatePath}}"
+  partialsPath: "{{CWD}}/templates/partials"
   helpersPath: "{{CWD}}/helpers"
   isCached: true

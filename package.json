@@ -25,11 +25,13 @@
   "homepage": "https://github.com/firstandthird/micro-mail#readme",
   "dependencies": {
     "async": "2.0.0-rc.4",
-    "rapptor": "firstandthird/rapptor#e1b04d6",
-    "nodemailer": "2.4.1",
-    "vision": "4.1.0",
+    "handlebars": "4.0.5",
     "inert": "4.0.0",
-    "handlebars": "4.0.5"
+    "mandrill-api": "^1.0.45",
+    "nodemailer": "2.4.1",
+    "rapptor": "firstandthird/rapptor#e1b04d6",
+    "vision": "4.1.0",
+    "yamljs": "^0.2.7"
   },
   "devDependencies": {
     "chai": "^3.5.0",
