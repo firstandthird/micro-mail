@@ -7,12 +7,15 @@ exports.view = {
   method: 'GET',
   handler(request, reply) {
     const email = request.params.email;
+
+    const testPath = `${request.server.settings.app.views.path}/${email}/test.json`;
+
     let defaultData = {};
     try {
-      defaultData = require(`${request.server.settings.app.templatePath}/${email}/test`);
+      defaultData = require(testPath);
     } catch (e) {
       // Nothing... just continue
-      request.server.log(['warn', 'view', email], { message: 'debug.json not found' });
+      request.server.log(['warn', 'view', email], { message: 'test.json not found', testPath });
     }
 
     const templateData = _.defaults({}, request.query, defaultData);

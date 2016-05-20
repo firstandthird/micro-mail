@@ -10,12 +10,16 @@ module.exports = function(payload) {
   const template = payload.template || null;
   const data = payload.data || {};
 
-  const defaultDetails = server.settings.app.emails.defaultDetails || {};
-  const templateDir = `${server.settings.app.templatePath}/${template}`;
+  const defaultDetails = (server.settings.app.emails && server.settings.app.emails.defaultDetails) ? server.settings.app.emails.defaultDetails : {};
+  const templateDir = `${server.settings.app.views.path}/${template}`;
   let emailDetails = {};
 
   if (template !== null) {
-    emailDetails = yamljs.load(`${templateDir}/details.yaml`);
+    try {
+      emailDetails = yamljs.load(`${templateDir}/details.yaml`);
+    } catch (e) {
+      // Do nothing, continue
+    }
   }
 
   const finalDetails = _.defaults({}, payload, emailDetails, defaultDetails);
