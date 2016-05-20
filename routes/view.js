@@ -9,7 +9,7 @@ exports.view = {
     const email = request.params.email;
     let defaultData = {};
     try {
-      defaultData = require(`${request.server.settings.app.templatePath}/${email}/debug`);
+      defaultData = require(`${request.server.settings.app.templatePath}/${email}/test`);
     } catch (e) {
       // Nothing... just continue
       request.server.log(['warn', 'view', email], { message: 'debug.json not found' });

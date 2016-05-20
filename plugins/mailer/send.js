@@ -1,39 +1,10 @@
 'use strict';
 
-const yamljs = require('yamljs');
-const handlebars = require('handlebars');
-const _ = require('lodash');
-
-
 const async = require('async');
 module.exports = function(server, transporter, emailData, allDone) {
   async.auto({
     details: (done) => {
-      const template = emailData.template || null;
-      const data = emailData.data || {};
-
-      const defaultDetails = server.settings.app.emails.defaultDetails || {};
-      const templateDir = `${server.settings.app.views.path}/${template}`;
-      let emailDetails = {};
-
-      if (template !== null) {
-        emailDetails = yamljs.load(`${templateDir}/details.yaml`);
-      }
-
-      const finalDetails = _.defaults({}, emailData, emailDetails, defaultDetails);
-
-      const renderedDetails = _.reduce(finalDetails, (result, value, key) => {
-        if (['to', 'template', 'data', 'text', 'headers'].indexOf(key) !== -1) {
-          result[key] = value;
-          return result;
-        }
-
-        const tmpl = handlebars.compile(value);
-        result[key] = tmpl(data);
-        return result;
-      }, {});
-
-      done(null, renderedDetails);
+      done(null, server.methods.renderData(emailData));
     },
     content: (done) => {
       if (emailData.template) {

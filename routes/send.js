@@ -2,9 +2,7 @@ exports.send = {
   path: '/send',
   method: 'POST',
   handler(request, reply) {
-    // Render emailDetails
-    const renderedData = request.server.methods.renderData(request.payload);
-    request.server.sendEmail(renderedData, (err, results) => {
+    request.server.sendEmail(request.payload, (err, results) => {
       if (err) {
         request.server.log(['error', 'send'], { err });
         return reply({
