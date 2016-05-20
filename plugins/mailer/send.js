@@ -13,7 +13,7 @@ module.exports = function(server, transporter, emailData, allDone) {
       const data = emailData.data || {};
 
       const defaultDetails = server.settings.app.emails.defaultDetails || {};
-      const templateDir = `${server.settings.app.templatePath}/${template}`;
+      const templateDir = `${server.settings.app.views.path}/${template}`;
       let emailDetails = {};
 
       if (template !== null) {

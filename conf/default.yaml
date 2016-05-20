@@ -1,4 +1,4 @@
-templatePath: "{{CWD}}/templates/emails"
+templatePath: "{{CWD}}/templates"
 plugins:
   vision:
   inert:
@@ -8,14 +8,10 @@ plugins:
       port: "{{ENV.SMTP_PORT}}"
       user: "{{ENV.SMTP_USER}}"
       pass: "{{ENV.SMTP_PASS}}"
-emails:
-  defaultDetails:
-    from: 'no-reply@leanin.org'
-    fromName: 'LeanIn.org'
 views:
   engines:
     html: "handlebars"
-  path: "{{templatePath}}"
-  partialsPath: "{{CWD}}/templates/partials"
-  helpersPath: "{{CWD}}/helpers"
+  path: "{{templatePath}}/emails"
+  partialsPath: "{{templatePath}}/partials"
+  helpersPath: "{{templatePath}}/helpers"
   isCached: true
