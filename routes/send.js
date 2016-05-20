@@ -15,7 +15,7 @@ exports.send = {
       return reply({
         status: 'ok',
         message: 'Email delivered.',
-        result: results.send
+        result: results
       });
     });
   }
