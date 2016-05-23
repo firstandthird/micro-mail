@@ -27,6 +27,7 @@
     "async": "2.0.0-rc.4",
     "handlebars": "4.0.5",
     "inert": "4.0.0",
+    "lodash": "^4.13.1",
     "nodemailer": "2.4.1",
     "rapptor": "firstandthird/rapptor#e1b04d6",
     "vision": "4.1.0",
