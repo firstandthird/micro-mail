@@ -1,6 +1,3 @@
-FROM firstandthird/node
+FROM firstandthird/node:0.0.2
 
-ADD . /app/server
-WORKDIR /app/server
-
-CMD ["node", "../node_modules/.bin/rapptor"]
+CMD ["node", "./node_modules/.bin/rapptor"]

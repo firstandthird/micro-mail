@@ -29,7 +29,7 @@
     "inert": "4.0.0",
     "lodash": "^4.13.1",
     "nodemailer": "2.4.1",
-    "rapptor": "firstandthird/rapptor#61e6370",
+    "rapptor": "firstandthird/rapptor#4eb1e10",
     "vision": "4.1.0",
     "yamljs": "^0.2.7"
   },
