@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const _ = require('lodash');
+const Handlebars = require('handlebars');
 
 exports.list = {
   path: '/',
@@ -13,12 +14,15 @@ exports.list = {
         return reply(err);
       }
 
-      files = _.map(files, (file) => {
-        const link = `<a href="/view/${file}">${file}</a>`;
-        return link;
-      });
+      fs.readFile('files/index.html', 'utf8', (fileErr, contents) => {
+        if (fileErr) {
+          return reply(fileErr);
+        }
 
-      reply(files.join('<br/>'));
+        const viewTemplate = Handlebars.compile(contents);
+
+        return reply(viewTemplate({ files }));
+      });
     });
   }
 };
