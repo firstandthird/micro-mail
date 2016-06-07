@@ -1,0 +1,92 @@
+<!Doctype>
+<html>
+  <head>
+  <title>Email Templates</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style>
+      .message-cnt { display: none; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>Email List / Test</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="testEmail">Test Email</label>
+              <input type="text" class="form-control" id="testEmail" placeholder="Test Email"/>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <table class="table">
+          <tr>
+            <th style="width:500px;">Template</th>
+            <th style="width:500px;">&nbsp;</th>
+          </tr>
+          {{#each files}}
+            <tr>
+              <td>{{this}}</td>
+              <td>
+                <a href="/view/{{this}}" class="btn btn-success" target="_blank">View</a>
+                <a href="#" data-action="sendTest" data-template="{{this}}" class="btn btn-warning">Test</a>
+                <span class="message-working text-info message-cnt">
+                  <span class="glyphicon glyphicon-refresh"></span> <strong>Working...</strong>
+                </span>
+                <span class="message-complete text-success message-cnt">
+                  <span class="glyphicon glyphicon-ok"></span> <strong>Sent!</strong>
+                </span>
+                <span class="message-error text-danger message-cnt">
+                  <span class="glyphicon glyphicon-remove-sign"></span> <strong>Error</strong>
+                </span>
+            </tr>
+          {{/each}}
+        </table>
+      </div>
+    </div> <!-- END .container -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+      $(function() {
+        var url = window.location.protocol + '//' + window.location.host;
+        $('[data-action="sendTest"]').on({
+          click: function(e) {
+            e.preventDefault();
+            var template = $(this).data('template');
+            var prnt = $(this).parent();
+            
+            prnt.find('.message-cnt').hide();
+            prnt.find('.message-working').show();
+            
+            var to = $('#testEmail').val();
+
+            if(to == '') {
+              prnt.find('.message-cnt').hide();
+              prnt.find('.message-error').find('strong').text('You must fill in Test Email Above');
+              prnt.find('.message-error').show();
+              
+              return;
+            }
+
+            $.post(url + '/send', {
+              to: to,
+              template: template
+            }, function() {
+              prnt.find('.message-cnt').hide();
+              prnt.find('.message-complete').show();
+            })
+              .fail(function() {
+                prnt.find('.message-cnt').hide();
+                prnt.find('.message-error').show();
+              });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
