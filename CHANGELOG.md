@@ -1,4 +1,10 @@
 
+0.3.0 / 2016-06-08
+==================
+
+  * adding test to test pane
+  * adding test.json to test
+
 0.2.0 / 2016-06-07
 ==================
 
