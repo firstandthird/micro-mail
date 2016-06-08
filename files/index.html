@@ -73,7 +73,7 @@
               return;
             }
 
-            $.post(url + '/send', {
+            $.post(url + '/send?test=1', {
               to: to,
               template: template
             }, function() {
