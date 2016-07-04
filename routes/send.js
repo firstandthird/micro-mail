@@ -2,12 +2,12 @@ const Joi = require('joi');
 
 const schema = Joi.object().keys({
   from: Joi.string().required(),
-  to: Joi.string(),
+  to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
   data: Joi.object(),
-  text: Joi.string().required(),
-  template: Joi.string().required(),
+  text: Joi.string(),
+  template: Joi.string(),
   subject: Joi.string()
-}).without('text', 'template');
+}).or('text', 'template');
 
 exports.send = {
   path: '/send',
@@ -18,15 +18,14 @@ exports.send = {
       request.payload.data = require(testPath);
     }
     // validates:
-    console.log('-----------------------validating')
     Joi.validate(request.payload, schema, (err, value) => {
       if (err) {
-        console.log('===============================no validation')
-        console.log(request.payload)
-        return reply(err).code(500);
+        return reply({
+          status: 'error',
+          message: 'Validation error',
+          result: err.details[0].message
+        }).code(500);
       }
-      console.log('passed validation.................................')
-      console.log(request.payload)
       request.server.sendEmail(request.payload, (err, results) => {
         if (err) {
           request.server.log(['error', 'send'], { err });
