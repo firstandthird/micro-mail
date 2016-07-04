@@ -166,3 +166,51 @@ lab.describe('/send', { timeout: 5000 }, () => {
     });
   });
 });
+
+lab.describe('/send many', { timeout: 5000 }, () => {
+  lab.it('should be able to send separate emails to several destinations', (done) => {
+    const templateParams = {
+      from: 'emal@example.com',
+      subject: 'This is a subject',
+      template: 'test-template',
+      data: {
+        var: 'value'
+      }
+    };
+    server.inject({
+      method: 'POST',
+      url: '/send?sendMany=true',
+      payload: templateParams,
+    }, (res) => {
+      code.expect(res.statusCode).to.equal(200);
+      code.expect(res.result.length).to.equal(3);
+      for (var i = 0; i < res.result.length; i++) {
+        code.expect(res.result[i].status).to.equal('ok');
+      }
+      done();
+    });
+  });
+  lab.it('should be able to send failure message for specific emails', (done) => {
+    const templateParams = {
+      to: 'prey@river.com,notanaddress,crows@rock.com',
+      from: 'emal@example.com',
+      subject: 'This is a subject',
+      template: 'test-template',
+      data: {
+        var: 'value'
+      }
+    };
+    server.inject({
+      method: 'POST',
+      url: '/send?sendMany=true',
+      payload: templateParams,
+    }, (res) => {
+      code.expect(res.statusCode).to.equal(200);
+      code.expect(res.result.length).to.equal(3);
+      code.expect(res.result[0].status).to.equal('error');
+      code.expect(res.result[1].status).to.equal('ok');
+      code.expect(res.result[2].status).to.equal('ok');
+      done();
+    });
+  });
+});

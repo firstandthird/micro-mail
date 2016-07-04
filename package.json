@@ -30,6 +30,7 @@
     "inert": "4.0.0",
     "joi": "^8.4.2",
     "lodash": "^4.13.1",
+    "lodash.omit": "^4.3.0",
     "nodemailer": "2.4.1",
     "rapptor": "^1.0.0",
     "vision": "4.1.0",

@@ -1,8 +1,10 @@
 const Joi = require('joi');
+const omit = require('lodash.omit');
+const async = require('async');
 
 const schema = Joi.object().keys({
   from: Joi.string().required(),
-  to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
+  to: Joi.string().required(),
   data: Joi.object(),
   text: Joi.string(),
   template: Joi.string(),
@@ -26,21 +28,51 @@ exports.send = {
           result: err.details[0].message
         }).code(500);
       }
-      request.server.sendEmail(request.payload, (err, results) => {
+      const getResult = (err, results) => {
         if (err) {
           request.server.log(['error', 'send'], { err });
-          return reply({
+          return {
             status: 'error',
             message: 'There has been an error', // Default message for MVP
             result: err
-          }).code(500);
+          }
         }
-        return reply({
+        return {
           status: 'ok',
           message: 'Email delivered.',
           result: results
+        };
+      };
+      if (request.query.sendMany) {
+        // will send each individually and return a single
+        // list of all results
+        const toList = request.payload.to.split(",");
+        const allResults = [];
+        const allSucceeded = true;
+        async.each(toList, (item, done) => {
+          const curPayload = omit(request.payload, 'to');
+          curPayload.to = item.trim();
+          request.server.sendEmail(curPayload, (err, result) => {
+            if (err) {
+              allSucceeded = false;
+            }
+            allResults.push(getResult(err, result));
+            done();
+          });
+        }, () => {
+          if (allSucceeded) {
+            return reply(allResults);
+          }
+          return reply(allResults).code(500);
         });
-      });
+      } else {
+        request.server.sendEmail(request.payload, (err, results) => {
+          if (err) {
+            return reply(getResult(err, results)).code(500);
+          }
+          return reply(getResult(err, results));
+        });
+      }
     });
   }
 };
