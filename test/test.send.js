@@ -170,6 +170,7 @@ lab.describe('/send', { timeout: 5000 }, () => {
 lab.describe('/send many', { timeout: 5000 }, () => {
   lab.it('should be able to send separate emails to several destinations', (done) => {
     const templateParams = {
+      to: 'prey@river.com, vultures@largetree.com,crows@rock.com',
       from: 'emal@example.com',
       subject: 'This is a subject',
       template: 'test-template',
