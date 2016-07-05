@@ -18,19 +18,19 @@ module.exports = (options, callback) => {
       disabledCommands: ['STARTTLS'],
       // auth method, for testing just needs to verify that
       // login info was passed correctly
-      onAuth: (auth, session, callback) => {
-        return callback(null, {
+      onAuth: (auth, session, callback2) => {
+        return callback2(null, {
           user: auth.username,
           password: auth.password
         });
       },
       socketTimeout: 100 * 1000,
       closeTimeout: 6 * 1000,
-      onData: (stream, session, callback) => {
+      onData: (stream, session, callback2) => {
         stream.on('end', () => {
-          return callback(null, 'Message queued');
+          return callback2(null, 'Message queued');
         });
-        stream.on('data', (chunk) => {
+        stream.on('data', () => {
         });
       },
     });

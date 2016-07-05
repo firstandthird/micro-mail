@@ -1,3 +1,4 @@
+'use strict';
 const Joi = require('joi');
 
 const schema = Joi.object().keys({
@@ -18,7 +19,7 @@ exports.send = {
       request.payload.data = require(testPath);
     }
     // validates:
-    Joi.validate(request.payload, schema, (err, value) => {
+    Joi.validate(request.payload, schema, (err) => {
       if (err) {
         return reply({
           status: 'error',
@@ -26,9 +27,9 @@ exports.send = {
           result: err.details[0].message
         }).code(500);
       }
-      request.server.sendEmail(request.payload, (err, results) => {
-        if (err) {
-          request.server.log(['error', 'send'], { err });
+      request.server.sendEmail(request.payload, (err2, results) => {
+        if (err2) {
+          request.server.log(['error', 'send'], { err2 });
           return reply({
             status: 'error',
             message: 'There has been an error', // Default message for MVP

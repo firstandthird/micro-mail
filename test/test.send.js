@@ -18,7 +18,7 @@ lab.beforeEach((done) => {
     server = configuredServer;
     smtpServer = configuredSmtpServer;
     done();
-  })
+  });
 });
 
 lab.describe('/send', { timeout: 5000 }, () => {
