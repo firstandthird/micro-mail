@@ -1,3 +1,4 @@
+'use strict';
 const Joi = require('joi');
 const omit = require('lodash.omit');
 const async = require('async');
@@ -20,12 +21,12 @@ exports.send = {
       request.payload.data = require(testPath);
     }
     // validates:
-    Joi.validate(request.payload, schema, (err, value) => {
-      if (err) {
+    Joi.validate(request.payload, schema, (err2) => {
+      if (err2) {
         return reply({
           status: 'error',
           message: 'Validation error',
-          result: err.details[0].message
+          result: err2.details[0].message
         }).code(500);
       }
       const getResult = (err, results) => {
@@ -35,7 +36,7 @@ exports.send = {
             status: 'error',
             message: 'There has been an error', // Default message for MVP
             result: err
-          }
+          };
         }
         return {
           status: 'ok',
@@ -46,9 +47,9 @@ exports.send = {
       if (request.query.sendMany) {
         // will send each individually and return a single
         // list of all results
-        const toList = request.payload.to.split(",");
+        const toList = request.payload.to.split(',');
         const allResults = [];
-        const allSucceeded = true;
+        let allSucceeded = true;
         async.each(toList, (item, done) => {
           const curPayload = omit(request.payload, 'to');
           curPayload.to = item.trim();

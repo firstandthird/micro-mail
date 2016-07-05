@@ -18,7 +18,7 @@ lab.beforeEach((done) => {
     server = configuredServer;
     smtpServer = configuredSmtpServer;
     done();
-  })
+  });
 });
 
 lab.describe('/send', { timeout: 5000 }, () => {
@@ -168,7 +168,7 @@ lab.describe('/send', { timeout: 5000 }, () => {
 });
 
 lab.describe('/send many', { timeout: 5000 }, () => {
-  lab.it('should be able to send separate emails to several destinations', (done) => {
+  lab.it('will send separate emails to several destinations and return 200 if all were good', (done) => {
     const templateParams = {
       to: 'prey@river.com, vultures@largetree.com,crows@rock.com',
       from: 'emal@example.com',
@@ -185,13 +185,13 @@ lab.describe('/send many', { timeout: 5000 }, () => {
     }, (res) => {
       code.expect(res.statusCode).to.equal(200);
       code.expect(res.result.length).to.equal(3);
-      for (var i = 0; i < res.result.length; i++) {
+      for (let i = 0; i < res.result.length; i++) {
         code.expect(res.result[i].status).to.equal('ok');
       }
       done();
     });
   });
-  lab.it('should be able to send failure message for specific emails', (done) => {
+  lab.it('will return 500 if any email fails and list status for specific emails', (done) => {
     const templateParams = {
       to: 'prey@river.com,notanaddress,crows@rock.com',
       from: 'emal@example.com',
@@ -206,7 +206,7 @@ lab.describe('/send many', { timeout: 5000 }, () => {
       url: '/send?sendMany=true',
       payload: templateParams,
     }, (res) => {
-      code.expect(res.statusCode).to.equal(200);
+      code.expect(res.statusCode).to.equal(500);
       code.expect(res.result.length).to.equal(3);
       code.expect(res.result[0].status).to.equal('error');
       code.expect(res.result[1].status).to.equal('ok');
