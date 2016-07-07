@@ -28,6 +28,7 @@ lab.describe('/send', { timeout: 5000 }, () => {
       to: 'prey@river.com',
       subject: 'inclement weather warning',
       template: 'test-template',
+      fromName: 'Big E',
       data: {
         testData: 'value'
       }
@@ -42,7 +43,6 @@ lab.describe('/send', { timeout: 5000 }, () => {
       done();
     });
   });
-
   lab.it('should validate the params', (done) => {
     const badParams = {
       from: 'emal@example.com',

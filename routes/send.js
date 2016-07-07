@@ -3,6 +3,7 @@ const Joi = require('joi');
 
 const schema = Joi.object().keys({
   from: Joi.string().required(),
+  fromName: Joi.string(),
   to: Joi.string().required(),
   data: Joi.object(),
   text: Joi.string(),
