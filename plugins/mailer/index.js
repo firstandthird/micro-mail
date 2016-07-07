@@ -10,8 +10,11 @@ exports.register = function(server, options, next) {
     }
   });
 
-  server.decorate('server', 'sendEmail', (data, done) => {
-    send(server, transporter, data, done);
+  server.decorate('server', 'sendEmail', (data, sendIndividual, done) => {
+    if (sendIndividual) {
+      return send(server, transporter, data, true, done);
+    }
+    send(server, transporter, data, options.sendIndividual, done);
   });
 
   next();

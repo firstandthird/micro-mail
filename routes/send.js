@@ -1,7 +1,5 @@
 'use strict';
 const Joi = require('joi');
-const omit = require('lodash.omit');
-const async = require('async');
 
 const schema = Joi.object().keys({
   from: Joi.string().required(),
@@ -20,6 +18,9 @@ exports.send = {
     if (request.query.test) {
       request.payload.data = require(testPath);
     }
+    if (request.payload && typeof request.payload.to === 'object') {
+      request.payload.to = request.payload.to.join(',');
+    }
     // validates:
     Joi.validate(request.payload, schema, (err2) => {
       if (err2) {
@@ -29,51 +30,12 @@ exports.send = {
           result: err2.details[0].message
         }).code(500);
       }
-      const getResult = (err, results) => {
+      request.server.sendEmail(request.payload, request.query.sendIndividual, (err, results) => {
         if (err) {
-          request.server.log(['error', 'send'], { err });
-          return {
-            status: 'error',
-            message: 'There has been an error', // Default message for MVP
-            result: err
-          };
+          return reply(results).code(500);
         }
-        return {
-          status: 'ok',
-          message: 'Email delivered.',
-          result: results
-        };
-      };
-      if (request.query.sendMany) {
-        // will send each individually and return a single
-        // list of all results
-        const toList = request.payload.to.split(',');
-        const allResults = [];
-        let allSucceeded = true;
-        async.each(toList, (item, done) => {
-          const curPayload = omit(request.payload, 'to');
-          curPayload.to = item.trim();
-          request.server.sendEmail(curPayload, (err, result) => {
-            if (err) {
-              allSucceeded = false;
-            }
-            allResults.push(getResult(err, result));
-            done();
-          });
-        }, () => {
-          if (allSucceeded) {
-            return reply(allResults);
-          }
-          return reply(allResults).code(500);
-        });
-      } else {
-        request.server.sendEmail(request.payload, (err, results) => {
-          if (err) {
-            return reply(getResult(err, results)).code(500);
-          }
-          return reply(getResult(err, results));
-        });
-      }
+        return reply(results);
+      });
     });
   }
 };

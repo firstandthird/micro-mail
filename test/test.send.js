@@ -42,6 +42,7 @@ lab.describe('/send', { timeout: 5000 }, () => {
       done();
     });
   });
+
   lab.it('should validate the params', (done) => {
     const badParams = {
       from: 'emal@example.com',
@@ -168,6 +169,47 @@ lab.describe('/send', { timeout: 5000 }, () => {
 });
 
 lab.describe('/send many', { timeout: 5000 }, () => {
+  lab.it('should be able to send multiple destination emails at once as a comma-separated string', (done) => {
+    const params = {
+      from: 'eagles@nest.com',
+      to: 'prey@river.com, fish@lake.com',
+      subject: 'What times are you available later?',
+      template: 'test-template',
+      data: {
+        testData: 'value'
+      }
+    };
+    server.inject({
+      method: 'POST',
+      url: '/send',
+      payload: params
+    }, (res) => {
+      code.expect(res.statusCode).to.equal(200);
+      code.expect(res.result.status).to.equal('ok');
+      done();
+    });
+  });
+  lab.it('should be able to send multiple destination emails at once as an array of strings', (done) => {
+    const params = {
+      from: 'eagles@nest.com',
+      to: ['prey@river.com', 'fish@lake.com'],
+      subject: 'What times are you available later?',
+      template: 'test-template',
+      data: {
+        testData: 'value'
+      }
+    };
+    server.inject({
+      method: 'POST',
+      url: '/send',
+      payload: params
+    }, (res) => {
+      code.expect(res.statusCode).to.equal(200);
+      code.expect(res.result.status).to.equal('ok');
+      done();
+    });
+  });
+
   lab.it('will send separate emails to several destinations and return 200 if all were good', (done) => {
     const templateParams = {
       to: 'prey@river.com, vultures@largetree.com,crows@rock.com',
@@ -180,7 +222,7 @@ lab.describe('/send many', { timeout: 5000 }, () => {
     };
     server.inject({
       method: 'POST',
-      url: '/send?sendMany=true',
+      url: '/send?sendIndividual=true',
       payload: templateParams,
     }, (res) => {
       code.expect(res.statusCode).to.equal(200);
@@ -191,6 +233,7 @@ lab.describe('/send many', { timeout: 5000 }, () => {
       done();
     });
   });
+
   lab.it('will return 500 if any email fails and list status for specific emails', (done) => {
     const templateParams = {
       to: 'prey@river.com,notanaddress,crows@rock.com',
@@ -203,7 +246,7 @@ lab.describe('/send many', { timeout: 5000 }, () => {
     };
     server.inject({
       method: 'POST',
-      url: '/send?sendMany=true',
+      url: '/send?sendIndividual=true',
       payload: templateParams,
     }, (res) => {
       code.expect(res.statusCode).to.equal(500);
@@ -212,6 +255,39 @@ lab.describe('/send many', { timeout: 5000 }, () => {
       code.expect(res.result[1].status).to.equal('ok');
       code.expect(res.result[2].status).to.equal('ok');
       done();
+    });
+  });
+  lab.it('will use the "sendIndividual" param from a config file', (done) => {
+    // set up a server / smtp rig set up for sendIndividual
+    setup({
+      port: 8889,
+      configPath: `${process.cwd()}/test/conf0`
+    }, (configuredServer, configuredSmtpServer) => {
+      const templateParams = {
+        to: 'prey@river.com, crows@rock.com',
+        from: 'emal@example.com',
+        subject: 'This is a subject',
+        template: 'test-template',
+        data: {
+          var: 'value'
+        }
+      };
+      configuredServer.inject({
+        method: 'POST',
+        // don't need the sendIndividual=true param:
+        url: '/send',
+        payload: templateParams,
+      }, (res) => {
+        code.expect(res.statusCode).to.equal(200);
+        code.expect(res.result.length).to.equal(2);
+        code.expect(res.result[0].status).to.equal('ok');
+        code.expect(res.result[1].status).to.equal('ok');
+        configuredServer.stop(() => {
+          configuredSmtpServer.close(() => {
+            done();
+          });
+        });
+      });
     });
   });
 });
