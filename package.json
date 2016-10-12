@@ -31,6 +31,7 @@
     "nodemailer": "2.4.1",
     "rapptor": "firstandthird/rapptor#4eb1e10",
     "vision": "4.1.0",
+    "juice": "^3.0.1",
     "yamljs": "^0.2.7"
   },
   "devDependencies": {

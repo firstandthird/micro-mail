@@ -2,6 +2,7 @@
 
 const yamljs = require('yamljs');
 const handlebars = require('handlebars');
+const juice = require('juice');
 const _ = require('lodash');
 
 module.exports = function(payload) {
@@ -25,15 +26,16 @@ module.exports = function(payload) {
   const finalDetails = _.defaults({}, payload, emailDetails, defaultDetails);
 
   const renderedDetails = _.reduce(finalDetails, (result, value, key) => {
-    if (['to', 'template', 'data', 'text', 'headers'].indexOf(key) !== -1) {
+    if (['to', 'template', 'data', 'text', 'headers', 'inlineCss'].includes(key)) {
       result[key] = value;
+      if (payload.inlineCss && (key === 'template' || key === 'text')) {
+        result[key] = juice(result[key]);
+      }
       return result;
     }
-
     const tmpl = handlebars.compile(value);
     result[key] = tmpl(data);
     return result;
   }, {});
-
   return renderedDetails;
 };

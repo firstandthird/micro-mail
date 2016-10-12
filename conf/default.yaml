@@ -1,4 +1,5 @@
 templatePath: "{{CWD}}/templates"
+inlineCss: false
 plugins:
   vision:
   inert:

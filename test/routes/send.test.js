@@ -60,7 +60,6 @@ describe('Routes', () => {
     });
 
     it('should require either text or template', (done) => {
-      expect(true).to.equal(false);
       async.parallel([
         function(next) {
           // Neither text or template
@@ -119,6 +118,25 @@ describe('Routes', () => {
           });
         }
       ], done);
+    });
+
+    it('should be able to process an html template', (done) => {
+      const templateParams = {
+        from: 'emal@example.com',
+        subject: 'This is a subject',
+        inlineCss: true,
+        text: `<style>div{color:red;}</style><div/>`,
+        data: {}
+      };
+      rapptor.server.inject({
+        method: 'POST',
+        url: '/send',
+        payload: templateParams,
+      }, (res) => {
+        // expect(res.statusCode).to.equal(200);
+        console.log(res.result)
+        done();
+      });
     });
 
     it('should return 200 on success');
