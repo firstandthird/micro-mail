@@ -4,6 +4,7 @@
   "description": "micro email api",
   "scripts": {
     "start": "rapptor",
+    "test": "lab -e test/",
     "lint": "eslint ."
   },
   "repository": {
@@ -27,21 +28,21 @@
     "async": "2.0.0-rc.4",
     "handlebars": "4.0.5",
     "inert": "4.0.0",
+    "joi": "^8.4.2",
     "lodash": "^4.13.1",
     "nodemailer": "2.4.1",
-    "rapptor": "firstandthird/rapptor#4eb1e10",
+    "rapptor": "^1.0.0",
     "vision": "4.1.0",
     "juice": "^3.0.1",
     "yamljs": "^0.2.7"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "^2.9.0",
-    "eslint-config-airbnb": "^8.0.0",
-    "eslint-config-firstandthird": "^2.0.0",
-    "eslint-plugin-import": "^1.5.0",
-    "eslint-plugin-jsx-a11y": "^1.0.2",
-    "eslint-plugin-react": "^5.1.1",
-    "lab": "^10.5.1"
+    "code": "^3.0.1",
+    "eslint": "^3.4.0",
+    "eslint-config-firstandthird": "^3.0.2",
+    "eslint-plugin-import": "^1.14.0",
+    "lab": "^10.5.1",
+    "smtp-server": "^1.9.1"
   }
 }

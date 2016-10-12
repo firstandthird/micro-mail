@@ -1,0 +1,16 @@
+plugins:
+  vision:
+  inert:
+  ./plugins/mailer:
+    smtp:
+      host: "localhost"
+      port: "8888"
+      user: "gandalf@wizard.com"
+      pass: "youshallnotpass"
+views:
+  engines:
+    html: "handlebars"
+  path: "{{CWD}}/test/emails"
+  partialsPath: "{{CWD}}/test/partials"
+  helpersPath: "{{CWD}}/test/helpers"
+  isCached: false
