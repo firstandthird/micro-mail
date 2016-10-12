@@ -26,7 +26,7 @@ module.exports = function(payload) {
   const finalDetails = _.defaults({}, payload, emailDetails, defaultDetails);
 
   const renderedDetails = _.reduce(finalDetails, (result, value, key) => {
-    if (['to', 'template', 'data', 'text', 'headers', 'inlineCss'].includes(key)) {
+    if (['to', 'template', 'data', 'text', 'headers', 'inlineCss'].indexOf(key) > -1) {
       result[key] = value;
       if (payload.inlineCss && (key === 'template' || key === 'text')) {
         result[key] = juice(result[key]);
