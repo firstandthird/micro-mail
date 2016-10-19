@@ -31,9 +31,14 @@ exports.send = {
           result: err2.details[0].message
         }).code(500);
       }
-      request.server.sendEmail(request.payload, request.query.sendIndividual, (err, results) => {
-        if (err) {
-          return reply(results).code(500);
+      request.server.sendEmail(request.payload, (err2, results) => {
+        if (err2) {
+          request.server.log(['error', 'send'], { err2 });
+          return reply({
+            status: 'error',
+            message: 'There has been an error', // Default message for MVP
+            result: err
+          }).code(500);
         }
         return reply(results);
       });
