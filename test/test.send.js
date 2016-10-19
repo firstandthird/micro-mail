@@ -43,6 +43,7 @@ lab.describe('/send', { timeout: 5000 }, () => {
       done();
     });
   });
+
   lab.it('should validate the params', (done) => {
     const badParams = {
       from: 'emal@example.com',
@@ -80,7 +81,6 @@ lab.describe('/send', { timeout: 5000 }, () => {
       done();
     });
   });
-
   lab.it('should process a template if provided', (done) => {
     // Just template
     const templateParams = {
@@ -209,7 +209,6 @@ lab.describe('/send many', { timeout: 5000 }, () => {
       done();
     });
   });
-
   lab.it('will send separate emails to several destinations and return 200 if all were good', (done) => {
     const templateParams = {
       to: 'prey@river.com, vultures@largetree.com,crows@rock.com',
@@ -250,13 +249,11 @@ lab.describe('/send many', { timeout: 5000 }, () => {
       payload: templateParams,
     }, (res) => {
       code.expect(res.statusCode).to.equal(500);
-      code.expect(res.result.length).to.equal(3);
-      code.expect(res.result[0].status).to.equal('error');
-      code.expect(res.result[1].status).to.equal('ok');
-      code.expect(res.result[2].status).to.equal('ok');
+      code.expect(res.result.message).to.equal('There has been an error');
       done();
     });
   });
+
   lab.it('will use the "sendIndividual" param from a config file', (done) => {
     // set up a server / smtp rig set up for sendIndividual
     setup({

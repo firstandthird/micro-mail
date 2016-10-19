@@ -25,19 +25,20 @@ exports.send = {
     // validates:
     Joi.validate(request.payload, schema, (err2) => {
       if (err2) {
+        const errMessage = err2.details.map((detail) => { return detail.message; }).join('::');
         return reply({
           status: 'error',
           message: 'Validation error',
-          result: err2.details[0].message
+          result: errMessage
         }).code(500);
       }
-      request.server.sendEmail(request.payload, (err2, results) => {
+      request.server.sendEmail(request.payload, request.query.sendIndividual, (err2, results) => {
         if (err2) {
           request.server.log(['error', 'send'], { err2 });
           return reply({
             status: 'error',
             message: 'There has been an error', // Default message for MVP
-            result: err
+            result: err2
           }).code(500);
         }
         return reply(results);
