@@ -1,6 +1,7 @@
 'use strict';
-
+const juice = require('juice');
 const async = require('async');
+
 module.exports = function(server, transporter, emailData, allDone) {
   async.auto({
     details: (done) => {
@@ -8,9 +9,13 @@ module.exports = function(server, transporter, emailData, allDone) {
     },
     content: (done) => {
       if (emailData.template) {
-        return server.render(`${emailData.template}/email`, emailData.data, done);
+        return server.render(`${emailData.template}/email`, emailData.data, (err, templateOutput) => {
+          if (err) {
+            return done(err);
+          }
+          return done(null, juice(templateOutput));
+        });
       }
-
       done(null, null);
     },
     mailObj: ['content', 'details', (results, done) => {
@@ -27,7 +32,7 @@ module.exports = function(server, transporter, emailData, allDone) {
       };
 
       if (results.content) {
-        mailObj.html = results.content[0];
+        mailObj.html = results.content;
       }
 
       if (results.details.headers) {
