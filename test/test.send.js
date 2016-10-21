@@ -121,6 +121,42 @@ lab.describe('/send', { timeout: 5000 }, () => {
     });
   });
 
+  lab.it('should be able to inline css if specified', (done) => {
+    const templateParams = {
+      to: 'nobody@nowhere.com',
+      from: 'emal@example.com',
+      subject: 'This is a subject',
+      inlineCss: true,
+      text: `<style>div{color:red;}</style><div/>`,
+      data: {}
+    };
+    server.inject({
+      method: 'POST',
+      url: '/send',
+      payload: templateParams,
+    }, (res) => {
+      code.expect(res.statusCode).to.equal(200);
+      done();
+    });
+  });
+  lab.it('should be able to inline css if specified', (done) => {
+    const templateParams = {
+      to: 'nobody@nowhere.com',
+      from: 'emal@example.com',
+      subject: 'This is a subject',
+      inlineCss: true,
+      template: 'test-template2',
+      data: { color: 'red' }
+    };
+    server.inject({
+      method: 'POST',
+      url: '/send',
+      payload: templateParams,
+    }, (res) => {
+      code.expect(res.statusCode).to.equal(200);
+      done();
+    });
+  });
   lab.it('should return the correct success response', (done) => {
     const textParams = {
       from: 'emal@example.com',

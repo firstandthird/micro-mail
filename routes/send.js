@@ -6,6 +6,7 @@ const schema = Joi.object().keys({
   to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
   data: Joi.object(),
   text: Joi.string(),
+  inlineCss: Joi.bool(),
   template: Joi.string(),
   subject: Joi.string()
 }).or('text', 'template');

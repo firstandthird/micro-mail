@@ -33,6 +33,7 @@
     "nodemailer": "2.4.1",
     "rapptor": "^1.0.0",
     "vision": "4.1.0",
+    "juice": "^3.0.1",
     "yamljs": "^0.2.7"
   },
   "devDependencies": {
