@@ -10,10 +10,7 @@ module.exports = function(server, transporter, emailData, allDone) {
     content: (done) => {
       if (emailData.template) {
         return server.render(`${emailData.template}/email`, emailData.data, (err, templateOutput) => {
-          if (err) {
-            return done(err);
-          }
-          return done(null, juice(templateOutput));
+          return done(err, juice(templateOutput));
         });
       }
       done(null, null);
