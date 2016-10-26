@@ -1,7 +1,7 @@
 'use strict';
 
 const async = require('async');
-module.exports = function(server, transporter, emailData, allDone) {
+module.exports = function(server, transporter, emailData, debug, allDone) {
   async.auto({
     details: (done) => {
       done(null, server.methods.renderData(emailData));
@@ -37,12 +37,15 @@ module.exports = function(server, transporter, emailData, allDone) {
       done(null, mailObj);
     }],
     send: ['mailObj', (results, done) => {
+      if (debug) {
+        return done(null, { debug: 1 });
+      }
       transporter.sendMail(results.mailObj, done);
     }]
   }, (err, results) => {
     if (err) {
       return allDone(err);
     }
-    allDone(null, results.send);
+    allDone(null, results);
   });
 };
