@@ -18,6 +18,9 @@ exports.send = {
     if (request.query.test) {
       request.payload.data = require(testPath);
     }
+
+    const debug = (request.query.debug !== undefined);
+
     // validates:
     Joi.validate(request.payload, schema, (err) => {
       if (err) {
@@ -27,7 +30,7 @@ exports.send = {
           result: err.details[0].message
         }).code(500);
       }
-      request.server.sendEmail(request.payload, (err2, results) => {
+      request.server.sendEmail(request.payload, debug, (err2, results) => {
         if (err2) {
           request.server.log(['error', 'send'], { err2 });
           return reply({
@@ -36,10 +39,15 @@ exports.send = {
             result: err
           }).code(500);
         }
+
+        if (debug) {
+          request.server.log(['info'], results);
+        }
+
         return reply({
           status: 'ok',
           message: 'Email delivered.',
-          result: results
+          result: results.send
         });
       });
     });
