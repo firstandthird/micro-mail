@@ -1,5 +1,7 @@
 'use strict';
 const Joi = require('joi');
+const yamljs = require('yamljs');
+const _ = require('lodash');
 
 const schema = Joi.object().keys({
   from: Joi.string().required(),
@@ -33,7 +35,21 @@ exports.send = {
           result: errMessage
         }).code(500);
       }
-      request.server.sendEmail(request.payload, debug, request.query.sendIndividual, (err3, results) => {
+      const template = request.payload.template || null;
+      let emailDetails = {};
+      const server = request.server;
+      const templateDir = `${server.settings.app.views.path}/${template}`;
+      if (template !== null) {
+        try {
+          emailDetails = yamljs.load(`${templateDir}/details.yaml`);
+        } catch (e) {
+          // Do nothing, continue
+        }
+      }
+      const defaultDetails = (server.settings.app.emails && server.settings.app.emails.defaultDetails) ? server.settings.app.emails.defaultDetails : {};
+      const finalDetails = _.defaults({}, request.payload, emailDetails, defaultDetails);
+      const sendMany = finalDetails.sendMany || false;
+      request.server.sendEmail(request.payload, debug, !sendMany, (err3, results) => {
       // request.server.sendEmail(request.payload, debug, (err3, results) => {
         if (err3) {
           request.server.log(['error', 'send'], { err3 });
@@ -43,7 +59,6 @@ exports.send = {
             result: err3
           }).code(500);
         }
-        return reply(results);
         if (debug) {
           request.server.log(['info'], results);
         }
