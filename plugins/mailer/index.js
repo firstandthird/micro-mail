@@ -9,8 +9,11 @@ exports.register = function(server, options, next) {
       pass: options.smtp.pass
     }
   });
-  server.decorate('server', 'sendEmail', (data, debug, done) => {
-    send(server, transporter, data, debug, done);
+  server.decorate('server', 'sendEmail', (data, debug, sendIndividual, done) => {
+    if (sendIndividual) {
+      return send(server, transporter, data, debug, true, done);
+    }
+    send(server, transporter, data, debug, options.sendIndividual, done);
   });
 
   next();

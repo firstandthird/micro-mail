@@ -6,14 +6,14 @@ const SMTPServer = require('smtp-server').SMTPServer;
 
 module.exports = (options, callback) => {
   const cwd = process.cwd();
-  const rapptor = new Rapptor({
-    configPath: `${cwd}/test/conf`,
-    cwd,
-  });
+  const rapptorOptions = { cwd };
+  const port = options.port ? options.port : 8888;
+  rapptorOptions.configPath = options.configPath ? options.configPath : `${cwd}/test/conf`;
+  const rapptor = new Rapptor(rapptorOptions);
   rapptor.start((err, server) => {
     // set up a test smtp server:
     const smtpServer = new SMTPServer({
-      // uncomment to show SMTP exchange:
+      // uncomment the next line to monitor SMTP exchange:
       // logger: true,
       disabledCommands: ['STARTTLS'],
       // auth method, for testing just needs to verify that
@@ -34,7 +34,7 @@ module.exports = (options, callback) => {
         });
       },
     });
-    smtpServer.listen(8888, 'localhost');
+    smtpServer.listen(port, 'localhost');
     callback(server, smtpServer);
   });
 };
