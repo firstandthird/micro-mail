@@ -251,40 +251,4 @@ lab.describe('/send many', { timeout: 5000 }, () => {
       done();
     });
   });
-
-  lab.it('will use the "sendIndividual" param from a config file', (done) => {
-    // set up a server / smtp rig set up for sendIndividual
-    setup({
-      port: 8889,
-      configPath: `${process.cwd()}/test/conf0`
-    }, (configuredServer, configuredSmtpServer) => {
-      const templateParams = {
-        to: 'prey@river.com, crows@rock.com',
-        from: 'emal@example.com',
-        subject: 'This is a subject',
-        template: 'test-template-individual',
-        data: {
-          var: 'value'
-        }
-      };
-      configuredServer.inject({
-        method: 'POST',
-        // don't need the sendIndividual=true param:
-        url: '/send',
-        payload: templateParams,
-      }, (res) => {
-        code.expect(res.statusCode).to.equal(200);
-        code.expect(res.result.result.length).to.equal(2);
-        code.expect(res.result.result[0].response).to.include('250');
-        code.expect(res.result.result[1].response).to.include('250');
-        code.expect(res.result.status).to.equal('ok');
-        code.expect(res.result.message).to.equal('Email delivered.');
-        configuredServer.stop(() => {
-          configuredSmtpServer.close(() => {
-            done();
-          });
-        });
-      });
-    });
-  });
 });
