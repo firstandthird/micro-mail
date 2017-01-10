@@ -22,26 +22,36 @@ exports.send = {
     if (request.payload && typeof request.payload.to === 'object') {
       request.payload.to = request.payload.to.join(',');
     }
+    const debug = (request.query.debug !== undefined);
     // validates:
     Joi.validate(request.payload, schema, (err2) => {
       if (err2) {
-        const errMessage = err2.details.map((detail) => { return detail.message; }).join('::');
+        const errMessage = err2.details.map((detail) => detail.message).join('::');
         return reply({
           status: 'error',
           message: 'Validation error',
           result: errMessage
         }).code(500);
       }
-      request.server.sendEmail(request.payload, request.query.sendIndividual, (err2, results) => {
-        if (err2) {
-          request.server.log(['error', 'send'], { err2 });
+      request.server.sendEmail(request.payload, debug, request.query.sendIndividual, (err3, results) => {
+      // request.server.sendEmail(request.payload, debug, (err3, results) => {
+        if (err3) {
+          request.server.log(['error', 'send'], { err3 });
           return reply({
             status: 'error',
             message: 'There has been an error', // Default message for MVP
-            result: err2
+            result: err3
           }).code(500);
         }
         return reply(results);
+        if (debug) {
+          request.server.log(['info'], results);
+        }
+        return reply({
+          status: 'ok',
+          message: 'Email delivered.',
+          result: results.send
+        });
       });
     });
   }

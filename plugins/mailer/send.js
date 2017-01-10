@@ -3,7 +3,7 @@
 const async = require('async');
 const omit = require('lodash.omit');
 
-module.exports = function(server, transporter, allData, sendIndividual, allDone) {
+module.exports = function(server, transporter, allData, debug, sendIndividual, allDone) {
   const sendOne = (emailData, sendDone) => {
     async.auto({
       details: (done) => {
