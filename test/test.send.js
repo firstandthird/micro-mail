@@ -22,6 +22,7 @@ lab.beforeEach((done) => {
 });
 
 lab.describe('/send', { timeout: 5000 }, () => {
+
   lab.it('should exist at POST /send', (done) => {
     const params = {
       from: 'eagles@nest.com',
@@ -140,8 +141,8 @@ lab.describe('/send', { timeout: 5000 }, () => {
       code.expect(res.statusCode).to.equal(200);
       code.expect(res.result.status).to.equal('ok');
       code.expect(res.result.message).to.equal('Email delivered.');
-      code.expect(res.result.result.rejected.length).to.equal(0);
-      code.expect(res.result.result.response).to.include('250');
+      code.expect(res.result.result.result.rejected.length).to.equal(0);
+      code.expect(res.result.result.result.response).to.include('250');
       done();
     });
   });
@@ -214,21 +215,18 @@ lab.describe('/send many', { timeout: 5000 }, () => {
       to: 'prey@river.com, vultures@largetree.com,crows@rock.com',
       from: 'emal@example.com',
       subject: 'This is a subject',
-      template: 'test-template',
+      template: 'test-template-individual',
       data: {
         var: 'value'
       }
     };
     server.inject({
       method: 'POST',
-      url: '/send?sendIndividual=true',
+      url: '/send',
       payload: templateParams,
     }, (res) => {
       code.expect(res.statusCode).to.equal(200);
-      code.expect(res.result.length).to.equal(3);
-      for (let i = 0; i < res.result.length; i++) {
-        code.expect(res.result[i].status).to.equal('ok');
-      }
+      code.expect(res.result.result.length).to.equal(3);
       done();
     });
   });
@@ -238,14 +236,14 @@ lab.describe('/send many', { timeout: 5000 }, () => {
       to: 'prey@river.com,notanaddress,crows@rock.com',
       from: 'emal@example.com',
       subject: 'This is a subject',
-      template: 'test-template',
+      template: 'test-template-individual',
       data: {
         var: 'value'
       }
     };
     server.inject({
       method: 'POST',
-      url: '/send?sendIndividual=true',
+      url: '/send',
       payload: templateParams,
     }, (res) => {
       code.expect(res.statusCode).to.equal(500);
@@ -264,7 +262,7 @@ lab.describe('/send many', { timeout: 5000 }, () => {
         to: 'prey@river.com, crows@rock.com',
         from: 'emal@example.com',
         subject: 'This is a subject',
-        template: 'test-template',
+        template: 'test-template-individual',
         data: {
           var: 'value'
         }
@@ -276,9 +274,11 @@ lab.describe('/send many', { timeout: 5000 }, () => {
         payload: templateParams,
       }, (res) => {
         code.expect(res.statusCode).to.equal(200);
-        code.expect(res.result.length).to.equal(2);
-        code.expect(res.result[0].status).to.equal('ok');
-        code.expect(res.result[1].status).to.equal('ok');
+        code.expect(res.result.result.length).to.equal(2);
+        code.expect(res.result.result[0].response).to.include('250');
+        code.expect(res.result.result[1].response).to.include('250');
+        code.expect(res.result.status).to.equal('ok');
+        code.expect(res.result.message).to.equal('Email delivered.');
         configuredServer.stop(() => {
           configuredSmtpServer.close(() => {
             done();

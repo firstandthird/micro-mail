@@ -64,7 +64,7 @@ module.exports = function(server, transporter, allData, debug, sendIndividual, a
         if (err) {
           allSucceeded = false;
         }
-        allResults.push(result);
+        allResults.push(result.result);
         done();
       });
     }, (err) => {

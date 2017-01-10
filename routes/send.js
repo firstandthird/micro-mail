@@ -48,9 +48,8 @@ exports.send = {
       }
       const defaultDetails = (server.settings.app.emails && server.settings.app.emails.defaultDetails) ? server.settings.app.emails.defaultDetails : {};
       const finalDetails = _.defaults({}, request.payload, emailDetails, defaultDetails);
-      const sendMany = finalDetails.sendMany || false;
-      request.server.sendEmail(request.payload, debug, !sendMany, (err3, results) => {
-      // request.server.sendEmail(request.payload, debug, (err3, results) => {
+      const sendIndividual = finalDetails.sendIndividual || false;
+      request.server.sendEmail(request.payload, debug, sendIndividual, (err3, results) => {
         if (err3) {
           request.server.log(['error', 'send'], { err3 });
           return reply({
@@ -62,10 +61,21 @@ exports.send = {
         if (debug) {
           request.server.log(['info'], results);
         }
+        if (sendIndividual) {
+          results.forEach((result) => {
+            if (result.response !== '250 Message queued') {
+              return reply({
+                status: 'failed',
+                message: 'There has been an error.',
+                result: results
+              }).code(500);
+            }
+          });
+        }
         return reply({
           status: 'ok',
           message: 'Email delivered.',
-          result: results.send
+          result: results
         });
       });
     });
