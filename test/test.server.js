@@ -47,9 +47,9 @@ lab.describe('/send?test', { timeout: 5000}, () => {
       url: '/send?test=true',
       payload: textParams,
     }, (res) => {
-      code.expect(allData.length).to.equal(1);
-      code.expect(allData[0]).to.include('fish@lake.com');
-      code.expect(allData[0]).to.include('alligator@thebank.com');
+      const output = allData.join();
+      code.expect(output).to.include('fish@lake.com');
+      code.expect(output).to.include('alligator@thebank.com');
       done();
     });
   });
