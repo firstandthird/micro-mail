@@ -32,6 +32,15 @@ lab.describe('/send', { timeout: 5000 }, () => {
       done();
     })
   });
+  lab.it('should display view a template by name', (done) => {
+    server.inject({
+      method: 'GET',
+      url: '/view/test-template'
+    }, (res) => {
+      code.expect(res.result).to.include('Hello world');
+      done();
+    });
+  });
   lab.it('should exist at POST /send', (done) => {
     const params = {
       from: 'eagles@nest.com',
