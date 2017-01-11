@@ -22,6 +22,16 @@ lab.beforeEach((done) => {
 });
 
 lab.describe('/send', { timeout: 5000 }, () => {
+  lab.it('should list available templates' , (done) => {
+    server.inject({
+      method: 'GET',
+      url: '/_list',
+    }, (res) => {
+      code.expect(res.statusCode).to.equal(200);
+      code.expect(res.result).to.include('<html>');
+      done();
+    })
+  });
   lab.it('should exist at POST /send', (done) => {
     const params = {
       from: 'eagles@nest.com',
