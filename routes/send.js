@@ -4,6 +4,7 @@ const Joi = require('joi');
 const schema = Joi.object().keys({
   from: Joi.string().required(),
   to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
+  fromName: Joi.string(),
   data: Joi.object(),
   text: Joi.string(),
   template: Joi.string(),
