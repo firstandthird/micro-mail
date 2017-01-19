@@ -10,6 +10,13 @@ module.exports = (options, callback) => {
     configPath: `${cwd}/test/conf`,
     cwd,
   });
+  const onData =  options.onData ? options.onData :(stream, session, callback2) => {
+    stream.on('end', () => {
+      return callback2(null, 'Message queued');
+    });
+    stream.on('data', () => {
+    });
+  };
   rapptor.start((err, server) => {
     // set up a test smtp server:
     const smtpServer = new SMTPServer({
@@ -26,13 +33,7 @@ module.exports = (options, callback) => {
       },
       socketTimeout: 100 * 1000,
       closeTimeout: 6 * 1000,
-      onData: (stream, session, callback2) => {
-        stream.on('end', () => {
-          return callback2(null, 'Message queued');
-        });
-        stream.on('data', () => {
-        });
-      },
+      onData
     });
     smtpServer.listen(8888, 'localhost');
     callback(server, smtpServer);
