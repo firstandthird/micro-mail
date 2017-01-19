@@ -44,6 +44,7 @@ lab.describe('/send', { timeout: 5000 }, () => {
   lab.it('should exist at POST /send', (done) => {
     const params = {
       from: 'eagles@nest.com',
+      fromName: 'Big E',
       to: 'prey@river.com',
       subject: 'inclement weather warning',
       template: 'test-template',

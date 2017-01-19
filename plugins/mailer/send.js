@@ -16,7 +16,7 @@ module.exports = function(server, transporter, emailData, debug, allDone) {
     mailObj: ['content', 'details', (results, done) => {
       let from = results.details.from;
       if (results.details.fromName) {
-        from = `"${results.details.fromName}" ${from}`;
+        from = `"${results.details.fromName}" <${from}>`;
       }
 
       const mailObj = {
