@@ -4,7 +4,7 @@
   "description": "micro email api",
   "scripts": {
     "start": "rapptor",
-    "test": "lab -e test/",
+    "test": "NODE_ENV=test tape test/*.js | tap-spec",
     "lint": "eslint ."
   },
   "repository": {
@@ -26,12 +26,14 @@
   "homepage": "https://github.com/firstandthird/micro-mail#readme",
   "dependencies": {
     "async": "2.1.4",
+    "aug": "^1.0.1",
     "handlebars": "4.0.6",
     "inert": "4.1.0",
     "joi": "10.2.0",
     "lodash": "4.17.4",
     "nodemailer": "2.7.0",
     "rapptor": "1.3.2",
+    "varson": "^0.5.3",
     "vision": "4.1.1",
     "yamljs": "0.2.8"
   },
@@ -42,6 +44,8 @@
     "eslint-config-firstandthird": "3.2.0",
     "eslint-plugin-import": "2.2.0",
     "lab": "11.2.2",
-    "smtp-server": "1.17.0"
+    "smtp-server": "1.17.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3"
   }
 }

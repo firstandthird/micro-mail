@@ -4,20 +4,18 @@
 const Rapptor = require('rapptor');
 const SMTPServer = require('smtp-server').SMTPServer;
 
-module.exports = (options, callback) => {
-  const cwd = process.cwd();
-  const rapptor = new Rapptor({
-    configPath: `${cwd}/test/conf`,
-    cwd,
-  });
-  const onData =  options.onData ? options.onData :(stream, session, callback2) => {
-    stream.on('end', () => {
-      return callback2(null, 'Message queued');
-    });
-    stream.on('data', () => {
-    });
+module.exports = (options, done) => {
+  const rapptor = new Rapptor();
+
+  const onData = options.onData ? options.onData : (stream, session, callback) => {
+    stream.on('end', () => callback(null, 'Message queued'));
+    stream.on('data', () => {});
   };
+
   rapptor.start((err, server) => {
+    if (err) {
+      return done(err);
+    }
     // set up a test smtp server:
     const smtpServer = new SMTPServer({
       // uncomment to show SMTP exchange:
@@ -25,8 +23,8 @@ module.exports = (options, callback) => {
       disabledCommands: ['STARTTLS'],
       // auth method, for testing just needs to verify that
       // login info was passed correctly
-      onAuth: (auth, session, callback2) => {
-        return callback2(null, {
+      onAuth: (auth, session, callback) => {
+        return callback(null, {
           user: auth.username,
           password: auth.password
         });
@@ -36,6 +34,6 @@ module.exports = (options, callback) => {
       onData
     });
     smtpServer.listen(8888, 'localhost');
-    callback(server, smtpServer);
+    done(null, server, smtpServer);
   });
 };
