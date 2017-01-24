@@ -1,16 +1,16 @@
 const test = require('tape');
 
-const setup = require('./setup.test');
+const setup = require('./setup');
 
 setup({}, (setupError, server, smtpServer) => {
   if (setupError) {
     throw setupError;
   }
   test.onFinish(() => {
-    server.stop();
-    process.exit();
+    server.stop(() => {
+      smtpServer.close();
+    });
   });
-
 
   test('getEmailDetails - with yaml', (assert) => {
     const payload = {
@@ -65,4 +65,3 @@ setup({}, (setupError, server, smtpServer) => {
     });
   });
 });
-
