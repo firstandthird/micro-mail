@@ -22,9 +22,9 @@ setup({}, (setupError, server, smtpServer) => {
         serviceName: 'test city'
       }
     };
-    const template = fs.readFileSync(path.join(__dirname, 'templates', 'getEmailContent')).toString();
     const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'getEmailContent')).toString();
-    server.methods.getEmailContent(template, data, (err, content) => {
+    server.settings.app.views.path = path.join(__dirname, 'emails', 'getEmailContent');
+    server.methods.getEmailContent('getEmailContent', data, (err, content) => {
       assert.equal(err, null, 'no errors');
       assert.equal(content, expectedOutput, 'renders content correctly');
       assert.end();
