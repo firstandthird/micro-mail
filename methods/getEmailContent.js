@@ -9,8 +9,9 @@ module.exports = function(templateName, data, allDone) {
       if (err) {
         return allDone(err);
       }
-      return allDone(null, handlebars.compile(fileContent.toString())(data));
+      allDone(null, handlebars.compile(fileContent.toString())(data));
     });
+  } else {
+    return allDone(null, false);
   }
-  return allDone(null, false);
 };

@@ -1,21 +1,12 @@
 'use strict';
-
 const test = require('tape');
-
 const setup = require('./setup');
 
-setup({}, (setupError, server, smtpServer) => {
-  if (setupError) {
-    throw setupError;
-  }
-  test.onFinish(() => {
-    server.stop(() => {
-      smtpServer.close();
-    });
-  });
-
-
-  test('getEmailDetails - with yaml', (assert) => {
+test('getEmailDetails - with yaml', (assert) => {
+  setup({}, (setupError, server, smtpServer) => {
+    if (setupError) {
+      throw setupError;
+    }
     const payload = {
       template: 'getEmailDetails1',
       toEmail: 'bob.smith@firstandthird.com',
@@ -40,11 +31,19 @@ setup({}, (setupError, server, smtpServer) => {
         },
         default1: 'yay default'
       });
-      assert.end();
+      server.stop(() => {
+        smtpServer.close(assert.end);
+      });
     });
   });
+});
 
-  test('getEmailDetails - with no yaml', (assert) => {
+test('getEmailDetails - with no yaml', (assert) => {
+  setup({}, (setupError, server, smtpServer) => {
+    if (setupError) {
+      throw setupError;
+    }
+
     const payload = {
       template: 'getEmailDetails2',
       toEmail: 'bob.smith@firstandthird.com',
@@ -64,7 +63,9 @@ setup({}, (setupError, server, smtpServer) => {
         },
         default1: 'yay default'
       });
-      assert.end();
+      server.stop(() => {
+        smtpServer.close(assert.end);
+      });
     });
   });
 });

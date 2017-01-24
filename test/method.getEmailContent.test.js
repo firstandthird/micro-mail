@@ -4,17 +4,13 @@ const test = require('tape');
 const setup = require('./setup');
 const fs = require('fs');
 const path = require('path');
-setup({}, (setupError, server, smtpServer) => {
-  if (setupError) {
-    throw setupError;
-  }
-  test.onFinish(() => {
-    server.stop(() => {
-      smtpServer.close();
-    });
-  });
 
-  test('getEmailContent - with valid template', (assert) => {
+test('getEmailContent - with valid template', (assert) => {
+  setup({}, (setupError, server, smtpServer) => {
+    if (setupError) {
+      throw setupError;
+    }
+
     const data = {
       data: {
         firstName: 'bob',
@@ -27,11 +23,18 @@ setup({}, (setupError, server, smtpServer) => {
     server.methods.getEmailContent('getEmailContent', data, (err, content) => {
       assert.equal(err, null, 'no errors');
       assert.equal(content, expectedOutput, 'renders content correctly');
-      assert.end();
+      server.stop(() => {
+        smtpServer.close(assert.end);
+      });
     });
   });
+});
 
-  test('getEmailContent - with no template', (assert) => {
+test('getEmailContent - with no template', (assert) => {
+  setup({}, (setupError, server, smtpServer) => {
+    if (setupError) {
+      throw setupError;
+    }
     const data = {
       toEmail: 'bob.smith@firstandthird.com',
       data: {
@@ -42,7 +45,9 @@ setup({}, (setupError, server, smtpServer) => {
     server.methods.getEmailContent(undefined, data, (err, details) => {
       assert.equal(err, null, 'no errors');
       assert.equal(details, false);
-      assert.end();
+      server.stop(() => {
+        smtpServer.close(assert.end);
+      });
     });
   });
 });
