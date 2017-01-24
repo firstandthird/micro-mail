@@ -1,3 +1,5 @@
+'use strict';
+
 const handlebars = require('handlebars');
 
 module.exports = function(template, data, allDone) {
