@@ -1,7 +1,8 @@
-module.exports = function(template, emailData, allDone) {
-  const server = this;
-  if (emailData.template) {
-    return server.render(`${emailData.template}/email`, emailData.data, allDone);
+const handlebars = require('handlebars');
+
+module.exports = function(template, data, allDone) {
+  if (template) {
+    return allDone(null, handlebars.compile(template.toString())(data));
   }
   return allDone(null, false);
 };

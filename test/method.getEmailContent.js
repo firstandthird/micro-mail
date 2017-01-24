@@ -1,66 +1,46 @@
 const test = require('tape');
 
 const setup = require('./setup.test');
-
+const fs = require('fs');
+const path = require('path');
 setup({}, (setupError, server, smtpServer) => {
   if (setupError) {
     throw setupError;
   }
   test.onFinish(() => {
-    server.stop();
-    smtpServer.close();
+    server.stop(() => {
+      smtpServer.close();
+    });
   });
 
   test('getEmailContent - with valid template', (assert) => {
     const data = {
-      template: 'getEmailDetails1',
-      toEmail: 'bob.smith@firstandthird.com',
       data: {
-        subject: 'Hi there bob test city',
-        template: 'getEmailDetails1',
-        fromName: 'Micro Mail',
-        fromEmail: 'code@firstandthird.com',
-        toName: 'bob smith',
-        toEmail: 'bob.smith@firstandthird.com',
-        data: {
-          firstName: 'bob',
-          lastName: 'smith',
-          serviceName: 'test city'
-        },
-        default1: 'yay default'
+        firstName: 'bob',
+        lastName: 'smith',
+        serviceName: 'test city'
       }
     };
+    const template = fs.readFileSync(path.join(__dirname, 'templates', 'getEmailContent')).toString();
+    const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'getEmailContent')).toString();
     server.methods.getEmailContent(template, data, (err, content) => {
       assert.equal(err, null, 'no errors');
-      console.log('+++');
-      console.log('+++');
-      console.log('+++');
-      console.log('+++');
-      console.log(content);
+      assert.equal(content, expectedOutput, 'renders content correctly');
       assert.end();
     });
   });
 
   test('getEmailContent - with no template', (assert) => {
-    const payload = {
-      template: 'getEmailDetails2',
+    const data = {
       toEmail: 'bob.smith@firstandthird.com',
       data: {
         firstName: 'bob',
         lastName: 'smith'
       }
     };
-    server.methods.getEmailContent(payload, (err, details) => {
+    server.methods.getEmailContent(undefined, data, (err, details) => {
       assert.equal(err, null, 'no errors');
-      assert.deepEqual(details, {
-        template: 'getEmailDetails2',
-        toEmail: 'bob.smith@firstandthird.com',
-        data: {
-          firstName: 'bob',
-          lastName: 'smith'
-        },
-        default1: 'yay default'
-      });
+      assert.equal(details, false);
       assert.end();
     });
   });
