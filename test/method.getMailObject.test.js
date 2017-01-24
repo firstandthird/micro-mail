@@ -24,11 +24,6 @@ test('getMailObject ', (assert) => {
         html: content,
         text: details.text
       });
-      // assert.equal(result.to, details.to);
-      // assert.equal(result.from, );
-      // assert.equal(result.subject, details.subject);
-      // assert.equal(result.html, content);
-      // assert.equal(result.text, 'we should do it next week they will never see it coming');
       server.stop(() => {
         smtpServer.close(assert.end);
       });
