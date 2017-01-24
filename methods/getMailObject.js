@@ -10,7 +10,7 @@ module.exports = function(details, content, allDone) {
     text: details.text
   };
   if (content) {
-    mailObj.html = content[0];
+    mailObj.html = content;
   }
   if (details.headers) {
     mailObj.headers = details.headers;
