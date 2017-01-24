@@ -1,6 +1,6 @@
 const test = require('tape');
 
-const setup = require('./setup.test');
+const setup = require('./setup');
 
 setup({}, (setupError, server, smtpServer) => {
   if (setupError) {

@@ -1,6 +1,6 @@
 const test = require('tape');
 
-const setup = require('./setup.test');
+const setup = require('./setup');
 const fs = require('fs');
 const path = require('path');
 setup({}, (setupError, server, smtpServer) => {

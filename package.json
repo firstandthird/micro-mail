@@ -4,7 +4,7 @@
   "description": "micro email api",
   "scripts": {
     "start": "rapptor",
-    "test": "NODE_ENV=test tape test/*.js | tap-spec",
+    "test": "NODE_ENV=test tape test/*.test.js | tap-spec",
     "lint": "eslint ."
   },
   "repository": {
