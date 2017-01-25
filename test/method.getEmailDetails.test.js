@@ -7,6 +7,7 @@ test('getEmailDetails - with yaml', (assert) => {
     if (setupError) {
       throw setupError;
     }
+
     const payload = {
       template: 'getEmailDetails1',
       toEmail: 'bob.smith@firstandthird.com',

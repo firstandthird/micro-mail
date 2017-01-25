@@ -23,12 +23,10 @@ module.exports = (options, done) => {
       disabledCommands: ['STARTTLS'],
       // auth method, for testing just needs to verify that
       // login info was passed correctly
-      onAuth: (auth, session, callback) => {
-        return callback(null, {
-          user: auth.username,
-          password: auth.password
-        });
-      },
+      onAuth: (auth, session, callback) => callback(null, {
+        user: auth.username,
+        password: auth.password
+      }),
       socketTimeout: 100 * 1000,
       closeTimeout: 6 * 1000,
       onData
