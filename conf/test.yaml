@@ -1,3 +1,9 @@
+plugins:
+  ./plugins/transport:
+    _priority: -2
+    smtp:
+      host: "localhost"
+      port: 8888
 views:
   engines:
     html: "handlebars"
