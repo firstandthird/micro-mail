@@ -31,6 +31,25 @@ test('getMailObject ', (assert) => {
   });
 });
 
+test('getMailObject will not validate if missing required fields', (assert) => {
+  setup({}, (setupError, server, smtpServer) => {
+    if (setupError) {
+      throw setupError;
+    }
+    const details = {
+      fromName: 'crabbe',
+      text: 'we should do it next week they will never see it coming'
+    };
+    const content = 'do that thing we discussed last week';
+    server.methods.getMailObject(details, content, (err, result) => {
+      assert.notEqual(err, null);
+      assert.equal(err.name, 'ValidationError');
+      server.stop(() => {
+        smtpServer.close(assert.end);
+      });
+    });
+  });
+});
 
 test('getMailObject --with headers ', (assert) => {
   setup({}, (setupError, server, smtpServer) => {
