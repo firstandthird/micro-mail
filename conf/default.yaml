@@ -2,6 +2,8 @@ templatePath: "{{CWD}}/templates"
 plugins:
   vision:
   inert:
+  hapi-auto-handler:
+    _priority: -1
   ./plugins/transport:
     smtp:
       host: "{{ENV.SMTP_HOST}}"
