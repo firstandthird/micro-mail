@@ -1,3 +1,14 @@
+'use strict';
+const Joi = require('joi');
+
+const schema = Joi.object().keys({
+  from: Joi.string().required(),
+  to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
+  subject: Joi.string(),
+  headers: Joi.optional(),
+  html: Joi.optional(),
+  text: Joi.optional()
+});
 module.exports = function(details, content, allDone) {
   let from = details.from;
   if (details.fromName) {
@@ -15,5 +26,10 @@ module.exports = function(details, content, allDone) {
   if (details.headers) {
     mailObj.headers = details.headers;
   }
-  return allDone(null, mailObj);
+  Joi.validate(mailObj, schema, (validationErr) => {
+    if (validationErr) {
+      return allDone(validationErr);
+    }
+    return allDone(null, mailObj);
+  });
 };
