@@ -1,3 +1,5 @@
+'use strict';
+
 const yamljs = require('yamljs');
 const async = require('async');
 const varson = require('varson');

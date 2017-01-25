@@ -1,3 +1,4 @@
+'use strict';
 const test = require('tape');
 const setup = require('./setup');
 
@@ -43,6 +44,7 @@ test('getEmailDetails - with no yaml', (assert) => {
     if (setupError) {
       throw setupError;
     }
+
     const payload = {
       template: 'getEmailDetails2',
       toEmail: 'bob.smith@firstandthird.com',

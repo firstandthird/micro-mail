@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const send = require('./send');
 exports.register = function(server, options, next) {
   const transporter = nodemailer.createTransport({
     host: options.smtp.host,
@@ -9,13 +8,11 @@ exports.register = function(server, options, next) {
       pass: options.smtp.pass
     }
   });
-  server.decorate('server', 'sendEmail', (data, debug, done) => {
-    send(server, transporter, data, debug, done);
-  });
 
+  server.decorate('server', 'transport', transporter);
   next();
 };
 
 exports.register.attributes = {
-  name: 'mailer'
+  name: 'transport'
 };
