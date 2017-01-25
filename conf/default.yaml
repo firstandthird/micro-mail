@@ -2,7 +2,7 @@ templatePath: "{{CWD}}/templates"
 plugins:
   vision:
   inert:
-  ./plugins/mailer:
+  ./plugins/transport:
     smtp:
       host: "{{ENV.SMTP_HOST}}"
       port: "{{ENV.SMTP_PORT}}"
