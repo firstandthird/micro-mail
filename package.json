@@ -28,6 +28,7 @@
     "async": "2.1.4",
     "aug": "^1.0.1",
     "handlebars": "4.0.6",
+    "hapi-auto-handler": "^1.1.2",
     "inert": "4.1.0",
     "joi": "10.2.0",
     "lodash": "4.17.4",
