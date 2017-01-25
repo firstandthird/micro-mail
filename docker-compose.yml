@@ -1,9 +1,21 @@
 app:
-  build: .
-  command: 'nodemon node_modules/.bin/rapptor'
+  image: 'firstandthird/node:6.7'
+  command: './node_modules/.bin/nodemon node_modules/.bin/rapptor'
   volumes:
-    - '.:/app/server'
+    - '.:/app'
+    - './example:/app/templates'
   environment:
     PORT: 8081
+    VIRTUAL_HOST: 'micromail.*'
+    SMTP_HOST: 'mailhog'
+    SMTP_PORT: 1025
   ports:
-    - '8081:8081'
+    - '8081'
+  links:
+    - 'mailhog'
+mailhog:
+  image: 'mailhog/mailhog'
+  hostname: 'mailhog'
+  ports:
+    - '8025:8025'
+    - '1025:1025'

@@ -5,6 +5,7 @@ plugins:
   hapi-auto-handler:
     _priority: -1
   ./plugins/transport:
+    _priority: -2
     smtp:
       host: "{{ENV.SMTP_HOST}}"
       port: "{{ENV.SMTP_PORT}}"

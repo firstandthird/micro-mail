@@ -5,7 +5,8 @@ const path = require('path');
 
 module.exports = function(templateName, data, allDone) {
   if (templateName) {
-    fs.readFile(path.join(this.settings.app.views.path, templateName), (err, fileContent) => {
+    const templatePath = path.join(this.settings.app.views.path, templateName, 'email.html');
+    fs.readFile(templatePath, (err, fileContent) => {
       if (err) {
         return allDone(err);
       }

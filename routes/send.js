@@ -7,7 +7,7 @@ exports.send = {
   config: {
     validate: {
       payload: Joi.object().keys({
-        from: Joi.string().required(),
+        fromEmail: Joi.string(),
         to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
         fromName: Joi.string(),
         data: Joi.object(),
@@ -33,14 +33,14 @@ exports.send = {
       content(server, details, done) {
         server.methods.getEmailContent(details.template, details.data, done);
       },
-      mailObj(server, details, done) {
-        done();
+      mailObj(server, details, content, done) {
+        server.methods.getMailObject(details, content, done);
       },
       send(server, mailObj, done) {
         server.methods.sendMail(mailObj, done);
       },
       reply(send, done) {
-        done({
+        done(null, {
           status: 'ok',
           message: 'Email delivered.',
           result: send
