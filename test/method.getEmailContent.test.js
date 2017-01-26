@@ -1,27 +1,7 @@
 'use strict';
-const setup = require('./setup');
 const fs = require('fs');
 const path = require('path');
-const tapeExtra = require('tape-extras');
-const tape = require('tape');
-
-const test = tapeExtra(tape, {
-  before(done) {
-    setup({}, (setupError, server, smtpServer) => {
-      if (setupError) {
-        throw setupError;
-      }
-      done(null, { server, smtpServer });
-    });
-  },
-  after(servers, done) {
-    servers.server.stop(() => {
-      servers.smtpServer.close(() => {
-        done();
-      });
-    });
-  }
-});
+const test = require('./loadTests.js');
 
 test('getEmailContent - with valid template', (assert, servers) => {
   const data = {
