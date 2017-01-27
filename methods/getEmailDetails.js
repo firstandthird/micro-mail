@@ -39,6 +39,16 @@ module.exports = function(payload, allDone) {
       const rawDetails = aug('deep', emailDefaults, templateDefaults, payload);
       const details = varson(rawDetails);
       done(null, details);
+    },
+    validate(details, done) {
+      const keys = Object.keys(details.data);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        if (details.data[key] === undefined) {
+          return done(new Error(`data field field ${key} is undefined`));
+        }
+      }
+      return done(null, details);
     }
   }, (err, results) => {
     allDone(err, results ? results.details : null);
