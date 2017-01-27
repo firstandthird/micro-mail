@@ -25,7 +25,7 @@ test('getEmailDetails - with yaml', (assert, servers) => {
         serviceName: 'test city'
       },
       default1: 'yay default'
-    });
+    }, 'getEmailDetails sets up details correctly');
     assert.end();
   });
 });
@@ -49,7 +49,7 @@ test('getEmailDetails - with no yaml', (assert, servers) => {
         lastName: 'smith'
       },
       default1: 'yay default'
-    });
+    }, 'getEmailDetails sets up details with no yaml');
     assert.end();
   });
 });
