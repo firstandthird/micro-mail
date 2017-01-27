@@ -28,8 +28,8 @@ test('getEmailContent - with no template', (assert, servers) => {
     }
   };
   servers.server.methods.getEmailContent(undefined, data, (err, details) => {
-    assert.equal(err, null, 'no errors');
-    assert.equal(details, false);
+    assert.equal(err, null, 'getEmailContent no errors');
+    assert.equal(details, false, 'getEmailTemplate with no template, details is false');
     assert.end();
   });
 });

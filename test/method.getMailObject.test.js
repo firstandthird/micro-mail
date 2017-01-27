@@ -11,15 +11,16 @@ test('getMailObject ', (assert, servers) => {
   };
   const content = 'do that thing we discussed last week';
   servers.server.methods.getMailObject(details, content, (err, result) => {
-    assert.equal(err, null);
-    assert.equal(typeof result, 'object');
+    assert.equal(err, null, 'getMailObject works');
+    assert.equal(typeof result, 'object', 'getMailObject result is object');
     assert.deepEqual(result, {
       to: details.to,
       from: '"crabbe" <putin@kremlin.ru>',
       subject: details.subject,
       html: content,
       text: details.text
-    });
+    }, 'getMailObject result filled out correctly');
+    assert.end();
   });
 });
 
@@ -30,8 +31,9 @@ test('getMailObject will not validate if missing required fields', (assert, serv
   };
   const content = 'do that thing we discussed last week';
   servers.server.methods.getMailObject(details, content, (err, result) => {
-    assert.notEqual(err, null);
-    assert.equal(err.name, 'ValidationError');
+    assert.notEqual(err, null, 'getMailObject does not validate if missing fields');
+    assert.equal(err.name, 'ValidationError', 'throws validation error');
+    assert.end();
   });
 });
 
@@ -48,7 +50,8 @@ test('getMailObject --with headers ', (assert, servers) => {
   };
   const content = 'do that thing we discussed last week';
   servers.server.methods.getMailObject(details, content, (err, result) => {
-    assert.equal(err, null);
-    assert.equal(result.headers['the-secret-number'], '206');
+    assert.equal(err, null, 'getMailObject with headers, no error');
+    assert.equal(result.headers['the-secret-number'], '206', 'passes headers');
+    assert.end();
   });
 });
