@@ -45,6 +45,6 @@
     "nodemon": "^1.11.0",
     "smtp-server": "1.17.0",
     "tape": "^4.6.3",
-    "tape-extras": "0.0.1"
+    "tape-extras": "0.0.2"
   }
 }
