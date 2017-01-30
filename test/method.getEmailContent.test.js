@@ -1,52 +1,35 @@
 'use strict';
-const test = require('tape');
-
-const setup = require('./setup');
 const fs = require('fs');
 const path = require('path');
+const test = require('./loadTests.js');
 
-test('getEmailContent - with valid template', (assert) => {
-  setup({}, (setupError, server, smtpServer) => {
-    if (setupError) {
-      throw setupError;
+test('getEmailContent - with valid template', (assert, servers) => {
+  const data = {
+    data: {
+      firstName: 'bob',
+      lastName: 'smith',
+      serviceName: 'test city'
     }
-
-    const data = {
-      data: {
-        firstName: 'bob',
-        lastName: 'smith',
-        serviceName: 'test city'
-      }
-    };
-    const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'getEmailContent.html')).toString();
-    server.methods.getEmailContent('getEmailContent', data, (err, content) => {
-      assert.equal(err, null, 'no errors');
-      assert.equal(content, expectedOutput, 'renders content correctly');
-      server.stop(() => {
-        smtpServer.close(assert.end);
-      });
-    });
+  };
+  const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'getEmailContent.html')).toString();
+  servers.server.methods.getEmailContent('getEmailContent', data, (err, content) => {
+    assert.equal(err, null, 'no errors');
+    assert.equal(content, expectedOutput, 'renders content correctly');
+    assert.end();
   });
 });
 
-test('getEmailContent - with no template', (assert) => {
-  setup({}, (setupError, server, smtpServer) => {
-    if (setupError) {
-      throw setupError;
+test('getEmailContent - with no template', (assert, servers) => {
+  const data = {
+    toEmail: 'bob.smith@firstandthird.com',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith'
     }
-    const data = {
-      toEmail: 'bob.smith@firstandthird.com',
-      data: {
-        firstName: 'bob',
-        lastName: 'smith'
-      }
-    };
-    server.methods.getEmailContent(undefined, data, (err, details) => {
-      assert.equal(err, null, 'no errors');
-      assert.equal(details, false);
-      server.stop(() => {
-        smtpServer.close(assert.end);
-      });
-    });
+  };
+  servers.server.methods.getEmailContent(undefined, data, (err, details) => {
+    assert.equal(err, null, 'getEmailContent no errors');
+    assert.equal(details, false, 'getEmailTemplate with no template, details is false');
+    assert.end();
   });
 });

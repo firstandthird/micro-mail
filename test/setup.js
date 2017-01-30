@@ -11,7 +11,6 @@ module.exports = (options, done) => {
     stream.on('end', () => callback(null, 'Message queued'));
     stream.on('data', () => {});
   };
-
   rapptor.start((err, server) => {
     if (err) {
       return done(err);

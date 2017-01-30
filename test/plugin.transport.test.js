@@ -1,17 +1,8 @@
 'use strict';
-const test = require('tape');
-const setup = require('./setup');
+const test = require('./loadTests.js');
 
-test('plugin/transport - decorate', (assert) => {
-  setup({}, (setupError, server, smtpServer) => {
-    if (setupError) {
-      throw setupError;
-    }
-
-    assert.equal(typeof server.transport, 'object');
-    assert.equal(typeof server.transport.sendMail, 'function');
-    server.stop(() => {
-      smtpServer.close(assert.end);
-    });
-  });
+test('plugin/transport - decorate', (assert, servers) => {
+  assert.equal(typeof servers.server.transport, 'object');
+  assert.equal(typeof servers.server.transport.sendMail, 'function');
+  assert.end();
 });
