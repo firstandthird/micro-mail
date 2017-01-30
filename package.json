@@ -4,7 +4,7 @@
   "description": "micro email api",
   "scripts": {
     "start": "rapptor",
-    "test": "NODE_ENV=test tape test/*.test.js",
+    "test": "NODE_ENV=test tape test/*.test.js | tap-spec",
     "lint": "eslint ."
   },
   "repository": {
@@ -44,7 +44,8 @@
     "eslint-plugin-import": "2.2.0",
     "nodemon": "^1.11.0",
     "smtp-server": "1.17.0",
+    "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
-    "tape-extras": "0.0.1"
+    "tape-extras": "0.0.2"
   }
 }
