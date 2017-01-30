@@ -68,3 +68,18 @@ test('getEmailDetails will not validate if missing required fields', (assert, se
     assert.notEqual(err, null);
   });
 });
+
+test('getEmailDetails will not validate if data fields are blank', (assert, servers) => {
+  const payload = {
+    template: 'getEmailDetails2',
+    toEmail: 'bob.smith@firstandthird.com',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith',
+      theUnnamable: ''
+    }
+  };
+  servers.server.methods.getEmailDetails(payload, (err, details) => {
+    assert.notEqual(err, null);
+  });
+});
