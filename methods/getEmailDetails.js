@@ -44,8 +44,8 @@ module.exports = function(payload, allDone) {
       const keys = Object.keys(details.data);
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        if (details.data[key] === undefined) {
-          return done(new Error(`data field field ${key} is undefined`));
+        if (details.data[key] === undefined || details.data[key] === '') {
+          return done(new Error(`data field field ${key} is empty`));
         }
       }
       return done(null, details);
