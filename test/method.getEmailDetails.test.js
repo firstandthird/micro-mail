@@ -53,3 +53,33 @@ test('getEmailDetails - with no yaml', (assert, servers) => {
     assert.end();
   });
 });
+
+test('getEmailDetails will not validate if missing required fields', (assert, servers) => {
+  const payload = {
+    template: 'getEmailDetails2',
+    toEmail: 'bob.smith@firstandthird.com',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith',
+      theUndefinable: undefined
+    }
+  };
+  servers.server.methods.getEmailDetails(payload, (err, details) => {
+    assert.notEqual(err, null);
+  });
+});
+
+test('getEmailDetails will not validate if data fields are blank', (assert, servers) => {
+  const payload = {
+    template: 'getEmailDetails2',
+    toEmail: 'bob.smith@firstandthird.com',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith',
+      theUnnamable: ''
+    }
+  };
+  servers.server.methods.getEmailDetails(payload, (err, details) => {
+    assert.notEqual(err, null);
+  });
+});
