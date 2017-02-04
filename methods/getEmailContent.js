@@ -11,7 +11,10 @@ module.exports = function(templateName, data, allDone) {
       if (err) {
         return allDone(err);
       }
-      allDone(null, juice(handlebars.compile(fileContent.toString())(data)));
+      if (data.inlineCss) {
+        return allDone(null, juice(handlebars.compile(fileContent.toString())(data)));
+      }
+      return allDone(null, handlebars.compile(fileContent.toString())(data));
     });
   } else {
     return allDone(null, false);
