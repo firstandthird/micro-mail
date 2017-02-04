@@ -3,6 +3,7 @@
 // for unit testing outside of docker
 const Rapptor = require('rapptor');
 const SMTPServer = require('smtp-server').SMTPServer;
+const path = require('path');
 
 module.exports = (options, done) => {
   const rapptor = new Rapptor();
@@ -15,6 +16,7 @@ module.exports = (options, done) => {
     if (err) {
       return done(err);
     }
+
     // set up a test smtp server:
     const smtpServer = new SMTPServer({
       // uncomment to show SMTP exchange:
@@ -31,6 +33,7 @@ module.exports = (options, done) => {
       onData
     });
     smtpServer.listen(8888, 'localhost');
+    server.settings.app.views.path = path.join(__dirname, 'emails');
     done(null, server, smtpServer);
   });
 };
