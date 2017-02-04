@@ -1,5 +1,4 @@
 'use strict';
-
 const yamljs = require('yamljs');
 const handlebars = require('handlebars');
 const _ = require('lodash');
@@ -25,7 +24,7 @@ module.exports = function(payload) {
   const finalDetails = _.defaults({}, payload, emailDetails, defaultDetails);
 
   const renderedDetails = _.reduce(finalDetails, (result, value, key) => {
-    if (['to', 'template', 'data', 'text', 'headers'].indexOf(key) !== -1) {
+    if (['to', 'template', 'data', 'text', 'headers', 'inlineCss'].indexOf(key) > -1) {
       result[key] = value;
       return result;
     }
