@@ -43,7 +43,7 @@
     "eslint-config-firstandthird": "3.2.0",
     "eslint-plugin-import": "2.2.0",
     "nodemon": "^1.11.0",
-    "smtp-server": "1.17.0",
+    "smtp-server": "2.0.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "tape-extras": "0.0.2"
