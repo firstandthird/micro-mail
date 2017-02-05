@@ -40,3 +40,88 @@ test('sendEmail - accepts rejects invalid submission without destination', (asse
     assert.end();
   });
 });
+
+test('should be able to send multiple destination emails at once as a comma-separated string', (assert, servers) => {
+  // assert.plan(2);
+  const mailObj = {
+    from: 'eagles@nest.com',
+    to: 'prey@river.com, fish@lake.com',
+    subject: 'What times are you available later?'
+  };
+  servers.server.methods.sendMail(mailObj, (err, result) => {
+    assert.equal(err, null);
+    assert.equal(result.accepted.length, 2);
+    assert.equal(result.response, '250 Message queued');
+    assert.equal(result.envelope.to.length, 2);
+    assert.end();
+  });
+});
+
+test('should be able to send multiple destination emails at once as an array of strings', (assert, servers) => {
+  const mailObj = {
+    from: 'eagles@nest.com',
+    to: ['prey@river.com', 'fish@lake.com'],
+    subject: 'What times are you available later?',
+  };
+  servers.server.methods.sendMail(mailObj, (err, result) => {
+    assert.equal(err, null);
+    assert.equal(result.accepted.length, 2);
+    assert.equal(result.response, '250 Message queued');
+    assert.equal(result.envelope.to.length, 2);
+  });
+});
+
+test('will send separate emails to several destinations ', (assert, servers) => {
+  const mailObj = [{
+    to: 'prey@river.com',
+    from: 'emal@example.com',
+    subject: 'This is a subject'
+  }, {
+    to: 'vultures@largetree.com',
+    from: 'emal@example.com',
+    subject: 'This is a subject'
+  }, {
+    to: 'crows@rock.com',
+    from: 'emal@example.com',
+    subject: 'This is a subject'
+  }];
+  servers.server.methods.sendMail(mailObj, (err, result) => {
+    assert.equal(err, null);
+    assert.equal(result.length, 3);
+    result.forEach((singleResult) => {
+      assert.equal(singleResult.accepted.length, 1);
+      assert.equal(singleResult.response, '250 Message queued');
+      assert.equal(singleResult.envelope.to.length, 1);
+    });
+    assert.end();
+  });
+});
+
+test('will return if any email fails and list status for specific emails', (assert, servers) => {
+  const mailObj = [{
+    to: 'prey@river.com',
+    from: 'emal@example.com',
+    subject: 'This is a subject'
+  }, {
+    to: 'notanaddress',
+    from: 'emal@example.com',
+    subject: 'This is a subject'
+  }, {
+    to: 'crows@rock.com',
+    from: 'emal@example.com',
+    subject: 'This is a subject'
+  }];
+  servers.server.methods.sendMail(mailObj, (err, result) => {
+    // console.log('+++++++')
+    // console.log('+++++++')
+    // console.log('+++++++')
+    // console.log(err)
+    // console.log(result)
+    // assert.equal(singleResult.accepted.length, 1);
+    // assert.equal(singleResult.response, '250 Message queued');
+    // assert.equal(singleResult.envelope.to.length, 1);
+    assert.end();
+  });
+});
+// code.expect(res.statusCode).to.equal(500);
+// code.expect(res.result.message).to.equal('There has been an error');

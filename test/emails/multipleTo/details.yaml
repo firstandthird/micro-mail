@@ -1,0 +1,7 @@
+subject: 'Hi there {{data.firstName}} {{data.serviceName}}'
+fromName: 'Micro Mail'
+fromEmail: 'code@firstandthird.com'
+sendIndividual: true
+toName: '{{data.firstName}} {{data.lastName}}'
+data:
+  serviceName: 'test city'
