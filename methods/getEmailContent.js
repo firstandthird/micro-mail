@@ -11,9 +11,9 @@ module.exports = function(templateName, data, allDone) {
       if (err) {
         return allDone(err);
       }
-      const compiledResult = handlebars.compile(fileContent.toString())(data);
+      let compiledResult = handlebars.compile(fileContent.toString())(data);
       if (data.inlineCss) {
-        return allDone(null, juice(compiledResult));
+        compiledResult = juice(compiledResult);
       }
       return allDone(null, compiledResult);
     });
