@@ -10,6 +10,7 @@ exports.send = {
         fromEmail: Joi.string(),
         to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
         fromName: Joi.string(),
+        inlineCss: Joi.bool(),
         data: Joi.object(),
         text: Joi.string(),
         template: Joi.string(),

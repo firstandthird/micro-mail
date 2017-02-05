@@ -2,6 +2,7 @@
 const handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
+const juice = require('juice');
 
 module.exports = function(templateName, data, allDone) {
   if (templateName) {
@@ -10,7 +11,11 @@ module.exports = function(templateName, data, allDone) {
       if (err) {
         return allDone(err);
       }
-      allDone(null, handlebars.compile(fileContent.toString())(data));
+      let compiledResult = handlebars.compile(fileContent.toString())(data);
+      if (data.inlineCss) {
+        compiledResult = juice(compiledResult);
+      }
+      return allDone(null, compiledResult);
     });
   } else {
     return allDone(null, false);

@@ -11,6 +11,7 @@ test('getEmailContent - with valid template', (assert, servers) => {
       serviceName: 'test city'
     }
   };
+
   const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'getEmailContent.html')).toString();
   servers.server.methods.getEmailContent('getEmailContent', data, (err, content) => {
     assert.equal(err, null, 'no errors');
@@ -30,6 +31,46 @@ test('getEmailContent - with no template', (assert, servers) => {
   servers.server.methods.getEmailContent(undefined, data, (err, details) => {
     assert.equal(err, null, 'getEmailContent no errors');
     assert.equal(details, false, 'getEmailTemplate with no template, details is false');
+    assert.end();
+  });
+});
+
+test('should be able to inline css if specified', (assert, servers) => {
+  const data = {
+    inlineCss: true,
+    text: '<style>div{color:red;}</style><div/>',
+    color: 'red',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith',
+      serviceName: 'test city',
+      color: 'red'
+    }
+  };
+  const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'test-template2.html')).toString();
+  servers.server.methods.getEmailContent('test-template2', data, (err, content) => {
+    assert.equal(err, null, 'getEmailContent no errors');
+    assert.equal(content, expectedOutput, 'able to inline css');
+    assert.end();
+  });
+});
+
+test('should also not inline if specified', (assert, servers) => {
+  const data = {
+    inlineCss: false,
+    text: '<style>div{color:red;}</style><div/>',
+    color: 'red',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith',
+      serviceName: 'test city',
+      color: 'red'
+    }
+  };
+  const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'test-template3.html')).toString();
+  servers.server.methods.getEmailContent('test-template2', data, (err, content) => {
+    assert.equal(err, null, 'getEmailContent no errors');
+    assert.equal(content, expectedOutput, 'will skip inlining css');
     assert.end();
   });
 });
