@@ -34,7 +34,7 @@
     "juice": "^4.0.2",
     "lodash": "4.17.4",
     "nodemailer": "2.7.0",
-    "rapptor": "1.3.2",
+    "rapptor": "1.4.0",
     "varson": "^0.5.3",
     "vision": "4.1.1",
     "yamljs": "0.2.8"
