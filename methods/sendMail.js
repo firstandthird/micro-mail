@@ -7,10 +7,16 @@ module.exports = function(mailObj, allDone) {
     const results = [];
     async.each(mailObj, (mailItem, done) => {
       server.transport.sendMail(mailItem, (err, result) => {
-        console.log(err)
-        console.log(result)
-        results.push(result);
-        done(err);
+        if (err) {
+          results.push({
+            response: 'failed to send',
+            message: 'There has been an error',
+            data: mailItem
+          });
+        } else {
+          results.push(result);
+        }
+        return done();
       });
     }, (err) => {
       allDone(err, results);
