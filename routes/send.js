@@ -37,8 +37,8 @@ exports.send = {
       mailObj(server, details, content, done) {
         server.methods.getMailObject(details, content, done);
       },
-      send(server, mailObj, done) {
-        server.methods.sendMail(mailObj, done);
+      send(server, mailObj, details, done) {
+        server.methods.sendMail(mailObj, details.sendIndividual, done);
       },
       reply(send, done) {
         done(null, {
