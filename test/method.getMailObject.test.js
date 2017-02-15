@@ -3,7 +3,7 @@ const test = require('./loadTests.js');
 
 test('getMailObject ', (assert, servers) => {
   const details = {
-    from: 'putin@kremlin.ru',
+    fromEmail: 'putin@kremlin.ru',
     fromName: 'crabbe',
     to: 'donald@whitehouse.gov',
     subject: 'that thing we discussed',
@@ -15,7 +15,7 @@ test('getMailObject ', (assert, servers) => {
     assert.equal(typeof result, 'object', 'getMailObject result is object');
     assert.deepEqual(result, {
       to: details.to,
-      from: '"crabbe" <putin@kremlin.ru>',
+      fromEmail: '"crabbe" <putin@kremlin.ru>',
       subject: details.subject,
       html: content,
       text: details.text
@@ -42,7 +42,7 @@ test('getMailObject --with headers ', (assert, servers) => {
     headers: {
       'the-secret-number': '206'
     },
-    from: 'putin@kremlin.ru',
+    fromEmail: 'putin@kremlin.ru',
     fromName: 'crabbe',
     to: 'donald@whitehouse.gov',
     subject: 'that thing we discussed',

@@ -10,7 +10,7 @@ const schema = Joi.object().keys({
   text: Joi.optional()
 });
 module.exports = function(details, content, allDone) {
-  let from = details.from;
+  let from = details.fromEmail;
   if (details.fromName) {
     from = `"${details.fromName}" <${from}>`;
   }
@@ -26,6 +26,8 @@ module.exports = function(details, content, allDone) {
   if (details.headers) {
     mailObj.headers = details.headers;
   }
+  console.log('mailObj')
+  console.log(mailObj)
   Joi.validate(mailObj, schema, (validationErr) => {
     if (validationErr) {
       return allDone(validationErr);
