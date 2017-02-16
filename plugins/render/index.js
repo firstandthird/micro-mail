@@ -43,6 +43,8 @@ exports.register = function(server, options, next) {
             try {
               handlebars.registerHelper(path.basename(file, '.js'), require(path.join(options.helpersPath, file)));
             } catch (e) {
+              console.log(`unable to load ${file}`)
+              console.log(e)
               server.log(['error'], `error loading helper ${file}`);
             }
           });
