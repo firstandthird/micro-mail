@@ -6,8 +6,8 @@ plugins:
       port: 8888
   ./plugins/render:
     path: "{{templatePath}}/test/emails"
-    partialsPath: "{{CWD}}/test/templates/partials"
-    helpersPath: "{{CWD}}/test/templates/helpers"
+    partialsPath: "test/templates/partials/"
+    helpersPath: "test/templates/helpers/"
 views:
   engines:
     html: "handlebars"
