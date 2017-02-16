@@ -15,7 +15,11 @@ exports.register = function(server, options, next) {
             return done();
           }
           async.each(files, (file, eachDone) => {
-            fs.readFile(path.join(options.partialsPath, file), (err, data) => {
+            fs.readFile(path.join(options.partialsPath, file), (readErr, data) => {
+              if (readErr) {
+                server.log(['error', 'plugins.render'], readErr);
+                return eachDone();
+              }
               handlebars.registerPartial(path.basename(file, '.html'), data.toString());
               eachDone();
             });
@@ -36,8 +40,6 @@ exports.register = function(server, options, next) {
               handlebars.registerHelper(path.basename(file, '.js'), require(path.join(options.helpersPath, file)));
             } catch (e) {
               server.log(['error'], `error loading helper ${file}`);
-            } finally {
-
             }
           });
           done();
@@ -45,7 +47,7 @@ exports.register = function(server, options, next) {
       }
       return done();
     }
-  }, (err) => {
+  }, () => {
     server.method('renderEmailTemplate', (templateName, data, renderDone) => {
       const templatePath = path.join(server.settings.app.views.path, templateName, 'email.html');
       fs.readFile(templatePath, (templateErr, fileContent) => {
