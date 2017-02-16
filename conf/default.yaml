@@ -11,6 +11,10 @@ plugins:
       port: "{{ENV.SMTP_PORT}}"
       user: "{{ENV.SMTP_USER}}"
       pass: "{{ENV.SMTP_PASS}}"
+  ./plugins/render:
+    path: "{{templatePath}}/emails"
+    partialsPath: "{{templatePath}}/partials"
+    helpersPath: "{{templatePath}}/helpers"
 views:
   engines:
     html: "handlebars"

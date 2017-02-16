@@ -6,8 +6,7 @@ const SMTPServer = require('smtp-server').SMTPServer;
 const path = require('path');
 
 module.exports = (options, done) => {
-  const rapptor = new Rapptor();
-
+  const rapptor = new Rapptor({ env: 'test' });
   const onData = options.onData ? options.onData : (stream, session, callback) => {
     stream.on('end', () => callback(null, 'Message queued'));
     stream.on('data', () => {});
@@ -16,7 +15,6 @@ module.exports = (options, done) => {
     if (err) {
       return done(err);
     }
-
     // set up a test smtp server:
     const smtpServer = new SMTPServer({
       // uncomment to show SMTP exchange:
