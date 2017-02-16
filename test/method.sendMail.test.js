@@ -4,7 +4,8 @@ const test = require('./loadTests.js');
 test('sendEmail - accepts valid submission and envelope', (assert, servers) => {
   const mailObj = {
     from: 'someone@somewhere.com',
-    to: 'nobody@nowhere.com'
+    to: 'nobody@nowhere.com',
+    html: 'some html'
   };
   servers.server.methods.sendMail(mailObj, false, (err, result) => {
     assert.equal(err, null);

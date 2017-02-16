@@ -15,7 +15,7 @@ test('getMailObject ', (assert, servers) => {
     assert.equal(typeof result, 'object', 'getMailObject result is object');
     assert.deepEqual(result, {
       to: details.to,
-      fromEmail: '"crabbe" <putin@kremlin.ru>',
+      from: '"crabbe" <putin@kremlin.ru>',
       subject: details.subject,
       html: content,
       text: details.text

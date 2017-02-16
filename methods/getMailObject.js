@@ -18,16 +18,16 @@ module.exports = function(details, content, allDone) {
     from,
     to: details.to,
     subject: details.subject,
-    text: details.text
   };
+  if (details.text) {
+    mailObj.text = details.text;
+  }
   if (content) {
     mailObj.html = content;
   }
   if (details.headers) {
     mailObj.headers = details.headers;
   }
-  console.log('mailObj')
-  console.log(mailObj)
   Joi.validate(mailObj, schema, (validationErr) => {
     if (validationErr) {
       return allDone(validationErr);
