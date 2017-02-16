@@ -4,10 +4,12 @@ plugins:
     smtp:
       host: "localhost"
       port: 8888
+  ./plugins/render:
+    path: "{{templatePath}}/test/emails"
+    partialsPath: "{{CWD}}/test/templates/partials"
+    helpersPath: "{{CWD}}/test/templates/helpers"
 views:
   engines:
     html: "handlebars"
   path: "{{CWD}}/test/emails"
-  #partialsPath: "{{CWD}}/test/partials"
-  #helpersPath: "{{CWD}}/test/helpers"
   isCached: false
