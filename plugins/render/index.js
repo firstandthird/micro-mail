@@ -6,13 +6,11 @@ const path = require('path');
 const juice = require('juice');
 
 exports.register = function(server, options, next) {
-  console.log(options)
   async.autoInject({
     partials: (done) => {
       if (options.partialsPath) {
         return fs.readdir(options.partialsPath, (err, files) => {
           if (err) {
-            console.log(err)
             server.log(['error', 'plugins.render'], err);
             return done();
           }
@@ -34,17 +32,13 @@ exports.register = function(server, options, next) {
       if (options.helpersPath) {
         return fs.readdir(options.helpersPath, (err, files) => {
           if (err) {
-            console.log(err)
             server.log(['error', 'plugins.render'], err);
             return done();
           }
           files.forEach((file) => {
-            console.log(`file is ${file}`)
             try {
               handlebars.registerHelper(path.basename(file, '.js'), require(path.join(options.helpersPath, file)));
             } catch (e) {
-              console.log(`unable to load ${file}`)
-              console.log(e)
               server.log(['error'], `error loading helper ${file}`);
             }
           });
