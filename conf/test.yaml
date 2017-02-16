@@ -5,8 +5,8 @@ plugins:
       host: "localhost"
       port: 8888
   ./plugins/render:
-    partialsPath: "{{CWD}}/test/templates/partials/"
-    helpersPath: "{{CWD}}/test/templates/helpers/"
+    partialsPath: "{{CWD}}/test/partials/"
+    helpersPath: "{{CWD}}/test/helpers/"
 views:
   engines:
     html: "handlebars"
