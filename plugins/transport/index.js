@@ -1,3 +1,4 @@
+'use strict';
 const nodemailer = require('nodemailer');
 exports.register = function(server, options, next) {
   if (!options.smtp || !options.smtp.host || !options.smtp.port) {

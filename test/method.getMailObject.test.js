@@ -42,7 +42,7 @@ test('getMailObject --with headers ', (assert, servers) => {
     headers: {
       'the-secret-number': '206'
     },
-    from: 'putin@kremlin.ru',
+    fromEmail: 'putin@kremlin.ru',
     fromName: 'crabbe',
     to: 'donald@whitehouse.gov',
     subject: 'that thing we discussed',
