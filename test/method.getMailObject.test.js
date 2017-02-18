@@ -3,7 +3,7 @@ const test = require('./loadTests.js');
 
 test('getMailObject ', (assert, servers) => {
   const details = {
-    fromEmail: 'putin@kremlin.ru',
+    from: 'putin@kremlin.ru',
     fromName: 'crabbe',
     to: 'donald@whitehouse.gov',
     subject: 'that thing we discussed',

@@ -6,7 +6,7 @@ test('accepts one valid submission and envelope', (assert, servers) => {
     method: 'POST',
     url: '/send',
     payload: {
-      fromEmail: 'flynn@gmail.com',
+      from: 'flynn@gmail.com',
       fromName: 'mikey',
       to: 'totally_not_putin@absolutely_not_moscow.ru',
       text: 'some text',

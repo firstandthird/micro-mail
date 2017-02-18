@@ -8,14 +8,15 @@ exports.send = {
     validate: {
       payload: Joi.object().keys({
         fromEmail: Joi.string(),
-        to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
+        from: Joi.string(),
         fromName: Joi.string(),
+        to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
         inlineCss: Joi.bool(),
         data: Joi.object(),
         text: Joi.string(),
         template: Joi.string(),
         subject: Joi.string()
-      }).or('text', 'template')
+      }).or('text', 'template').or('from', 'fromEmail')
     }
   },
   handler: {
