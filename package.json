@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/firstandthird/micro-mail#readme",
   "dependencies": {
-    "async": "2.1.4",
+    "async": "2.1.5",
     "aug": "^1.0.1",
     "handlebars": "4.0.6",
     "hapi-auto-handler": "^1.1.2",
