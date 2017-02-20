@@ -40,7 +40,7 @@
     "yamljs": "0.2.8"
   },
   "devDependencies": {
-    "eslint": "3.13.1",
+    "eslint": "3.16.0",
     "eslint-config-firstandthird": "3.2.0",
     "eslint-plugin-import": "2.2.0",
     "nodemon": "^1.11.0",
