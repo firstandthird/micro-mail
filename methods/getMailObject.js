@@ -10,7 +10,7 @@ const schema = Joi.object().keys({
   text: Joi.optional()
 });
 module.exports = function(details, content, allDone) {
-  let from = details.from ? details.from : details.fromEmail;
+  let from = details.from || details.fromEmail;
   if (details.fromName) {
     from = `"${details.fromName}" <${from}>`;
   }

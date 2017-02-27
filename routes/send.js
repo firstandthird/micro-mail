@@ -7,8 +7,8 @@ exports.send = {
   config: {
     validate: {
       payload: Joi.object().keys({
-        fromEmail: Joi.string(),
         from: Joi.string(),
+        fromEmail: Joi.string(),
         fromName: Joi.string(),
         to: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
         inlineCss: Joi.bool(),
@@ -16,7 +16,7 @@ exports.send = {
         text: Joi.string(),
         template: Joi.string(),
         subject: Joi.string()
-      }).or('text', 'template').or('from', 'fromEmail')
+      }).or('text', 'template')
     }
   },
   handler: {
