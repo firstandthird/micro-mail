@@ -1,1 +1,4 @@
-FROM firstandthird/node:prod-6.7-2
+FROM firstandthird/node:6.10-3-onbuild
+
+ENV PORT 8081
+EXPOSE 8081

@@ -1,9 +1,9 @@
 app:
-  image: 'firstandthird/node:6.7'
-  command: './node_modules/.bin/nodemon node_modules/.bin/rapptor'
+  image: 'firstandthird/node:6.10-3-nobuild'
+  command: 'npm run dev'
   volumes:
-    - '.:/app'
-    - './example:/app/templates'
+    - '.:/home/app/src'
+    - './example:/home/app/src/templates'
   environment:
     PORT: 8081
     VIRTUAL_HOST: 'micromail.*'

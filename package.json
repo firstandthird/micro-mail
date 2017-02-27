@@ -4,6 +4,7 @@
   "description": "micro email api",
   "scripts": {
     "start": "rapptor",
+    "dev": "npm install && npm prune && nodemon -x npm start",
     "test": "NODE_ENV=test tape test/*.test.js | tap-spec",
     "lint": "eslint ."
   },
