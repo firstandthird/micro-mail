@@ -1,6 +1,6 @@
 'use strict';
 const test = require('./loadTests.js');
-
+/*
 test('getEmailDetails - with yaml', (assert, servers) => {
   const payload = {
     template: 'getEmailDetails1',
@@ -81,5 +81,39 @@ test('getEmailDetails will not validate if data fields are blank', (assert, serv
   };
   servers.server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
+  });
+});
+*/
+test('getEmailDetails - with pagedata (optional test)', (assert, servers) => {
+  if (!servers.server.plugins['hapi-pagedata']) {
+    return assert.end();
+  }
+  const payload = {
+    template: 'getEmailDetails1',
+    toEmail: 'bob.smith@firstandthird.com',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith'
+    }
+  };
+
+  // server.server.methods.pageData.set('');
+  servers.server.methods.getEmailDetails(payload, (err, details) => {
+    assert.equal(err, null, 'no errors');
+    assert.deepEqual(details, {
+      subject: 'Hi there bob from pagedata',
+      template: 'getEmailDetails1',
+      fromName: 'Micro Mail',
+      fromEmail: 'code@firstandthird.com',
+      toName: 'bob smith',
+      toEmail: 'bob.smith@firstandthird.com',
+      data: {
+        firstName: 'bob',
+        lastName: 'smith',
+        serviceName: 'test city'
+      },
+      default1: 'yay default'
+    }, 'getEmailDetails sets up details correctly');
+    assert.end();
   });
 });
