@@ -86,6 +86,7 @@ test('will send separate emails to several destinations ', (assert, servers) => 
       assert.equal(singleResult.response, '250 Message queued');
       assert.equal(singleResult.envelope.to.length, 1);
     });
+    assert.end();
   });
 });
 
@@ -102,5 +103,6 @@ test('will return if any email fails and list status for specific emails', (asse
     assert.equal(result[2].response, '250 Message queued');
     assert.equal(result[1].response, 'failed to send');
     assert.equal(result[1].rejected[0].to, 'notanaddress');
+    assert.end();
   });
 });
