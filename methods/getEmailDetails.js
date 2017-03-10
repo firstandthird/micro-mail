@@ -9,8 +9,8 @@ const _ = require('lodash');
 module.exports = function(payload, allDone) {
   const server = this;
   const settings = server.settings.app;
-  const template = payload.template || null;
-  const templateDir = `${settings.views.path}/${template}`;
+  const templateName = payload.template || null;
+  const templateDir = `${settings.views.path}/${templateName}`;
 
   async.autoInject({
     emailDefaults(done) {
@@ -23,7 +23,7 @@ module.exports = function(payload, allDone) {
       done(null, defaults);
     },
     templateDefaults(done) {
-      if (!template) {
+      if (!templateName) {
         return done(null, {});
       }
 
@@ -33,27 +33,21 @@ module.exports = function(payload, allDone) {
       } catch (e) {
         emailDetails = {};
       }
-
       done(null, emailDetails);
     },
     dataDefaults(done) {
       if (server.methods.pageData) {
         const pageDataSettings = settings.plugins['hapi-pagedata'];
-        server.methods.pageData.set(pageDataSettings.site, {
-          getEmailDetails1: {
-            tags: [pageDataSettings.tag]
-          },
-        }, (err, res) => {
-          return server.methods.pageData.get(pageDataSettings.site, template, pageDataSettings.tag, done);
+        return server.methods.pageData.get(pageDataSettings.site, _.kebabCase(templateName), 'template', (err, result) => {
+          if (err) {
+            return done(err);
+          }
+          return done(null, yamljs.parse(result.contentYaml));
         });
       }
       return done(null, {});
     },
     details(emailDefaults, templateDefaults, dataDefaults, done) {
-      console.log('so i got back');
-      console.log('so i got back');
-      console.log('so i got back');
-      console.log(dataDefaults);
       const rawDetails = aug('deep', emailDefaults, templateDefaults, dataDefaults, payload);
       const details = varson(rawDetails);
       done(null, details);
