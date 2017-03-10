@@ -22,6 +22,6 @@ views:
   engines:
     html: "handlebars"
   path: "{{templatePath}}/emails"
-  #partialsPath: "{{templatePath}}/partials"
-  #helpersPath: "{{templatePath}}/helpers"
+  partialsPath: "{{templatePath}}/partials"
+  helpersPath: "{{templatePath}}/helpers"
   isCached: true
