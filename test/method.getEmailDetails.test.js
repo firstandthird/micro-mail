@@ -84,7 +84,7 @@ test('getEmailDetails will not validate if data fields are blank', (assert, serv
   });
 });
 */
-test('getEmailDetails - with pagedata (optional test)', (assert, servers) => {
+test('getEmailDetails - with pagedata )', (assert, servers) => {
   if (!servers.server.plugins['hapi-pagedata']) {
     return assert.end();
   }
@@ -96,7 +96,19 @@ test('getEmailDetails - with pagedata (optional test)', (assert, servers) => {
       lastName: 'smith'
     }
   };
-
+  servers.server.route({
+    path: '/api/sites/{site}/pages/{page}',
+    method: 'GET',
+    handler(request, reply) {
+      reply({
+        content: [
+          // 'https://www.instagram.com/p/BDVkDO0oKOz/',
+          // 'https://www.instagram.com/p/BDVi2IHqHxy/',
+          'https://twitter.com/banks_jason/status/607291018447192064'
+        ]
+      });
+    }
+  });
   // server.server.methods.pageData.set('');
   servers.server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
