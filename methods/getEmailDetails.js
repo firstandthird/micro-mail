@@ -47,7 +47,7 @@ module.exports = function(payload, allDone) {
       return done(null, {});
     },
     details(emailDefaults, templateDefaults, dataDefaults, done) {
-      const rawDetails = aug('deep', emailDefaults, templateDefaults, dataDefaults, payload);
+      const rawDetails = aug('deep', {}, emailDefaults, templateDefaults, dataDefaults, payload);
       const details = varson(rawDetails);
       done(null, details);
     },
