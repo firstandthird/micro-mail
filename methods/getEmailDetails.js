@@ -35,14 +35,13 @@ module.exports = function(payload, allDone) {
       }
       done(null, emailDetails);
     },
-    dataDefaults(done) {
-      if (server.methods.pageData) {
-        const pageDataSettings = settings.plugins['hapi-pagedata'];
-        return server.methods.pageData.get(pageDataSettings.site, _.kebabCase(templateName), 'template', (err, result) => {
+    dataDefaults(emailDefaults, done) {
+      if (emailDefaults.pageDataSlug) {
+        return server.methods.pageData.get(emailDefaults.pageDataSlug, _.kebabCase(templateName), 'template', (err, result) => {
           if (err) {
             return done(err);
           }
-          return done(null, yamljs.parse(result.contentYaml));
+          return done(null, result);
         });
       }
       return done(null, {});

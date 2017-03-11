@@ -1,14 +1,12 @@
 templatePath: "{{CWD}}/templates"
 connection:
-  port: 8090
+  port: 8080
 plugins:
   vision:
   inert:
   hapi-pagedata:
-    site: "micro-mail-templates"
     host: "{{process.env.PAGEDATA_HOST}}"
     key: "dev"
-    tag: "template"
   hapi-auto-handler:
     _priority: -1
   ./plugins/transport:
