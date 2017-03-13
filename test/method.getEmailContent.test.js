@@ -1,9 +1,30 @@
 'use strict';
-const fs = require('fs');
+const tap = require('tap');
+const Rapptor = require('rapptor');
 const path = require('path');
-const test = require('./loadTests.js');
+const fs = require('fs');
 
-test('getEmailContent - with valid template', (assert, servers) => {
+let rapptor;
+let server;
+tap.beforeEach((done) => {
+  rapptor = new Rapptor();
+  rapptor.start((err, returned) => {
+    if (err) {
+      return done(err);
+    }
+    server = returned;
+    server.settings.app.views.path = path.join(__dirname, 'emails');
+    done();
+  });
+});
+
+tap.afterEach((done) => {
+  rapptor.stop(() => {
+    done();
+  });
+});
+
+tap.test('getEmailContent - with valid template', (assert) => {
   const data = {
     data: {
       firstName: 'bob',
@@ -11,16 +32,15 @@ test('getEmailContent - with valid template', (assert, servers) => {
       serviceName: 'test city'
     }
   };
-
   const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'getEmailContent.html')).toString();
-  servers.server.methods.getEmailContent('getEmailContent', data, (err, content) => {
+  server.methods.getEmailContent('getEmailContent', data, (err, content) => {
     assert.equal(err, null, 'no errors');
     assert.equal(content, expectedOutput, 'renders content correctly');
     assert.end();
   });
 });
 
-test('getEmailContent - with no template', (assert, servers) => {
+tap.test('getEmailContent - with no template', (assert) => {
   const data = {
     toEmail: 'bob.smith@firstandthird.com',
     data: {
@@ -28,14 +48,14 @@ test('getEmailContent - with no template', (assert, servers) => {
       lastName: 'smith'
     }
   };
-  servers.server.methods.getEmailContent(undefined, data, (err, details) => {
+  server.methods.getEmailContent(undefined, data, (err, details) => {
     assert.equal(err, null, 'getEmailContent no errors');
     assert.equal(details, false, 'getEmailTemplate with no template, details is false');
     assert.end();
   });
 });
 
-test('should be able to inline css if specified', (assert, servers) => {
+tap.test('should be able to inline css if specified', (assert) => {
   const data = {
     inlineCss: true,
     text: '<style>div{color:red;}</style><div/>',
@@ -48,14 +68,14 @@ test('should be able to inline css if specified', (assert, servers) => {
     }
   };
   const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'test-template2.html')).toString();
-  servers.server.methods.getEmailContent('test-template2', data, (err, content) => {
+  server.methods.getEmailContent('test-template2', data, (err, content) => {
     assert.equal(err, null, 'getEmailContent no errors');
     assert.equal(content, expectedOutput, 'able to inline css');
     assert.end();
   });
 });
 
-test('should also not inline if specified', (assert, servers) => {
+tap.test('should also not inline if specified', (assert) => {
   const data = {
     inlineCss: false,
     text: '<style>div{color:red;}</style><div/>',
@@ -68,7 +88,7 @@ test('should also not inline if specified', (assert, servers) => {
     }
   };
   const expectedOutput = fs.readFileSync(path.join(__dirname, 'expected', 'test-template3.html')).toString();
-  servers.server.methods.getEmailContent('test-template2', data, (err, content) => {
+  server.methods.getEmailContent('test-template2', data, (err, content) => {
     assert.equal(err, null, 'getEmailContent no errors');
     assert.equal(content, expectedOutput, 'will skip inlining css');
     assert.end();
