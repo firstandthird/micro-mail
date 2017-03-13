@@ -3,7 +3,7 @@ const test = require('./loadTests.js');
 
 test('getEmailDetails - with yaml', (assert, servers) => {
   const payload = {
-    template: 'getEmailDetails1',
+    template: 'getEmailDetails2',
     toEmail: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
@@ -14,11 +14,13 @@ test('getEmailDetails - with yaml', (assert, servers) => {
     assert.equal(err, null, 'no errors');
     assert.deepEqual(details, {
       subject: 'Hi there bob test city',
-      template: 'getEmailDetails1',
+      template: 'getEmailDetails2',
       fromName: 'Micro Mail',
       fromEmail: 'code@firstandthird.com',
       toName: 'bob smith',
       toEmail: 'bob.smith@firstandthird.com',
+      pageDataSlug: 'micro-mail-templates',
+      tag: 'template',
       data: {
         firstName: 'bob',
         lastName: 'smith',
@@ -32,7 +34,7 @@ test('getEmailDetails - with yaml', (assert, servers) => {
 
 test('getEmailDetails - with no yaml', (assert, servers) => {
   const payload = {
-    template: 'getEmailDetails2',
+    template: 'no yaml',
     toEmail: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
@@ -42,8 +44,10 @@ test('getEmailDetails - with no yaml', (assert, servers) => {
   servers.server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
     assert.deepEqual(details, {
-      template: 'getEmailDetails2',
+      template: 'no yaml',
       toEmail: 'bob.smith@firstandthird.com',
+      pageDataSlug: 'micro-mail-templates',
+      tag: 'template',
       data: {
         firstName: 'bob',
         lastName: 'smith'
@@ -92,25 +96,27 @@ test('getEmailDetails - with pagedata )', (assert, servers) => {
     template: 'getEmailDetails1',
     toEmail: 'bob.smith@firstandthird.com',
     data: {
-      firstName: 'bob',
-      lastName: 'smith'
+      firstName: 'bob'
     }
   };
   servers.server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
     assert.deepEqual(details, {
-      subject: 'Hi there bob from pagedata',
-      template: 'getEmailDetails1',
+      default1: 'yay default',
+      subject: 'Hi there bob no absolutely not',
       fromName: 'Micro Mail',
       fromEmail: 'code@firstandthird.com',
-      toName: 'bob smith',
+      toName: 'bob yay default',
       toEmail: 'bob.smith@firstandthird.com',
+      pageDataSlug: 'micro-mail-templates',
+      template: 'getEmailDetails1',
+      tag: 'template',
       data: {
-        firstName: 'route',
-        lastName: 'route route',
-        serviceName: 'no absolutely not'
+        firstName: 'bob',
+        lastName: 'yay default',
+        serviceName: 'no absolutely not',
+        temp: 'negative'
       },
-      default1: 'yay default'
     }, 'getEmailDetails sets up details correctly');
     assert.end();
   });
