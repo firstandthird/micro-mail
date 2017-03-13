@@ -4,7 +4,7 @@ plugins:
   inert:
   hapi-pagedata:
     host: "{{process.env.PAGEDATA_HOST}}"
-    key: "dev"
+    key: "{{process.env.API_KEY}}"
   hapi-auto-handler:
     _priority: -1
   ./plugins/transport:
