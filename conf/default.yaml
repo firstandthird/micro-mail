@@ -1,6 +1,4 @@
 templatePath: "{{CWD}}/templates"
-connection:
-  port: 8080
 plugins:
   vision:
   inert:
