@@ -96,21 +96,6 @@ test('getEmailDetails - with pagedata )', (assert, servers) => {
       lastName: 'smith'
     }
   };
-  servers.server.route({
-    path: '/api/sites/{site}/pages/{page}',
-    method: 'GET',
-    handler(request, reply) {
-      reply({
-        content: {
-          data: {
-            serviceName: 'no absolutely not',
-            firstName: 'route',
-            lastName: 'route route'
-          }
-        }
-      });
-    }
-  });
   servers.server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
     assert.deepEqual(details, {

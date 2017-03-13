@@ -24,21 +24,6 @@ test('accepts one valid submission and envelope', (assert, servers) => {
 });
 
 test('accepts multiple valid submissions and envelope', (assert, servers) => {
-  servers.server.route({
-    path: '/api/sites/{site}/pages/{page}',
-    method: 'GET',
-    handler(request, reply) {
-      reply({
-        content: {
-          data: {
-            serviceName: 'no absolutely not',
-            firstName: 'route',
-            lastName: 'route route'
-          }
-        }
-      });
-    }
-  });
   servers.server.inject({
     method: 'POST',
     url: '/send',

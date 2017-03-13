@@ -16,7 +16,21 @@ module.exports = (options, done) => {
     if (err) {
       return done(err);
     }
-
+    server.route({
+      path: '/api/sites/{site}/pages/{page}',
+      method: 'GET',
+      handler(request, reply) {
+        reply({
+          content: {
+            data: {
+              serviceName: 'no absolutely not',
+              firstName: 'route',
+              lastName: 'route route'
+            }
+          }
+        });
+      }
+    });
     // set up a test smtp server:
     const smtpServer = new SMTPServer({
       // uncomment to show SMTP exchange:
