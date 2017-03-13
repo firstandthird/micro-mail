@@ -36,8 +36,8 @@ module.exports = function(payload, allDone) {
       done(null, emailDetails);
     },
     dataDefaults(emailDefaults, done) {
-      if (emailDefaults.pageDataSlug) {
-        return server.methods.pageData.get(emailDefaults.pageDataSlug, _.kebabCase(templateName), 'template', (err, result) => {
+      if (emailDefaults.pageDataSlug && templateName) {
+        return server.methods.pageData.get(emailDefaults.pageDataSlug, _.kebabCase(templateName), emailDefaults.tag, (err, result) => {
           if (err) {
             return done(err);
           }
@@ -63,8 +63,7 @@ module.exports = function(payload, allDone) {
     }
   }, (err, results) => {
     if (err) {
-      console.log('so that was an error:')
-      console.log(err)
+      return allDone(err);
     }
     allDone(err, results ? results.details : null);
   });
