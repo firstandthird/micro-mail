@@ -1,6 +1,6 @@
 'use strict';
 const test = require('./loadTests.js');
-/*
+
 test('getEmailDetails - with yaml', (assert, servers) => {
   const payload = {
     template: 'getEmailDetails1',
@@ -83,7 +83,7 @@ test('getEmailDetails will not validate if data fields are blank', (assert, serv
     assert.notEqual(err, null);
   });
 });
-*/
+
 test('getEmailDetails - with pagedata )', (assert, servers) => {
   if (!servers.server.plugins['hapi-pagedata']) {
     return assert.end();
@@ -101,15 +101,16 @@ test('getEmailDetails - with pagedata )', (assert, servers) => {
     method: 'GET',
     handler(request, reply) {
       reply({
-        content: [
-          // 'https://www.instagram.com/p/BDVkDO0oKOz/',
-          // 'https://www.instagram.com/p/BDVi2IHqHxy/',
-          'https://twitter.com/banks_jason/status/607291018447192064'
-        ]
+        content: {
+          data: {
+            serviceName: 'no absolutely not',
+            firstName: 'route',
+            lastName: 'route route'
+          }
+        }
       });
     }
   });
-  // server.server.methods.pageData.set('');
   servers.server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
     assert.deepEqual(details, {
@@ -120,9 +121,9 @@ test('getEmailDetails - with pagedata )', (assert, servers) => {
       toName: 'bob smith',
       toEmail: 'bob.smith@firstandthird.com',
       data: {
-        firstName: 'bob',
-        lastName: 'smith',
-        serviceName: 'test city'
+        firstName: 'route',
+        lastName: 'route route',
+        serviceName: 'no absolutely not'
       },
       default1: 'yay default'
     }, 'getEmailDetails sets up details correctly');
