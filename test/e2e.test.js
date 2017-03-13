@@ -24,20 +24,29 @@ test('accepts one valid submission and envelope', (assert, servers) => {
 });
 
 test('accepts multiple valid submissions and envelope', (assert, servers) => {
+  servers.server.route({
+    path: '/api/sites/{site}/pages/{page}',
+    method: 'GET',
+    handler(request, reply) {
+      reply({
+        content: {
+          data: {
+            serviceName: 'no absolutely not',
+            firstName: 'route',
+            lastName: 'route route'
+          }
+        }
+      });
+    }
+  });
   servers.server.inject({
     method: 'POST',
     url: '/send',
     payload: {
       fromEmail: 'flynn@gmail.com',
       fromName: 'mikey',
-      text: 'some text',
       to: 'totally_not_putin@absolutely_not_moscow.ru, absolutely_not_comey@fbi.gov',
-      template: 'multipleTo',
-      data: {
-        firstName: 'general',
-        lastName: 'mike',
-        serviceName: 'tcp'
-      }
+      template: 'multipleTo'
     }
   }, (response) => {
     assert.equal(response.statusCode, 200, 'accepts valid multiple-to submission');
