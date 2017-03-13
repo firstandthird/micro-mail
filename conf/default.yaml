@@ -2,6 +2,9 @@ templatePath: "{{CWD}}/templates"
 plugins:
   vision:
   inert:
+  hapi-pagedata:
+    host: "{{ENV.PAGEDATA_HOST}}"
+    key: "{{ENV.PAGEDATA_KEY}}"
   hapi-auto-handler:
     _priority: -1
   ./plugins/transport:

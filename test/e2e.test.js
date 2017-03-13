@@ -76,14 +76,8 @@ tap.test('accepts multiple valid submissions and envelope', (assert) => {
     payload: {
       fromEmail: 'flynn@gmail.com',
       fromName: 'mikey',
-      text: 'some text',
       to: 'totally_not_putin@absolutely_not_moscow.ru, absolutely_not_comey@fbi.gov',
-      template: 'multipleTo',
-      data: {
-        firstName: 'general',
-        lastName: 'mike',
-        serviceName: 'tcp'
-      }
+      template: 'multipleTo'
     }
   }, (response) => {
     assert.equal(response.statusCode, 200, 'accepts valid multiple-to submission');

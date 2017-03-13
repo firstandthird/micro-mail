@@ -1,5 +1,5 @@
 env:
-  - SMTP_HOST=localhost SMTP_PORT=8888 SMTP_USER=user SMTP_PASS=pass
+  - SMTP_HOST=localhost SMTP_PORT=8888 SMTP_USER=user SMTP_PASS=pass PAGEDATA_HOST=http://localhost:8080 API_KEY=key
 language: node_js
 node_js:
   - "6"
