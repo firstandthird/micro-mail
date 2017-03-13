@@ -64,6 +64,6 @@ module.exports = function(payload, allDone) {
     if (err) {
       return allDone(err);
     }
-    allDone(err, results ? results.details : null);
+    allDone(null, results ? results.details : null);
   });
 };

@@ -3,8 +3,8 @@ plugins:
   vision:
   inert:
   hapi-pagedata:
-    host: "{{process.env.PAGEDATA_HOST}}"
-    key: "{{process.env.API_KEY}}"
+    host: "{{ENV.PAGEDATA_HOST}}"
+    key: "{{ENV.PAGEDATA_KEY}}"
   hapi-auto-handler:
     _priority: -1
   ./plugins/transport:
