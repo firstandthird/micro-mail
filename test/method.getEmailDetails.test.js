@@ -1,5 +1,6 @@
 'use strict';
 const test = require('./loadTests.js');
+const async = require('async');
 
 test('getEmailDetails - with yaml', (assert, servers) => {
   const payload = {
@@ -19,8 +20,6 @@ test('getEmailDetails - with yaml', (assert, servers) => {
       fromEmail: 'code@firstandthird.com',
       toName: 'bob smith',
       toEmail: 'bob.smith@firstandthird.com',
-      pageDataSlug: 'micro-mail-templates',
-      tag: 'template',
       data: {
         firstName: 'bob',
         lastName: 'smith',
@@ -46,8 +45,6 @@ test('getEmailDetails - with no yaml', (assert, servers) => {
     assert.deepEqual(details, {
       template: 'no yaml',
       toEmail: 'bob.smith@firstandthird.com',
-      pageDataSlug: 'micro-mail-templates',
-      tag: 'template',
       data: {
         firstName: 'bob',
         lastName: 'smith'
@@ -70,6 +67,7 @@ test('getEmailDetails will not validate if missing required fields', (assert, se
   };
   servers.server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
+    assert.end();
   });
 });
 
@@ -85,39 +83,69 @@ test('getEmailDetails will not validate if data fields are blank', (assert, serv
   };
   servers.server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
+    assert.end();
   });
 });
 
 test('getEmailDetails - with pagedata )', (assert, servers) => {
-  if (!servers.server.plugins['hapi-pagedata']) {
-    return assert.end();
-  }
-  const payload = {
-    template: 'getEmailDetails1',
-    toEmail: 'bob.smith@firstandthird.com',
-    data: {
-      firstName: 'bob'
+  // mock pagedata route for testing, this needs to work with wreck.get:
+  async.autoInject({
+    pagedataServer(done) {
+      const Hapi = require('hapi');
+      const server = new Hapi.Server();
+      server.connection({ port: 3000, host: 'localhost' });
+
+      server.route({
+        path: '/api/sites/{site}/pages/{page}',
+        method: 'GET',
+        handler(request, reply) {
+          assert.equal(request.params.site, 'site');
+          assert.equal(request.params.page, 'slug');
+          assert.equal(request.query.tag, 'tag');
+          reply(null, {
+            content: {
+              subject: 'This is a subject to {{data.firstName}}',
+              toName: '{{data.firstName}}'
+            }
+          });
+        }
+      });
+      server.start((err) => {
+        if (err) {
+          return done(err);
+        }
+        done(null, server);
+      });
+    },
+    getDetails(pagedataServer, done) {
+      const payload = {
+        template: 'getEmailDetailsPagedata',
+        toEmail: 'bob.smith@firstandthird.com',
+        data: {
+          firstName: 'bob'
+        }
+      };
+      servers.server.methods.getEmailDetails(payload, (err, details) => {
+        assert.equal(err, null, 'no errors');
+        assert.deepEqual(details, {
+          default1: 'yay default',
+          template: 'getEmailDetailsPagedata',
+          pagedata: {
+            site: 'site',
+            slug: 'slug',
+            tag: 'tag'
+          },
+          subject: 'This is a subject to bob',
+          toName: 'bob',
+          toEmail: 'bob.smith@firstandthird.com',
+          data: {
+            firstName: 'bob'
+          },
+        }, 'getEmailDetails sets up details correctly');
+      });
     }
-  };
-  servers.server.methods.getEmailDetails(payload, (err, details) => {
-    assert.equal(err, null, 'no errors');
-    assert.deepEqual(details, {
-      default1: 'yay default',
-      subject: 'Hi there bob no absolutely not',
-      fromName: 'Micro Mail',
-      fromEmail: 'code@firstandthird.com',
-      toName: 'bob yay default',
-      toEmail: 'bob.smith@firstandthird.com',
-      pageDataSlug: 'micro-mail-templates',
-      template: 'getEmailDetails1',
-      tag: 'template',
-      data: {
-        firstName: 'bob',
-        lastName: 'yay default',
-        serviceName: 'no absolutely not',
-        temp: 'negative'
-      },
-    }, 'getEmailDetails sets up details correctly');
+  }, (err) => {
+    assert.equal(err, null);
     assert.end();
   });
 });

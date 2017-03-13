@@ -4,8 +4,6 @@ const yamljs = require('yamljs');
 const async = require('async');
 const varson = require('varson');
 const aug = require('aug');
-const _ = require('lodash');
-
 module.exports = function(payload, allDone) {
   const server = this;
   const settings = server.settings.app;
@@ -35,19 +33,20 @@ module.exports = function(payload, allDone) {
       }
       done(null, emailDetails);
     },
-    dataDefaults(emailDefaults, done) {
-      if (emailDefaults.pageDataSlug && templateName) {
-        return server.methods.pageData.get(emailDefaults.pageDataSlug, _.kebabCase(templateName), emailDefaults.tag, (err, result) => {
+    pagedata(emailDefaults, templateDefaults, done) {
+      const pagedata = aug({}, emailDefaults.pagedata, templateDefaults.pagedata, payload.pagedata);
+      if (pagedata.site && pagedata.slug) {
+        return server.methods.pageData.get(pagedata.site, pagedata.slug, pagedata.tag, (err, data) => {
           if (err) {
             return done(err);
           }
-          return done(null, result);
+          done(null, data);
         });
       }
       return done(null, {});
     },
-    details(emailDefaults, templateDefaults, dataDefaults, done) {
-      const rawDetails = aug('deep', {}, emailDefaults, templateDefaults, dataDefaults, payload);
+    details(emailDefaults, templateDefaults, pagedata, done) {
+      const rawDetails = aug('deep', {}, emailDefaults, templateDefaults, pagedata, payload);
       const details = varson(rawDetails);
       done(null, details);
     },

@@ -16,27 +16,6 @@ module.exports = (options, done) => {
     if (err) {
       return done(err);
     }
-    // mock pagedata route for testing, this needs to work with wreck.get:
-    server.route({
-      path: '/api/sites/{site}/pages/{page}',
-      method: 'GET',
-      handler(request, reply) {
-        if (request.params.page !== 'get-email-details-1') {
-          return reply(null, {});
-        }
-        reply({
-          content: {
-            data: {
-              serviceName: 'no absolutely not',
-              firstName: 'route',
-              temp: 'negative',
-              lastName: '{{default1}}'
-            }
-          }
-        });
-      }
-    });
-    // set up a test smtp server:
     const smtpServer = new SMTPServer({
       // uncomment to show SMTP exchange:
       // logger: true,
