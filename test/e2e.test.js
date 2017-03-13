@@ -1,8 +1,54 @@
 'use strict';
-const test = require('./loadTests.js');
+const tap = require('tap');
+const Rapptor = require('rapptor');
+const SMTPServer = require('smtp-server').SMTPServer;
+const path = require('path');
 
-test('accepts one valid submission and envelope', (assert, servers) => {
-  servers.server.inject({
+let rapptor;
+let server;
+let smtpServer;
+tap.beforeEach((done) => {
+  rapptor = new Rapptor();
+  const onData = (stream, session, callback) => {
+    stream.on('end', () => callback(null, 'Message queued'));
+    stream.on('data', () => {});
+  };
+  // set up a test smtp server:
+  smtpServer = new SMTPServer({
+    // uncomment to show SMTP exchange:
+    // logger: true,
+    disabledCommands: ['STARTTLS'],
+    // auth method, for testing just needs to verify that
+    // login info was passed correctly
+    onAuth: (auth, session, callback) => callback(null, {
+      user: auth.username,
+      password: auth.password
+    }),
+    socketTimeout: 100 * 1000,
+    closeTimeout: 6 * 1000,
+    onData
+  });
+  smtpServer.listen(8888, 'localhost');
+  rapptor.start((err, returned) => {
+    if (err) {
+      return done(err);
+    }
+    server = returned;
+    server.settings.app.views.path = path.join(__dirname, 'emails');
+    done();
+  });
+});
+
+tap.afterEach((done) => {
+  rapptor.stop(() => {
+    smtpServer.close(() => {
+      done();
+    });
+  });
+});
+
+tap.test('accepts one valid submission and envelope', (assert) => {
+  server.inject({
     method: 'POST',
     url: '/send',
     payload: {
@@ -23,8 +69,8 @@ test('accepts one valid submission and envelope', (assert, servers) => {
   });
 });
 
-test('accepts multiple valid submissions and envelope', (assert, servers) => {
-  servers.server.inject({
+tap.test('accepts multiple valid submissions and envelope', (assert) => {
+  server.inject({
     method: 'POST',
     url: '/send',
     payload: {
