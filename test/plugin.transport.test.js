@@ -1,8 +1,30 @@
 'use strict';
-const test = require('./loadTests.js');
+const tap = require('tap');
+const Rapptor = require('rapptor');
+const path = require('path');
 
-test('plugin/transport - decorate', (assert, servers) => {
-  assert.equal(typeof servers.server.transport, 'object');
-  assert.equal(typeof servers.server.transport.sendMail, 'function');
+let rapptor;
+let server;
+tap.beforeEach((done) => {
+  rapptor = new Rapptor();
+  rapptor.start((err, returned) => {
+    if (err) {
+      return done(err);
+    }
+    server = returned;
+    server.settings.app.views.path = path.join(__dirname, 'emails');
+    done();
+  });
+});
+
+tap.afterEach((done) => {
+  rapptor.stop(() => {
+    done();
+  });
+});
+
+tap.test('plugin/transport - decorate', (assert) => {
+  assert.equal(typeof server.transport, 'object');
+  assert.equal(typeof server.transport.sendMail, 'function');
   assert.end();
 });

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "rapptor",
     "dev": "npm install && npm prune && nodemon -x npm start",
-    "test": "NODE_ENV=test tape test/*.test.js | tap-spec",
+    "test": "NODE_ENV=test tap test/*.test.js --cov",
     "lint": "eslint ."
   },
   "repository": {
@@ -30,6 +30,7 @@
     "aug": "^1.0.1",
     "handlebars": "4.0.6",
     "hapi-auto-handler": "^1.1.2",
+    "hapi-pagedata": "^0.8.0",
     "inert": "4.1.0",
     "joi": "10.2.2",
     "juice": "^4.0.2",
@@ -44,10 +45,9 @@
     "eslint": "3.13.1",
     "eslint-config-firstandthird": "3.2.0",
     "eslint-plugin-import": "2.2.0",
+    "hapi": "^16.1.0",
     "nodemon": "^1.11.0",
     "smtp-server": "1.17.0",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.6.3",
-    "tape-extras": "0.0.2"
+    "tap": "^10.3.0"
   }
 }
