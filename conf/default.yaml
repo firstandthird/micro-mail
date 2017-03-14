@@ -3,6 +3,7 @@ plugins:
   vision:
   inert:
   hapi-pagedata:
+    _enabled: "{{(ENV.PAGEDATA_HOST) ? true : false}}"
     host: "{{ENV.PAGEDATA_HOST}}"
     key: "{{ENV.PAGEDATA_KEY}}"
   hapi-auto-handler:
