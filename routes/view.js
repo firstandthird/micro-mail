@@ -30,8 +30,8 @@ exports.view = {
   }
 };
 
-exports.view = {
-  path: '/view/pagedata-{slug}',
+exports.viewPagedata = {
+  path: '/view/pagedata/{slug}',
   method: 'GET',
   handler: {
     autoInject: {

@@ -7,11 +7,15 @@ const path = require('path');
 let rapptor;
 let server;
 let smtpServer;
+let lastMessage;
 tap.beforeEach((done) => {
   rapptor = new Rapptor();
+  lastMessage = '';
   const onData = (stream, session, callback) => {
     stream.on('end', () => callback(null, 'Message queued'));
-    stream.on('data', () => {});
+    stream.on('data', (data) => {
+      lastMessage += data.toString();
+    });
   };
   // set up a test smtp server:
   smtpServer = new SMTPServer({
@@ -28,14 +32,18 @@ tap.beforeEach((done) => {
     closeTimeout: 6 * 1000,
     onData
   });
-  smtpServer.listen(8888, 'localhost');
-  rapptor.start((err, returned) => {
-    if (err) {
-      return done(err);
+  smtpServer.listen(8888, 'localhost', (smtpErr) => {
+    if (smtpErr) {
+      return done(smtpErr);
     }
-    server = returned;
-    server.settings.app.views.path = path.join(__dirname, 'emails');
-    done();
+    rapptor.start((err, returned) => {
+      if (err) {
+        return done(err);
+      }
+      server = returned;
+      server.settings.app.views.path = path.join(__dirname, 'emails');
+      done();
+    });
   });
 });
 
@@ -55,7 +63,7 @@ tap.test('accepts one valid submission and envelope', (assert) => {
       from: 'flynn@gmail.com',
       fromName: 'mikey',
       to: 'totally_not_putin@absolutely_not_moscow.ru',
-      text: 'some text',
+      text: 'some text {{data.firstName}}',
       subject: 'Heads up',
       data: {
         firstName: 'general',
@@ -65,6 +73,9 @@ tap.test('accepts one valid submission and envelope', (assert) => {
     }
   }, (response) => {
     assert.equal(response.statusCode, 200, 'accepts valid single submission');
+    assert.notEqual(lastMessage.indexOf('Subject: Heads up'), -1);
+    assert.notEqual(lastMessage.indexOf('some text general'), -1);
+    assert.notEqual(lastMessage.indexOf('To: totally_not_putin@absolutely_not_moscow.ru'), -1);
     assert.end();
   });
 });
@@ -81,6 +92,7 @@ tap.test('accepts multiple valid submissions and envelope', (assert) => {
     }
   }, (response) => {
     assert.equal(response.statusCode, 200, 'accepts valid multiple-to submission');
+    //TODO: better lastMessage tests
     assert.end();
   });
 });

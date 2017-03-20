@@ -49,6 +49,17 @@
           {{/each}}
         </table>
       </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <form class="form-inline" data-action="viewPagedata">
+            <div class="form-group">
+              <label for="testEmail">Pagedata Slug</label>
+              <input type="text" class="form-control" id="pagedataEmail" placeholder="Pagedata Slug"/>
+              <input type="submit" class="btn" value="View"/>
+            </div>
+          </form>
+        </div>
+      </div>
     </div> <!-- END .container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script>
@@ -85,6 +96,11 @@
                 prnt.find('.message-error').show();
               });
           }
+        });
+        $('[data-action="viewPagedata"]').on('submit', function(e) {
+          e.preventDefault();
+          var slug = $('input[type=text]', this).val();
+          window.location = '/view/pagedata/' + slug;
         });
       });
     </script>

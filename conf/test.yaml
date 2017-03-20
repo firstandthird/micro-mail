@@ -9,6 +9,8 @@ plugins:
     smtp:
       host: "localhost"
       port: 8888
+      user: 'user'
+      pass: 'pass'
 views:
   engines:
     html: "handlebars"
