@@ -47,8 +47,8 @@ exports.viewPagedata = {
       details(server, payload, done) {
         server.methods.getEmailDetails(payload, { useExampleData: true }, done);
       },
-      content(server, details, exampleData, done) {
-        server.methods.getEmailContent(details.template, exampleData, done);
+      content(server, details, done) {
+        server.methods.getEmailContent(details.template, details.data, done);
       },
       reply(request, details, content, done) {
         if (request.query.json) {
