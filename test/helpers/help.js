@@ -1,4 +1,4 @@
 'use strict';
-module.exports = () => {
-  return 'you have been helped'
-}
+module.exports = function() {
+  return 'you have been helped';
+};

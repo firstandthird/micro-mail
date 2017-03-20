@@ -1,5 +1,6 @@
 {
   "watch": [
+    "package.json",
     "index.js",
     "routes/**/*.js",
     "methods/**/*.js",

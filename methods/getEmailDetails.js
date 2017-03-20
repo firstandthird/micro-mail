@@ -35,8 +35,8 @@ module.exports = function(payload, allDone) {
     },
     pagedata(emailDefaults, templateDefaults, done) {
       const pagedata = aug({}, emailDefaults.pagedata, templateDefaults.pagedata, payload.pagedata);
-      if (pagedata.site && pagedata.slug) {
-        return server.methods.pageData.get(pagedata.site, pagedata.slug, pagedata.tag, (err, data) => {
+      if (pagedata.slug) {
+        return server.methods.pagedata.getPageContent(pagedata.slug, pagedata.tag, (err, data) => {
           if (err) {
             return done(err);
           }

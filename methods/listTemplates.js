@@ -8,7 +8,7 @@ module.exports = function(req, next) {
 
   fs.readdir(templateDir, (err, data) => {
     if (err) {
-
+      throw err;
     }
 
     next(data);

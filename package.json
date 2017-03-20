@@ -5,7 +5,7 @@
   "scripts": {
     "start": "rapptor",
     "dev": "npm install && npm prune && nodemon -x npm start",
-    "test": "NODE_ENV=test tap test/*.test.js --cov",
+    "test": "npm run lint && TAP_TIMEOUT=2 NODE_ENV=test tap test/*.test.js --cov",
     "lint": "eslint ."
   },
   "repository": {
@@ -27,17 +27,17 @@
   "homepage": "https://github.com/firstandthird/micro-mail#readme",
   "dependencies": {
     "async": "2.1.5",
-    "aug": "^1.0.1",
+    "aug": "1.0.2",
     "handlebars": "4.0.6",
-    "hapi-auto-handler": "^1.1.2",
-    "hapi-pagedata": "^0.8.0",
+    "hapi-auto-handler": "1.2.3",
+    "hapi-pagedata": "0.10.1",
     "inert": "4.1.0",
     "joi": "10.2.2",
-    "juice": "^4.0.2",
+    "juice": "4.0.2",
     "lodash": "4.17.4",
     "nodemailer": "2.7.0",
-    "rapptor": "1.8.2",
-    "varson": "^0.5.3",
+    "rapptor": "1.10.0",
+    "varson": "1.0.1",
     "vision": "4.1.1",
     "yamljs": "0.2.8"
   },
@@ -45,9 +45,9 @@
     "eslint": "3.13.1",
     "eslint-config-firstandthird": "3.2.0",
     "eslint-plugin-import": "2.2.0",
-    "hapi": "^16.1.0",
-    "nodemon": "^1.11.0",
+    "hapi": "16.1.0",
+    "nodemon": "1.11.0",
     "smtp-server": "1.17.0",
-    "tap": "^10.3.0"
+    "tap": "10.3.0"
   }
 }

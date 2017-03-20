@@ -1,3 +1,52 @@
 #!/bin/bash
 
-docker-compose build && docker-compose up
+CMD=$1
+shift
+ARGS=$@
+
+if [[ -z "$CMD" ]]; then
+  docker-compose up
+  exit
+fi
+
+if [[ "$CMD" == "test" ]]; then
+  docker-compose run \
+    --rm \
+    -e FORCE_COLOR=1 \
+    -e TAP_COLORS=1 \
+    app \
+    npm test -- $ARGS
+  exit
+fi
+
+if [[ "$CMD" == "test-watch" ]]; then
+  nodemon -x "./run test"
+  exit
+fi
+
+if [[ "$CMD" == "shell" ]]; then
+  docker-compose run --rm app sh
+  exit
+fi
+
+if [[ "$CMD" == "enter" ]]; then
+  docker-compose exec app sh
+  exit
+fi
+
+if [[ "$CMD" == "lint" ]]; then
+  docker-compose run --rm app npm run lint
+  exit
+fi
+
+if [[ "$CMD" == "build" ]]; then
+  docker-compose build
+  exit
+fi
+
+if [[ "$CMD" == "mongo" ]]; then
+  docker run -it --link pagedata_mongo_1:mongo --rm mongo sh -c 'exec mongo "$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/pagedata"'
+  exit
+fi
+
+docker-compose $CMD $ARGS

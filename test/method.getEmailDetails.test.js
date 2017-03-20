@@ -109,7 +109,7 @@ tap.test('getEmailDetails will not validate if data fields are blank', (assert) 
   });
 });
 
-tap.test('getEmailDetails - with pagedata )', (assert) => {
+tap.test('getEmailDetails - with pagedata for data', (assert) => {
   // mock pagedata route for testing, this needs to work with wreck.get:
   async.autoInject({
     pagedataServer(done) {
@@ -117,10 +117,9 @@ tap.test('getEmailDetails - with pagedata )', (assert) => {
       const pagedataServer = new Hapi.Server();
       pagedataServer.connection({ port: 3000, host: 'localhost' });
       pagedataServer.route({
-        path: '/api/sites/{site}/pages/{page}',
+        path: '/api/pages/{page}',
         method: 'GET',
         handler(request, reply) {
-          assert.equal(request.params.site, 'site');
           assert.equal(request.params.page, 'slug');
           assert.equal(request.query.tag, 'tag');
           reply(null, {
@@ -152,7 +151,74 @@ tap.test('getEmailDetails - with pagedata )', (assert) => {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
           pagedata: {
-            site: 'site',
+            slug: 'slug',
+            tag: 'tag'
+          },
+          subject: 'This is a subject to bob',
+          toName: 'bob',
+          toEmail: 'bob.smith@firstandthird.com',
+          data: {
+            firstName: 'bob'
+          },
+        }, 'getEmailDetails sets up details correctly');
+        done();
+      });
+    },
+    cleanup(getDetails, pagedataServer, done) {
+      pagedataServer.stop(done);
+    }
+  }, (err) => {
+    assert.equal(err, null, 'async no errors');
+    assert.end();
+  });
+});
+
+tap.test('getEmailDetails - with pagedata for template', (assert) => {
+  // mock pagedata route for testing, this needs to work with wreck.get:
+  async.autoInject({
+    pagedataServer(done) {
+      const Hapi = require('hapi');
+      const pagedataServer = new Hapi.Server();
+      pagedataServer.connection({ port: 3000, host: 'localhost' });
+      pagedataServer.route({
+        path: '/api/pages/{page}',
+        method: 'GET',
+        handler(request, reply) {
+          assert.equal(request.params.page, 'slug');
+          assert.equal(request.query.tag, 'tag');
+          reply(null, {
+            content: {
+              template: 'getEmailDetailsPagedata',
+              subject: 'This is a subject to {{data.firstName}}',
+              toName: '{{data.firstName}}'
+            }
+          });
+        }
+      });
+      pagedataServer.start((err) => {
+        if (err) {
+          return done(err);
+        }
+        done(null, pagedataServer);
+      });
+    },
+    getDetails(pagedataServer, done) {
+      const payload = {
+        pagedata: {
+          slug: 'slug',
+          tag: 'tag'
+        },
+        toEmail: 'bob.smith@firstandthird.com',
+        data: {
+          firstName: 'bob'
+        }
+      };
+      server.methods.getEmailDetails(payload, (err, details) => {
+        assert.equal(err, null, 'no errors');
+        assert.deepEqual(details, {
+          default1: 'yay default',
+          template: 'getEmailDetailsPagedata',
+          pagedata: {
             slug: 'slug',
             tag: 'tag'
           },

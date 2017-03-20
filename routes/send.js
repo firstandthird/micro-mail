@@ -15,8 +15,12 @@ exports.send = {
         data: Joi.object(),
         text: Joi.string(),
         template: Joi.string(),
-        subject: Joi.string()
-      }).or('text', 'template')
+        subject: Joi.string(),
+        pagedata: Joi.object().keys({
+          slug: Joi.string(),
+          tag: Joi.string().optional()
+        })
+      }).or('text', 'template', 'pagedata')
     }
   },
   handler: {

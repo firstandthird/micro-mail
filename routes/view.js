@@ -29,3 +29,33 @@ exports.view = {
     }
   }
 };
+
+exports.view = {
+  path: '/view/pagedata-{slug}',
+  method: 'GET',
+  handler: {
+    autoInject: {
+      payload(server, request, done) {
+        const slug = request.params.slug;
+        const payload = {
+          pagedata: {
+            slug
+          }
+        };
+        done(null, payload);
+      },
+      details(server, payload, done) {
+        server.methods.getEmailDetails(payload, done);
+      },
+      content(server, details, done) {
+        server.methods.getEmailContent(details.template, details.data, done);
+      },
+      reply(request, details, content, done) {
+        if (request.query.json) {
+          return done(null, details);
+        }
+        done(null, content);
+      }
+    }
+  }
+};
