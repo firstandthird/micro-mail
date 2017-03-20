@@ -83,12 +83,13 @@ tap.test('getEmailDetails will not validate if missing required fields', (assert
     toEmail: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
-      lastName: 'smith',
-      theUndefinable: undefined
-    }
+      lastName: 'smith'
+    },
+    requiredData: ['age']
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
+    assert.equal(err.message, 'missing data for age');
     assert.end();
   });
 });
@@ -100,11 +101,13 @@ tap.test('getEmailDetails will not validate if data fields are blank', (assert) 
     data: {
       firstName: 'bob',
       lastName: 'smith',
-      theUnnamable: ''
-    }
+      age: ''
+    },
+    requiredData: ['age']
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
+    assert.equal(err.message, 'missing data for age');
     assert.end();
   });
 });
@@ -229,6 +232,134 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
             firstName: 'bob'
           },
         }, 'getEmailDetails sets up details correctly');
+        done();
+      });
+    },
+    cleanup(getDetails, pagedataServer, done) {
+      pagedataServer.stop(done);
+    }
+  }, (err) => {
+    assert.equal(err, null, 'async no errors');
+    assert.end();
+  });
+});
+
+tap.test('getEmailDetails - with pagedata example data', (assert) => {
+  // mock pagedata route for testing, this needs to work with wreck.get:
+  async.autoInject({
+    pagedataServer(done) {
+      const Hapi = require('hapi');
+      const pagedataServer = new Hapi.Server();
+      pagedataServer.connection({ port: 3000, host: 'localhost' });
+      pagedataServer.route({
+        path: '/api/pages/{page}',
+        method: 'GET',
+        handler(request, reply) {
+          assert.equal(request.params.page, 'slug');
+          assert.equal(request.query.tag, 'tag');
+          reply(null, {
+            content: {
+              template: 'getEmailDetailsPagedata',
+              subject: 'This is a subject to {{data.firstName}}',
+              toName: '{{data.firstName}}',
+              example: {
+                firstName: 'bob'
+              }
+            }
+          });
+        }
+      });
+      pagedataServer.start((err) => {
+        if (err) {
+          return done(err);
+        }
+        done(null, pagedataServer);
+      });
+    },
+    getDetails(pagedataServer, done) {
+      const payload = {
+        pagedata: {
+          slug: 'slug',
+          tag: 'tag'
+        },
+        toEmail: 'bob.smith@firstandthird.com'
+      };
+      server.methods.getEmailDetails(payload, { useExampleData: true }, (err, details) => {
+        assert.equal(err, null, 'no errors');
+        assert.deepEqual(details, {
+          default1: 'yay default',
+          template: 'getEmailDetailsPagedata',
+          pagedata: {
+            slug: 'slug',
+            tag: 'tag'
+          },
+          subject: 'This is a subject to bob',
+          toName: 'bob',
+          toEmail: 'bob.smith@firstandthird.com',
+          data: {
+            firstName: 'bob'
+          },
+          example: {
+            firstName: 'bob'
+          }
+        }, 'getEmailDetails sets up details correctly');
+        done();
+      });
+    },
+    cleanup(getDetails, pagedataServer, done) {
+      pagedataServer.stop(done);
+    }
+  }, (err) => {
+    assert.equal(err, null, 'async no errors');
+    assert.end();
+  });
+});
+
+tap.test('getEmailDetails - with pagedata requiredData', (assert) => {
+  // mock pagedata route for testing, this needs to work with wreck.get:
+  async.autoInject({
+    pagedataServer(done) {
+      const Hapi = require('hapi');
+      const pagedataServer = new Hapi.Server();
+      pagedataServer.connection({ port: 3000, host: 'localhost' });
+      pagedataServer.route({
+        path: '/api/pages/{page}',
+        method: 'GET',
+        handler(request, reply) {
+          assert.equal(request.params.page, 'slug');
+          assert.equal(request.query.tag, 'tag');
+          reply(null, {
+            content: {
+              template: 'getEmailDetailsPagedata',
+              subject: 'This is a subject to {{data.firstName}}',
+              toName: '{{data.firstName}}',
+              example: {
+                firstName: 'bob'
+              },
+              requiredData: ['firstName']
+            }
+          });
+        }
+      });
+      pagedataServer.start((err) => {
+        if (err) {
+          return done(err);
+        }
+        done(null, pagedataServer);
+      });
+    },
+    getDetails(pagedataServer, done) {
+      const payload = {
+        pagedata: {
+          slug: 'slug',
+          tag: 'tag'
+        },
+        toEmail: 'bob.smith@firstandthird.com'
+      };
+      server.methods.getEmailDetails(payload, (err, details) => {
+        assert.notEqual(err, null, 'should error');
+        assert.equal(err.message, 'missing data for firstName');
+
         done();
       });
     },

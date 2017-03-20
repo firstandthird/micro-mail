@@ -4,7 +4,11 @@ const yamljs = require('yamljs');
 const async = require('async');
 const varson = require('varson');
 const aug = require('aug');
-module.exports = function(payload, allDone) {
+module.exports = function(payload, options, allDone) {
+  if (typeof options === 'function') {
+    allDone = options;
+    options = {};
+  }
   const server = this;
   const settings = server.settings.app;
   const templateName = payload.template || null;
@@ -45,20 +49,36 @@ module.exports = function(payload, allDone) {
       }
       return done(null, {});
     },
-    details(emailDefaults, templateDefaults, pagedata, done) {
-      const rawDetails = aug('deep', {}, emailDefaults, templateDefaults, pagedata, payload);
+    exampleData(pagedata, done) {
+      if (options.useExampleData && pagedata.example) {
+        return done(null, { data: pagedata.example });
+      }
+      done(null, {});
+    },
+    details(emailDefaults, templateDefaults, pagedata, exampleData, done) {
+      const rawDetails = aug('deep', {}, emailDefaults, templateDefaults, pagedata, payload, exampleData);
+      //set this just in case no data is passed
+      if (!rawDetails.data) {
+        rawDetails.data = {};
+      }
       const details = varson(rawDetails);
       done(null, details);
     },
     validate(details, done) {
-      const keys = Object.keys(details.data);
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        if (details.data[key] === undefined || details.data[key] === '') {
-          return done(new Error(`data field field ${key} is empty`));
-        }
+      if (!details.requiredData) {
+        return done();
       }
-      return done(null, details);
+
+      const errors = [];
+      details.requiredData.forEach((key) => {
+        if (!details.data[key]) {
+          errors.push(key);
+        }
+      });
+      if (errors.length !== 0) {
+        return done(new Error(`missing data for ${errors.join(',')}`));
+      }
+      done();
     }
   }, (err, results) => {
     if (err) {
