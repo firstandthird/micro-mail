@@ -1,12 +1,23 @@
 'use strict';
 
+
+const obj2html = function(obj) {
+  if (!obj) {
+    return '';
+  }
+  const html = [];
+  Object.keys(obj).forEach((key) => {
+    html.push(`${key}: ${obj[key]}`);
+  });
+  return html.join(', ');
+};
 const viewTemplate = function(mailObj, data) {
   const html = `
     <div><strong>Subject:</strong> ${mailObj.subject}</div>
     <div><strong>From:</strong> ${mailObj.from.replace('<', '&lt;').replace('>', '&gt;')}</div>
     <div><strong>To:</strong> ${mailObj.to}</div>
-    <div><strong>Headers:</strong> ${mailObj.headers || ''}</div>
-    <div><strong>Data:</strong> ${JSON.stringify(data)}</div>
+    <div><strong>Headers:</strong> ${obj2html(mailObj.headers)}</div>
+    <div><strong>Data:</strong> ${obj2html(data)}</div>
     <hr/>
     <div>
       ${mailObj.html}
