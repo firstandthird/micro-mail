@@ -31,7 +31,8 @@ tap.test('getEmailDetails - with yaml', (assert) => {
     data: {
       firstName: 'bob',
       lastName: 'smith'
-    }
+    },
+    demo: 1 // disable the tracking pixel and uuid generation
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
@@ -60,7 +61,8 @@ tap.test('getEmailDetails - with no yaml', (assert) => {
     data: {
       firstName: 'bob',
       lastName: 'smith'
-    }
+    },
+    demo: 1
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
@@ -85,7 +87,8 @@ tap.test('getEmailDetails will not validate if missing required fields', (assert
       firstName: 'bob',
       lastName: 'smith'
     },
-    requiredData: ['age']
+    requiredData: ['age'],
+    demo: 1
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
@@ -103,7 +106,8 @@ tap.test('getEmailDetails will not validate if data fields are blank', (assert) 
       lastName: 'smith',
       age: ''
     },
-    requiredData: ['age']
+    requiredData: ['age'],
+    demo: 1
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
@@ -146,7 +150,8 @@ tap.test('getEmailDetails - with pagedata for data', (assert) => {
         toEmail: 'bob.smith@firstandthird.com',
         data: {
           firstName: 'bob'
-        }
+        },
+        demo: 1
       };
       server.methods.getEmailDetails(payload, (err, details) => {
         assert.equal(err, null, 'no errors');
@@ -214,7 +219,8 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
         toEmail: 'bob.smith@firstandthird.com',
         data: {
           firstName: 'bob'
-        }
+        },
+        demo: 1
       };
       server.methods.getEmailDetails(payload, (err, details) => {
         assert.equal(err, null, 'no errors');
@@ -282,7 +288,8 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
           slug: 'slug',
           tag: 'tag'
         },
-        toEmail: 'bob.smith@firstandthird.com'
+        toEmail: 'bob.smith@firstandthird.com',
+        demo: 1
       };
       server.methods.getEmailDetails(payload, { useExampleData: true }, (err, details) => {
         assert.equal(err, null, 'no errors');
@@ -354,7 +361,8 @@ tap.test('getEmailDetails - with pagedata requiredData', (assert) => {
           slug: 'slug',
           tag: 'tag'
         },
-        toEmail: 'bob.smith@firstandthird.com'
+        toEmail: 'bob.smith@firstandthird.com',
+        demo: 1
       };
       server.methods.getEmailDetails(payload, (err, details) => {
         assert.notEqual(err, null, 'should error');

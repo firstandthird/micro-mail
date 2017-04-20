@@ -63,7 +63,10 @@ module.exports = function(payload, options, allDone) {
       if (!rawDetails.data) {
         rawDetails.data = {};
       }
-      rawDetails.uuid = uuid.v4();
+      if (!rawDetails.demo) {
+        rawDetails.uuid = uuid.v4();
+      }
+
       const details = varson(rawDetails);
       done(null, details);
     },
@@ -71,6 +74,7 @@ module.exports = function(payload, options, allDone) {
       if (!details.demo && settings.ENV.MICRO_METRICS_HOST) {
         details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}/t.gif?type=email.open&value=1&tags=template:${details.template}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
       }
+      delete details.demo; // no need to pass back
       done(null);
     },
     validate(trackingData, details, done) {
