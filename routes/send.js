@@ -46,7 +46,7 @@ exports.send = {
         server.methods.sendMail(mailObj, details.sendIndividual, done);
       },
       track(server, details, send, done) {
-        server.track('email.send', 1, { template: details.template }, { toEmail: details.to, uuid: send.messageId });
+        server.track('email.send', 1, { template: details.template }, { toEmail: details.to, uuid: details.uuid });
         done(null);
       },
       reply(send, done) {

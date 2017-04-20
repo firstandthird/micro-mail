@@ -36,6 +36,7 @@
     "joi": "10.2.2",
     "juice": "4.0.2",
     "lodash": "4.17.4",
+    "node-uuid": "^1.4.8",
     "nodemailer": "2.7.0",
     "rapptor": "1.10.0",
     "varson": "1.0.1",

@@ -4,6 +4,8 @@ const yamljs = require('yamljs');
 const async = require('async');
 const varson = require('varson');
 const aug = require('aug');
+const uuid = require('node-uuid');
+
 module.exports = function(payload, options, allDone) {
   if (typeof options === 'function') {
     allDone = options;
@@ -61,12 +63,13 @@ module.exports = function(payload, options, allDone) {
       if (!rawDetails.data) {
         rawDetails.data = {};
       }
+      rawDetails.uuid = uuid.v4();
       const details = varson(rawDetails);
       done(null, details);
     },
     trackingData(details, done) {
       if (!details.demo && settings.ENV.MICRO_METRICS_HOST) {
-        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}/t.gif?type=email.open&value=1&tags=template:${details.template}&fields=toEmail:${details.to}"></img>`;
+        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}/t.gif?type=email.open&value=1&tags=template:${details.template}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
       }
       done(null);
     },
