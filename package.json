@@ -38,7 +38,7 @@
     "lodash": "4.17.4",
     "node-uuid": "^1.4.8",
     "nodemailer": "2.7.0",
-    "rapptor": "1.10.0",
+    "rapptor": "1.13.0",
     "varson": "1.0.1",
     "vision": "4.1.1",
     "yamljs": "0.2.8"

@@ -1,4 +1,5 @@
 templatePath: "{{CWD}}/templates"
+enableMetrics: "{{(ENV.MICRO_METRICS_HOST) ? true : false}}"
 plugins:
   vision:
   inert:

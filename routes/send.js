@@ -46,8 +46,12 @@ exports.send = {
         server.methods.sendMail(mailObj, details.sendIndividual, done);
       },
       track(server, details, send, done) {
-        if (server.settings.app.ENV.MICRO_METRICS_HOST) {
-          server.track('email.send', 1, { template: details.template }, { toEmail: details.to, uuid: details.uuid });
+        if (server.settings.app.enableMetrics) {
+          const tags = { template: details.template };
+          if (details.pagedata && details.pagedata.slug) {
+            tags.pagedataSlug = details.pagedata.slug;
+          }
+          server.track('email.send', 1, tags, { toEmail: details.to, uuid: details.uuid });
         }
         done(null);
       },

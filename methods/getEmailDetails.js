@@ -63,7 +63,7 @@ module.exports = function(payload, options, allDone) {
       if (!rawDetails.data) {
         rawDetails.data = {};
       }
-      if (!rawDetails.demo) {
+      if (!rawDetails.disableTracking) {
         rawDetails.uuid = uuid.v4();
       }
 
@@ -71,10 +71,15 @@ module.exports = function(payload, options, allDone) {
       done(null, details);
     },
     trackingData(details, done) {
-      if (!details.demo && settings.ENV.MICRO_METRICS_HOST) {
-        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}/t.gif?type=email.open&value=1&tags=template:${details.template}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
+      if (!details.disableTracking && settings.enableMetrics) {
+        let tags = `template:${details.template}`;
+        if (details.pagedata && details.pagedata.slug) {
+          tags = `${tags},pagedataSlug:${details.pagedata.slug}`;
+        }
+
+        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}/t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
       }
-      delete details.demo; // no need to pass back
+      delete details.disableTracking; // no need to pass back
       done(null);
     },
     validate(trackingData, details, done) {

@@ -32,13 +32,14 @@ exports.view = {
   handler: {
     autoInject: {
       payload(server, request, done) {
+        console.log(server.settings.app); // eslint-disable-line no-console
         const email = request.params.email;
         const testPath = `${server.settings.app.views.path}/${email}/test.json`;
         const payload = {
           template: email,
           data: require(testPath),
           to: 'test@firstandthird.com',
-          demo: true
+          disableTracking: true
         };
         done(null, payload);
       },
@@ -75,7 +76,8 @@ exports.viewPagedata = {
           pagedata: {
             slug
           },
-          to: 'test@firstandthird.com'
+          to: 'test@firstandthird.com',
+          disableTracking: true
         };
         done(null, payload);
       },
