@@ -5,6 +5,7 @@ exports.send = {
   path: '/send',
   method: 'POST',
   config: {
+    auth: 'apikey',
     validate: {
       payload: Joi.object().keys({
         from: Joi.string(),

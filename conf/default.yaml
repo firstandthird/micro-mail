@@ -2,6 +2,13 @@ templatePath: "{{CWD}}/templates"
 plugins:
   vision:
   inert:
+  hapi-api-key:
+    _enabled: "{{ (ENV.MICROMAIL_API_KEY) ? true : false }}"
+    strategy:
+      name: 'apikey'
+      mode: false
+      apiKeys:
+        name: 'whoIsThere'
   hapi-pagedata:
     _enabled: "{{(ENV.PAGEDATA_HOST) ? true : false}}"
     host: "{{ENV.PAGEDATA_HOST}}"
