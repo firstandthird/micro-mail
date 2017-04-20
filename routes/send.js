@@ -45,6 +45,10 @@ exports.send = {
       send(server, mailObj, details, done) {
         server.methods.sendMail(mailObj, details.sendIndividual, done);
       },
+      track(server, details, send, done) {
+        server.track('email.send', 1, { template: details.template }, { toEmail: details.to, uuid: send.messageId });
+        done(null);
+      },
       reply(send, done) {
         done(null, {
           status: 'ok',

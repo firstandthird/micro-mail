@@ -6,6 +6,10 @@ plugins:
     _enabled: "{{(ENV.PAGEDATA_HOST) ? true : false}}"
     host: "{{ENV.PAGEDATA_HOST}}"
     key: "{{ENV.PAGEDATA_KEY}}"
+  hapi-micro-metrics:
+    _enabled: "{{(ENV.MICRO_METRICS_HOST) ? true : false }}"
+    host: "{{ENV.MICRO_METRICS_HOST}}"
+    verbose: "true"
   hapi-auto-handler:
     _priority: -1
   ./plugins/transport:

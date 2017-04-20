@@ -37,7 +37,8 @@ exports.view = {
         const payload = {
           template: email,
           data: require(testPath),
-          to: 'test@firstandthird.com'
+          to: 'test@firstandthird.com',
+          demo: true
         };
         done(null, payload);
       },

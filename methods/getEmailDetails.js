@@ -64,7 +64,13 @@ module.exports = function(payload, options, allDone) {
       const details = varson(rawDetails);
       done(null, details);
     },
-    validate(details, done) {
+    trackingData(details, done) {
+      if (!details.demo && settings.ENV.MICRO_METRICS_HOST) {
+        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}/t.gif?type=email.open&value=1&tags=template:${details.template}&fields=toEmail:${details.to}"></img>`;
+      }
+      done(null);
+    },
+    validate(trackingData, details, done) {
       if (!details.requiredData) {
         return done();
       }
