@@ -9,7 +9,7 @@ plugins:
       mode: true
       apiKeys:
         '{{ENV.MICROMAIL_API_KEY}}':
-          name: 'whoIsThere'
+          name: 'micromail-api'
   hapi-pagedata:
     _enabled: "{{(ENV.PAGEDATA_HOST) ? true : false}}"
     host: "{{ENV.PAGEDATA_HOST}}"
