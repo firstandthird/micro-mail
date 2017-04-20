@@ -30,6 +30,7 @@
     "aug": "1.0.2",
     "handlebars": "4.0.6",
     "hapi-auto-handler": "1.2.3",
+    "hapi-log-response": "^1.2.0",
     "hapi-micro-metrics": "^0.1.0",
     "hapi-pagedata": "0.10.1",
     "inert": "4.1.0",
