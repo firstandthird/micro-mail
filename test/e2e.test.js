@@ -58,7 +58,7 @@ tap.afterEach((done) => {
 tap.test('accepts one valid submission and envelope', (assert) => {
   server.inject({
     method: 'POST',
-    url: '/send',
+    url: '/send?token=123',
     payload: {
       from: 'flynn@gmail.com',
       fromName: 'mikey',
@@ -83,7 +83,7 @@ tap.test('accepts one valid submission and envelope', (assert) => {
 tap.test('accepts multiple valid submissions and envelope', (assert) => {
   server.inject({
     method: 'POST',
-    url: '/send',
+    url: '/send?token=123',
     payload: {
       fromEmail: 'flynn@gmail.com',
       fromName: 'mikey',

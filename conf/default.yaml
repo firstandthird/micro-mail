@@ -3,12 +3,13 @@ plugins:
   vision:
   inert:
   hapi-api-key:
-    _enabled: "{{ (ENV.MICROMAIL_API_KEY) ? true : false }}"
+    _priority: -1
     strategy:
       name: 'apikey'
-      mode: false
+      mode: true
       apiKeys:
-        name: 'whoIsThere'
+        '{{ENV.MICROMAIL_API_KEY}}':
+          name: 'whoIsThere'
   hapi-pagedata:
     _enabled: "{{(ENV.PAGEDATA_HOST) ? true : false}}"
     host: "{{ENV.PAGEDATA_HOST}}"
