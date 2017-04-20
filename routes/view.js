@@ -32,7 +32,6 @@ exports.view = {
   handler: {
     autoInject: {
       payload(server, request, done) {
-        console.log(server.settings.app); // eslint-disable-line no-console
         const email = request.params.email;
         const testPath = `${server.settings.app.views.path}/${email}/test.json`;
         const payload = {
