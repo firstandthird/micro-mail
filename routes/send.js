@@ -63,7 +63,7 @@ exports.send = {
           if (err) {
             logObj.err = err;
           }
-          server.log(['email', 'send', stat], logObj); 
+          server.log(['email', 'send', stat], logObj);
           done(err, result);
         });
       },
