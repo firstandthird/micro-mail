@@ -43,7 +43,29 @@ exports.send = {
         server.methods.getMailObject(details, content, done);
       },
       send(server, mailObj, details, done) {
-        server.methods.sendMail(mailObj, details.sendIndividual, done);
+        server.methods.sendMail(mailObj, details.sendIndividual, (err, result) => {
+          // log email send
+          const logObj = {
+            template: details.template,
+            toEmail: mailObj.to,
+            result
+          };
+
+          if (details.uuid) {
+            logObj.uuid = details.uuid;
+          }
+
+          if (details.pagedata && details.pagedata.slug) {
+            logObj.pagedata = details.pagedata.slug;
+          }
+
+          const stat = (err) ? 'error' : 'success';
+          if (err) {
+            logObj.err = err;
+          }
+          server.log(['email', 'send', stat], logObj); 
+          done(err, result);
+        });
       },
       track(server, details, send, done) {
         if (server.settings.app.enableMetrics) {
