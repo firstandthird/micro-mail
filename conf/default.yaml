@@ -4,11 +4,11 @@ plugins:
   vision:
   inert:
   hapi-pagedata:
-    _enabled: "{{enableMetrics }}"
+    _enabled: "{{(ENV.PAGEDATA_HOST) ? true : false}}"
     host: "{{ENV.PAGEDATA_HOST}}"
     key: "{{ENV.PAGEDATA_KEY}}"
   hapi-micro-metrics:
-    _enabled: "{{(ENV.MICRO_METRICS_HOST) ? true : false }}"
+    _enabled: "{{enableMetrics}}"
     host: "{{ENV.MICRO_METRICS_HOST}}"
     verbose: "true"
   hapi-auto-handler:
