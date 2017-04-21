@@ -79,6 +79,40 @@ tap.test('getEmailDetails - with no yaml', (assert) => {
   });
 });
 
+tap.test('getEmailDetails - with yaml and tracking enabled', (assert) => {
+  const payload = {
+    template: 'getEmailDetails2',
+    toEmail: 'bob.smith@firstandthird.com',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith'
+    }
+  };
+  server.methods.getEmailDetails(payload, (err, details) => {
+    assert.equal(err, null, 'no errors');
+    assert.ok(details.data.trackingPixel, 'Tracking pixel exists');
+    assert.ok(details.uuid, 'UUID passed back');
+    delete details.uuid;
+    delete details.data.trackingPixel;
+
+    assert.deepEqual(details, {
+      subject: 'Hi there bob test city',
+      template: 'getEmailDetails2',
+      fromName: 'Micro Mail',
+      fromEmail: 'code@firstandthird.com',
+      toName: 'bob smith',
+      toEmail: 'bob.smith@firstandthird.com',
+      data: {
+        firstName: 'bob',
+        lastName: 'smith',
+        serviceName: 'test city'
+      },
+      default1: 'yay default',
+    }, 'getEmailDetails sets up details correctly');
+    assert.end();
+  });
+});
+
 tap.test('getEmailDetails will not validate if missing required fields', (assert) => {
   const payload = {
     template: 'getEmailDetails2',
