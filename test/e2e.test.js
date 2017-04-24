@@ -28,8 +28,8 @@ tap.beforeEach((done) => {
       user: auth.username,
       password: auth.password
     }),
-    socketTimeout: 100 * 1000,
-    closeTimeout: 6 * 1000,
+    socketTimeout: 120 * 1000,
+    closeTimeout: 60 * 1000,
     onData
   });
   smtpServer.listen(8888, 'localhost', (smtpErr) => {
