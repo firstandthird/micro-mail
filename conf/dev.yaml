@@ -1,8 +1,2 @@
-server:
-  debug:
-    log:
-      - 'error'
-      - 'debug'
-      - 'notice'
 views:
   isCached: false
