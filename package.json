@@ -6,6 +6,7 @@
     "start": "rapptor",
     "dev": "npm install && npm prune && nodemon -x npm start",
     "test": "npm run lint && TAP_TIMEOUT=5 NODE_ENV=test tap test/*.test.js --cov",
+    "test-one": "NODE_ENV=test tap",
     "lint": "eslint ."
   },
   "repository": {
