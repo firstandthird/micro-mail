@@ -8,6 +8,8 @@ plugins:
     verbose: true
     host: "{{ENV.PAGEDATA_HOST}}"
     key: "{{ENV.PAGEDATA_KEY}}"
+    hookEndpoint: '/pagedata/hook'
+    cacheEndpoint: '/pagedata/cache'
     tag: "{{ENV.PAGEDATA_TAG}}"
   hapi-micro-metrics:
     _enabled: "{{enableMetrics}}"
