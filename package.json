@@ -33,7 +33,7 @@
     "hapi-auto-handler": "1.2.3",
     "hapi-log-response": "^1.2.0",
     "hapi-micro-metrics": "^0.1.1",
-    "hapi-pagedata": "0.10.1",
+    "hapi-pagedata": "0.16.1",
     "inert": "4.1.0",
     "joi": "10.2.2",
     "juice": "4.0.2",

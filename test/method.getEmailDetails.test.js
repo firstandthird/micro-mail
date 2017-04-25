@@ -193,8 +193,7 @@ tap.test('getEmailDetails - with pagedata for data', (assert) => {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
           pagedata: {
-            slug: 'slug',
-            tag: 'tag'
+            slug: 'slug'
           },
           subject: 'This is a subject to bob',
           toName: 'bob',
@@ -247,8 +246,7 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
     getDetails(pagedataServer, done) {
       const payload = {
         pagedata: {
-          slug: 'slug',
-          tag: 'tag'
+          slug: 'slug'
         },
         toEmail: 'bob.smith@firstandthird.com',
         data: {
@@ -262,8 +260,7 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
           pagedata: {
-            slug: 'slug',
-            tag: 'tag'
+            slug: 'slug'
           },
           subject: 'This is a subject to bob',
           toName: 'bob',
@@ -319,8 +316,7 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
     getDetails(pagedataServer, done) {
       const payload = {
         pagedata: {
-          slug: 'slug',
-          tag: 'tag'
+          slug: 'slug'
         },
         toEmail: 'bob.smith@firstandthird.com',
         disableTracking: true
@@ -331,8 +327,7 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
           pagedata: {
-            slug: 'slug',
-            tag: 'tag'
+            slug: 'slug'
           },
           subject: 'This is a subject to bob',
           toName: 'bob',
@@ -392,8 +387,7 @@ tap.test('getEmailDetails - with pagedata requiredData', (assert) => {
     getDetails(pagedataServer, done) {
       const payload = {
         pagedata: {
-          slug: 'slug',
-          tag: 'tag'
+          slug: 'slug'
         },
         toEmail: 'bob.smith@firstandthird.com',
         disableTracking: true

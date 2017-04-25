@@ -5,6 +5,7 @@ plugins:
     _enabled: true
     host: 'http://localhost:3000'
     key: 'dummy'
+    tag: 'tag'
   ./plugins/transport:
     _priority: -2
     smtp:

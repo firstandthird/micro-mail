@@ -17,8 +17,7 @@ exports.send = {
         template: Joi.string(),
         subject: Joi.string(),
         pagedata: Joi.object().keys({
-          slug: Joi.string(),
-          tag: Joi.string().optional()
+          slug: Joi.string()
         })
       }).or('text', 'template', 'pagedata')
     }
