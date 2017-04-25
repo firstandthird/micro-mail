@@ -42,7 +42,9 @@ tap.beforeEach((done) => {
       }
       server = returned;
       server.settings.app.views.path = path.join(__dirname, 'emails');
-      done();
+      setTimeout(() => {
+        done();
+      }, 200);
     });
   });
 });
