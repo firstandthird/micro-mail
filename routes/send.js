@@ -72,7 +72,7 @@ exports.send = {
           if (details.pagedata && details.pagedata.slug) {
             tags.pagedataSlug = details.pagedata.slug;
           }
-          server.track('email.send', null, tags, { toEmail: details.to, uuid: details.uuid });
+          server.track('email.send', 1, tags, { toEmail: details.to, uuid: details.uuid });
         }
         done(null);
       },
