@@ -40,7 +40,8 @@ module.exports = function(payload, options, allDone) {
       done(null, emailDetails);
     },
     pagedata(emailDefaults, templateDefaults, done) {
-      const pagedata = aug({}, emailDefaults.pagedata, templateDefaults.pagedata, payload.pagedata);
+      const defaults = aug({}, emailDefaults, templateDefaults, payload);
+      const pagedata = defaults.pagedata;
       if (pagedata) {
         return server.methods.pagedata.getPageContent(pagedata, (err, data) => {
           if (err) {

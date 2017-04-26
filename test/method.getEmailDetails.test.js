@@ -352,7 +352,6 @@ tap.test('getEmailDetails - with pagedata requiredData', (assert) => {
         path: '/api/pages/{page}',
         method: 'GET',
         handler(request, reply) {
-          console.log(request.params);
           assert.equal(request.params.page, 'slug');
           assert.equal(request.query.tag, 'tag');
           reply(null, {
