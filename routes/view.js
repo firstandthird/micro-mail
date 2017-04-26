@@ -72,9 +72,7 @@ exports.viewPagedata = {
       payload(server, request, done) {
         const slug = request.params.slug;
         const payload = {
-          pagedata: {
-            slug
-          },
+          pagedata: slug,
           to: 'test@firstandthird.com',
           disableTracking: true
         };

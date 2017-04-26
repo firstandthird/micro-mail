@@ -192,9 +192,7 @@ tap.test('getEmailDetails - with pagedata for data', (assert) => {
         assert.deepEqual(details, {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
-          pagedata: {
-            slug: 'slug'
-          },
+          pagedata: 'slug',
           subject: 'This is a subject to bob',
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
@@ -245,9 +243,7 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
     },
     getDetails(pagedataServer, done) {
       const payload = {
-        pagedata: {
-          slug: 'slug'
-        },
+        pagedata: 'slug',
         toEmail: 'bob.smith@firstandthird.com',
         data: {
           firstName: 'bob'
@@ -259,9 +255,7 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
         assert.deepEqual(details, {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
-          pagedata: {
-            slug: 'slug'
-          },
+          pagedata: 'slug',
           subject: 'This is a subject to bob',
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
@@ -315,9 +309,7 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
     },
     getDetails(pagedataServer, done) {
       const payload = {
-        pagedata: {
-          slug: 'slug'
-        },
+        pagedata: 'slug',
         toEmail: 'bob.smith@firstandthird.com',
         disableTracking: true
       };
@@ -326,9 +318,7 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
         assert.deepEqual(details, {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
-          pagedata: {
-            slug: 'slug'
-          },
+          pagedata: 'slug',
           subject: 'This is a subject to bob',
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
@@ -362,6 +352,7 @@ tap.test('getEmailDetails - with pagedata requiredData', (assert) => {
         path: '/api/pages/{page}',
         method: 'GET',
         handler(request, reply) {
+          console.log(request.params);
           assert.equal(request.params.page, 'slug');
           assert.equal(request.query.tag, 'tag');
           reply(null, {
@@ -386,9 +377,7 @@ tap.test('getEmailDetails - with pagedata requiredData', (assert) => {
     },
     getDetails(pagedataServer, done) {
       const payload = {
-        pagedata: {
-          slug: 'slug'
-        },
+        pagedata: 'slug',
         toEmail: 'bob.smith@firstandthird.com',
         disableTracking: true
       };
