@@ -37,7 +37,8 @@ exports.view = {
         const payload = {
           template: email,
           data: require(testPath),
-          to: 'test@firstandthird.com'
+          to: 'test@firstandthird.com',
+          disableTracking: true
         };
         done(null, payload);
       },
@@ -71,10 +72,9 @@ exports.viewPagedata = {
       payload(server, request, done) {
         const slug = request.params.slug;
         const payload = {
-          pagedata: {
-            slug
-          },
-          to: 'test@firstandthird.com'
+          pagedata: slug,
+          to: 'test@firstandthird.com',
+          disableTracking: true
         };
         done(null, payload);
       },

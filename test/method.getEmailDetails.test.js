@@ -31,7 +31,8 @@ tap.test('getEmailDetails - with yaml', (assert) => {
     data: {
       firstName: 'bob',
       lastName: 'smith'
-    }
+    },
+    disableTracking: true // disable the tracking pixel and uuid generation
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
@@ -60,7 +61,8 @@ tap.test('getEmailDetails - with no yaml', (assert) => {
     data: {
       firstName: 'bob',
       lastName: 'smith'
-    }
+    },
+    disableTracking: true
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.equal(err, null, 'no errors');
@@ -77,6 +79,40 @@ tap.test('getEmailDetails - with no yaml', (assert) => {
   });
 });
 
+tap.test('getEmailDetails - with yaml and tracking enabled', (assert) => {
+  const payload = {
+    template: 'getEmailDetails2',
+    toEmail: 'bob.smith@firstandthird.com',
+    data: {
+      firstName: 'bob',
+      lastName: 'smith'
+    }
+  };
+  server.methods.getEmailDetails(payload, (err, details) => {
+    assert.equal(err, null, 'no errors');
+    assert.ok(details.data.trackingPixel, 'Tracking pixel exists');
+    assert.ok(details.uuid, 'UUID passed back');
+    delete details.uuid;
+    delete details.data.trackingPixel;
+
+    assert.deepEqual(details, {
+      subject: 'Hi there bob test city',
+      template: 'getEmailDetails2',
+      fromName: 'Micro Mail',
+      fromEmail: 'code@firstandthird.com',
+      toName: 'bob smith',
+      toEmail: 'bob.smith@firstandthird.com',
+      data: {
+        firstName: 'bob',
+        lastName: 'smith',
+        serviceName: 'test city'
+      },
+      default1: 'yay default',
+    }, 'getEmailDetails sets up details correctly');
+    assert.end();
+  });
+});
+
 tap.test('getEmailDetails will not validate if missing required fields', (assert) => {
   const payload = {
     template: 'getEmailDetails2',
@@ -85,7 +121,8 @@ tap.test('getEmailDetails will not validate if missing required fields', (assert
       firstName: 'bob',
       lastName: 'smith'
     },
-    requiredData: ['age']
+    requiredData: ['age'],
+    disableTracking: true
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
@@ -103,7 +140,8 @@ tap.test('getEmailDetails will not validate if data fields are blank', (assert) 
       lastName: 'smith',
       age: ''
     },
-    requiredData: ['age']
+    requiredData: ['age'],
+    disableTracking: true
   };
   server.methods.getEmailDetails(payload, (err, details) => {
     assert.notEqual(err, null);
@@ -146,17 +184,15 @@ tap.test('getEmailDetails - with pagedata for data', (assert) => {
         toEmail: 'bob.smith@firstandthird.com',
         data: {
           firstName: 'bob'
-        }
+        },
+        disableTracking: true
       };
       server.methods.getEmailDetails(payload, (err, details) => {
         assert.equal(err, null, 'no errors');
         assert.deepEqual(details, {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
-          pagedata: {
-            slug: 'slug',
-            tag: 'tag'
-          },
+          pagedata: 'slug',
           subject: 'This is a subject to bob',
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
@@ -207,24 +243,19 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
     },
     getDetails(pagedataServer, done) {
       const payload = {
-        pagedata: {
-          slug: 'slug',
-          tag: 'tag'
-        },
+        pagedata: 'slug',
         toEmail: 'bob.smith@firstandthird.com',
         data: {
           firstName: 'bob'
-        }
+        },
+        disableTracking: true
       };
       server.methods.getEmailDetails(payload, (err, details) => {
         assert.equal(err, null, 'no errors');
         assert.deepEqual(details, {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
-          pagedata: {
-            slug: 'slug',
-            tag: 'tag'
-          },
+          pagedata: 'slug',
           subject: 'This is a subject to bob',
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
@@ -278,21 +309,16 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
     },
     getDetails(pagedataServer, done) {
       const payload = {
-        pagedata: {
-          slug: 'slug',
-          tag: 'tag'
-        },
-        toEmail: 'bob.smith@firstandthird.com'
+        pagedata: 'slug',
+        toEmail: 'bob.smith@firstandthird.com',
+        disableTracking: true
       };
       server.methods.getEmailDetails(payload, { useExampleData: true }, (err, details) => {
         assert.equal(err, null, 'no errors');
         assert.deepEqual(details, {
           default1: 'yay default',
           template: 'getEmailDetailsPagedata',
-          pagedata: {
-            slug: 'slug',
-            tag: 'tag'
-          },
+          pagedata: 'slug',
           subject: 'This is a subject to bob',
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
@@ -350,11 +376,9 @@ tap.test('getEmailDetails - with pagedata requiredData', (assert) => {
     },
     getDetails(pagedataServer, done) {
       const payload = {
-        pagedata: {
-          slug: 'slug',
-          tag: 'tag'
-        },
-        toEmail: 'bob.smith@firstandthird.com'
+        pagedata: 'slug',
+        toEmail: 'bob.smith@firstandthird.com',
+        disableTracking: true
       };
       server.methods.getEmailDetails(payload, (err, details) => {
         assert.notEqual(err, null, 'should error');

@@ -17,10 +17,7 @@ exports.send = {
         text: Joi.string(),
         template: Joi.string(),
         subject: Joi.string(),
-        pagedata: Joi.object().keys({
-          slug: Joi.string(),
-          tag: Joi.string().optional()
-        })
+        pagedata: Joi.string(),
       }).or('text', 'template', 'pagedata')
     }
   },
@@ -44,7 +41,39 @@ exports.send = {
         server.methods.getMailObject(details, content, done);
       },
       send(server, mailObj, details, done) {
-        server.methods.sendMail(mailObj, details.sendIndividual, done);
+        server.methods.sendMail(mailObj, details.sendIndividual, (err, result) => {
+          // log email send
+          const logObj = {
+            template: details.template,
+            toEmail: mailObj.to,
+            result
+          };
+
+          if (details.uuid) {
+            logObj.uuid = details.uuid;
+          }
+
+          if (details.pagedata) {
+            logObj.pagedata = details.pagedata;
+          }
+
+          const stat = (err) ? 'error' : 'success';
+          if (err) {
+            logObj.err = err;
+          }
+          server.log(['email', 'send', stat], logObj);
+          done(err, result);
+        });
+      },
+      track(server, details, send, done) {
+        if (server.settings.app.enableMetrics) {
+          const tags = { template: details.template };
+          if (details.pagedata && details.pagedata) {
+            tags.pagedataSlug = details.pagedata;
+          }
+          server.track('email.send', 1, tags, { toEmail: details.to, uuid: details.uuid });
+        }
+        done(null);
       },
       reply(send, done) {
         done(null, {

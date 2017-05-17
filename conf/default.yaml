@@ -1,4 +1,5 @@
 templatePath: "{{CWD}}/templates"
+enableMetrics: "{{(ENV.MICRO_METRICS_HOST) ? true : false}}"
 plugins:
   vision:
   inert:
@@ -12,10 +13,19 @@ plugins:
           name: 'micromail-api'
   hapi-pagedata:
     _enabled: "{{(ENV.PAGEDATA_HOST) ? true : false}}"
+    verbose: true
     host: "{{ENV.PAGEDATA_HOST}}"
     key: "{{ENV.PAGEDATA_KEY}}"
+    hookEndpoint: '/pagedata/hook'
+    cacheEndpoint: '/pagedata/cache'
+    tag: "{{ENV.PAGEDATA_TAG}}"
+  hapi-micro-metrics:
+    _enabled: "{{enableMetrics}}"
+    host: "{{ENV.MICRO_METRICS_HOST}}"
+    verbose: true
   hapi-auto-handler:
     _priority: -1
+  hapi-log-response:
   ./plugins/transport:
     _priority: -2
     smtp:

@@ -19,6 +19,16 @@ if [[ "$CMD" == "test" ]]; then
   exit
 fi
 
+if [[ "$CMD" == "test-one" ]]; then
+  docker-compose run \
+    --rm \
+    -e FORCE_COLOR=1 \
+    -e TAP_COLORS=1 \
+    app \
+    npm run test-one -- $ARGS
+  exit
+fi
+
 if [[ "$CMD" == "test-watch" ]]; then
   nodemon -x "./run test"
   exit

@@ -4,6 +4,8 @@ const yamljs = require('yamljs');
 const async = require('async');
 const varson = require('varson');
 const aug = require('aug');
+const uuid = require('node-uuid');
+
 module.exports = function(payload, options, allDone) {
   if (typeof options === 'function') {
     allDone = options;
@@ -38,9 +40,10 @@ module.exports = function(payload, options, allDone) {
       done(null, emailDetails);
     },
     pagedata(emailDefaults, templateDefaults, done) {
-      const pagedata = aug({}, emailDefaults.pagedata, templateDefaults.pagedata, payload.pagedata);
-      if (pagedata.slug) {
-        return server.methods.pagedata.getPageContent(pagedata.slug, pagedata.tag, (err, data) => {
+      const defaults = aug({}, emailDefaults, templateDefaults, payload);
+      const pagedata = defaults.pagedata;
+      if (pagedata) {
+        return server.methods.pagedata.getPageContent(pagedata, (err, data) => {
           if (err) {
             return done(err);
           }
@@ -61,10 +64,26 @@ module.exports = function(payload, options, allDone) {
       if (!rawDetails.data) {
         rawDetails.data = {};
       }
+      if (!rawDetails.disableTracking) {
+        rawDetails.uuid = uuid.v4();
+      }
+
       const details = varson(rawDetails);
       done(null, details);
     },
-    validate(details, done) {
+    trackingData(details, done) {
+      if (!details.disableTracking && settings.enableMetrics) {
+        let tags = `template:${details.template}`;
+        if (details.pagedata && details.pagedata.slug) {
+          tags = `${tags},pagedataSlug:${details.pagedata.slug}`;
+        }
+
+        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}/t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
+      }
+      delete details.disableTracking; // no need to pass back
+      done(null);
+    },
+    validate(trackingData, details, done) {
       if (!details.requiredData) {
         return done();
       }
