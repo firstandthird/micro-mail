@@ -80,8 +80,6 @@ const testViewTemplate = function(mailObj, data) {
   return html;
 };
 
-
-
 exports.testView = {
   path: '/view/test/{email}',
   method: 'GET',

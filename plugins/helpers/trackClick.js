@@ -2,22 +2,19 @@ const aug = require('aug');
 const qs = require('querystring');
 
 module.exports = function(url, opts, done) {
-  const server = this.server;
   const options = this.options;
 
-  if (!options.clicks || !options.clicks.enabled || !options.trackingUrl ) {
+  if (!options.clicks || !options.clicks.enabled || !options.trackingUrl) {
     return done(null, url);
   }
-  
+
   if (!done) {
     done = opts;
     opts = {};
   }
-  
-  const params = {};
 
   // Generate Tags
-  const tagList = []; 
+  const tagList = [];
   if (options.clicks.tags) {
     tagList.push(options.clicks.tags);
   }
@@ -28,9 +25,9 @@ module.exports = function(url, opts, done) {
 
   const allOpts = aug(options.clicks, opts);
   delete allOpts.enabled;
-  
+
   allOpts.tags = tagList.join(',');
- 
+
   const paramStr = [];
   Object.keys(allOpts).forEach(p => {
     paramStr.push(`${p}=${qs.escape(allOpts[p])}`);
@@ -38,5 +35,5 @@ module.exports = function(url, opts, done) {
 
   const link = `${options.trackingUrl}/r/?to=${url}&${paramStr.join('&')}`;
 
-  done(null, link); 
+  done(null, link);
 };

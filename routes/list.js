@@ -24,6 +24,6 @@ exports.list = {
       const template = Nunjucks.compile(contents);
 
       return reply(template.render({ files }));
-    });  
+    });
   }
 };
