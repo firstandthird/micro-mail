@@ -18,6 +18,16 @@ plugins:
   hapi-auto-handler:
     _priority: -1
   hapi-log-response:
+  ./plugins/loadHelpers:
+    _priority: -2
+    opens:
+      enabled: true
+      type: 'open'
+    clicks:
+      enabled: true
+      type: 'click'
+      tags: 'app:example-app'
+    trackingUrl: 'http://micro-metrics.docker.gcow.us'
   ./plugins/transport:
     _priority: -2
     smtp:
@@ -27,8 +37,7 @@ plugins:
       pass: "{{ENV.SMTP_PASS}}"
 views:
   engines:
-    html: "handlebars"
+    njk: "vision-nunjucks"
   path: "{{templatePath}}/emails"
-  partialsPath: "{{templatePath}}/partials"
-  helpersPath: "{{templatePath}}/helpers"
-  isCached: true
+  defaultExtension: 'njk'
+  compileMode: 'async'

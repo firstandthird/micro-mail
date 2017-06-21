@@ -28,8 +28,7 @@
   "homepage": "https://github.com/firstandthird/micro-mail#readme",
   "dependencies": {
     "async": "2.1.5",
-    "aug": "1.0.2",
-    "handlebars": "4.0.6",
+    "aug": "^1.0.2",
     "hapi-auto-handler": "1.2.3",
     "hapi-log-response": "^1.2.0",
     "hapi-micro-metrics": "0.4.2",
@@ -40,9 +39,11 @@
     "lodash": "4.17.4",
     "node-uuid": "^1.4.8",
     "nodemailer": "2.7.0",
-    "rapptor": "1.13.0",
+    "rapptor": "^1.15.2",
+    "require-all": "^2.2.0",
     "varson": "1.0.1",
-    "vision": "4.1.1",
+    "vision": "^4.1.1",
+    "vision-nunjucks": "^2.1.0",
     "yamljs": "0.2.8"
   },
   "devDependencies": {

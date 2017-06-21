@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const Handlebars = require('handlebars');
+const Nunjucks = require('nunjucks');
 
 exports.list = {
   path: '/_list',
@@ -19,10 +19,11 @@ exports.list = {
       if (fileErr) {
         return reply(fileErr);
       }
-      const files = request.pre.templates;
-      const viewTemplate = Handlebars.compile(contents);
 
-      return reply(viewTemplate({ files }));
-    });
+      const files = request.pre.templates;
+      const template = Nunjucks.compile(contents);
+
+      return reply(template.render({ files }));
+    });  
   }
 };

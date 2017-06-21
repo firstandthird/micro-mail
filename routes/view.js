@@ -11,7 +11,61 @@ const obj2html = function(obj) {
   });
   return html.join(', ');
 };
+
 const viewTemplate = function(mailObj, data) {
+  const html = `
+    <html>
+      <head>
+        <title>${mailObj.subject}</title>
+      </head>
+      <body>
+        <div class="container" style="margin:auto;width:800px;">
+          ${mailObj.html}
+        </div>
+      </body>
+    </html>
+  `;
+  return html;
+};
+
+exports.view = {
+  path: '/view/{email}',
+  method: 'GET',
+  handler: {
+    autoInject: {
+      payload(server, request, done) {
+        const email = request.params.email;
+        const payload = {
+          template: email,
+          data: request.query,
+          to: 'test@firstandthird.com',
+          disableTracking: true
+        };
+        done(null, payload);
+      },
+      details(server, payload, done) {
+        server.methods.getEmailDetails(payload, done);
+      },
+      content(server, details, done) {
+        server.methods.getEmailContent(details.template, details.data, done);
+      },
+      mailObj(server, details, content, done) {
+        server.methods.getMailObject(details, content, done);
+      },
+      tmpl(mailObj, details, done) {
+        done(null, viewTemplate(mailObj, details.data));
+      },
+      reply(request, details, tmpl, done) {
+        if (request.query.json) {
+          return done(null, details);
+        }
+        done(null, tmpl);
+      }
+    }
+  }
+};
+
+const testViewTemplate = function(mailObj, data) {
   const html = `
     <div><strong>Subject:</strong> ${mailObj.subject}</div>
     <div><strong>From:</strong> ${mailObj.from.replace('<', '&lt;').replace('>', '&gt;')}</div>
@@ -26,8 +80,10 @@ const viewTemplate = function(mailObj, data) {
   return html;
 };
 
-exports.view = {
-  path: '/view/{email}',
+
+
+exports.testView = {
+  path: '/view/test/{email}',
   method: 'GET',
   handler: {
     autoInject: {
@@ -52,7 +108,7 @@ exports.view = {
         server.methods.getMailObject(details, content, done);
       },
       tmpl(mailObj, details, done) {
-        done(null, viewTemplate(mailObj, details.data));
+        done(null, testViewTemplate(mailObj, details.data));
       },
       reply(request, details, tmpl, done) {
         if (request.query.json) {
