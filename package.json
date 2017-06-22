@@ -39,6 +39,7 @@
     "lodash": "4.17.4",
     "node-uuid": "^1.4.8",
     "nodemailer": "2.7.0",
+    "nunjucks": "^3.0.0",
     "rapptor": "^1.15.2",
     "require-all": "^2.2.0",
     "varson": "1.0.1",

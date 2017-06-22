@@ -27,7 +27,7 @@ plugins:
       enabled: true
       type: 'click'
       tags: 'app:example-app'
-    trackingUrl: 'http://micro-metrics.docker.gcow.us'
+    trackingUrl: '{{ENV.MICRO_METRICS_HOST}}'
   ./plugins/transport:
     _priority: -2
     smtp:
