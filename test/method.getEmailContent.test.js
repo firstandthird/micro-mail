@@ -40,6 +40,7 @@ tap.test('getEmailContent - with valid template', (assert) => {
   });
 });
 
+
 tap.test('getEmailContent - with no template', (assert) => {
   const data = {
     toEmail: 'bob.smith@firstandthird.com',

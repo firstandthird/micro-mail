@@ -4,7 +4,7 @@ const juice = require('juice');
 
 module.exports = function(templateName, data, allDone) {
   if (templateName) {
-    const templatePath = path.join(templateName, 'email.html');
+    const templatePath = path.join(templateName, 'email.njk');
     this.root.render(templatePath, data, (renderErr, compiledResult) => {
       if (renderErr) {
         return allDone(renderErr);
