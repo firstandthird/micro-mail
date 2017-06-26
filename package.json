@@ -5,7 +5,7 @@
   "scripts": {
     "start": "rapptor",
     "dev": "npm install && npm prune && nodemon -x npm start",
-    "test": "npm run lint && TAP_TIMEOUT=5 NODE_ENV=test tap test/*.test.js --cov",
+    "test": "npm run lint && TAP_TIMEOUT=10 NODE_ENV=test tap test/*.test.js --cov",
     "test-one": "NODE_ENV=test tap",
     "lint": "eslint ."
   },
@@ -29,7 +29,6 @@
   "dependencies": {
     "async": "2.1.5",
     "aug": "1.0.2",
-    "handlebars": "4.0.6",
     "hapi-api-key": "^1.2.0",
     "hapi-auto-handler": "1.2.3",
     "hapi-log-response": "^1.2.0",
@@ -41,9 +40,12 @@
     "lodash": "4.17.4",
     "node-uuid": "^1.4.8",
     "nodemailer": "2.7.0",
-    "rapptor": "1.13.0",
+    "nunjucks": "^3.0.0",
+    "rapptor": "^1.15.2",
+    "require-all": "^2.2.0",
     "varson": "1.0.1",
-    "vision": "4.1.1",
+    "vision": "^4.1.1",
+    "vision-nunjucks": "^2.1.0",
     "yamljs": "0.2.8"
   },
   "devDependencies": {
