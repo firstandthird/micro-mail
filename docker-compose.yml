@@ -9,6 +9,7 @@ app:
     VIRTUAL_HOST: 'micromail.*'
     PAGEDATA_HOST:
     PAGEDATA_KEY:
+    MICROMAIL_API_KEY:
     PAGEDATA_TAG:
     MICRO_METRICS_HOST:
     SMTP_HOST: 'mailhog'

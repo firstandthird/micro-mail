@@ -28,7 +28,8 @@
   "homepage": "https://github.com/firstandthird/micro-mail#readme",
   "dependencies": {
     "async": "2.1.5",
-    "aug": "^1.0.2",
+    "aug": "1.0.2",
+    "hapi-api-key": "^1.2.0",
     "hapi-auto-handler": "1.2.3",
     "hapi-log-response": "^1.2.0",
     "hapi-micro-metrics": "0.4.2",

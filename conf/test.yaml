@@ -1,6 +1,14 @@
 port: 8080
 enableMetrics: "true"
 plugins:
+  hapi-api-key:
+    _priority: -1
+    strategy:
+      name: 'apikey'
+      mode: true
+      apiKeys:
+        '{{ENV.MICROMAIL_API_KEY}}':
+          name: 'micromail-api'
   hapi-pagedata:
     _enabled: true
     host: 'http://localhost:3000'
