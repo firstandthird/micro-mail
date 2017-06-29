@@ -15,6 +15,8 @@ exports.list = {
     ]
   },
   handler(request, reply) {
+    const routePrefix = request.server.settings.app.routePrefix;
+    const apiKey = request.query.token;
     fs.readFile('files/index.html', 'utf8', (fileErr, contents) => {
       if (fileErr) {
         return reply(fileErr);
@@ -23,7 +25,7 @@ exports.list = {
       const files = request.pre.templates;
       const template = Nunjucks.compile(contents);
 
-      return reply(template.render({ files }));
+      return reply(template.render({ files, routePrefix, apiKey }));
     });
   }
 };

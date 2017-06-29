@@ -34,7 +34,7 @@
             <tr>
               <td>{{item}}</td>
               <td>
-                <a href="/view/test/{{ item }}" class="btn btn-success" target="_blank">View</a>
+                <a href="{{ routePrefix }}/view/test/{{ item }}?token={{ apiKey }}" class="btn btn-success" target="_blank">View</a>
                 <a href="#" data-action="sendTest" data-template="{{ item }}" class="btn btn-warning">Test</a>
                 <span class="message-working text-info message-cnt">
                   <span class="glyphicon glyphicon-refresh"></span> <strong>Working...</strong>
@@ -84,7 +84,7 @@
               return;
             }
 
-            $.post(url + '/send?test=1', {
+            $.post(url + '{{ routePrefix }}/send?test=1&token={{ apiKey }}', {
               to: to,
               template: template
             }, function() {
@@ -100,7 +100,7 @@
         $('[data-action="viewPagedata"]').on('submit', function(e) {
           e.preventDefault();
           var slug = $('input[type=text]', this).val();
-          window.location = '/view/pagedata/' + slug;
+          window.location = '{{ routePrefix }}/view/pagedata/' + slug + '?token={{ apiKey }}';
         });
       });
     </script>
