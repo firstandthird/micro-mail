@@ -32,7 +32,7 @@
     "hapi-api-key": "^1.2.0",
     "hapi-auto-handler": "1.2.3",
     "hapi-log-response": "^1.2.0",
-    "hapi-micro-metrics": "0.4.2",
+    "hapi-micro-metrics": "0.5.0",
     "hapi-pagedata": "0.16.1",
     "inert": "4.1.0",
     "joi": "10.2.2",
