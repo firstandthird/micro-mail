@@ -18,7 +18,7 @@ exports.send = {
         template: Joi.string(),
         subject: Joi.string(),
         pagedata: Joi.string(),
-        trackingData: Joi.object().default({})
+        trackingData: Joi.object().optional()
       }).or('text', 'template', 'pagedata')
     }
   },
@@ -68,7 +68,7 @@ exports.send = {
       },
       track(server, details, send, done) {
         if (server.settings.app.enableMetrics) {
-          const trackingTags = details.trackingData.tags || {};
+          const trackingTags = (details.trackingData) ? details.trackingData.tags : {};
           const tags = Object.assign({}, { template: details.template }, trackingTags);
           if (details.pagedata && details.pagedata) {
             tags.pagedataSlug = details.pagedata;

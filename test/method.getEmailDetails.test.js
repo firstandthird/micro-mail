@@ -86,6 +86,11 @@ tap.test('getEmailDetails - with yaml and tracking enabled', (assert) => {
     data: {
       firstName: 'bob',
       lastName: 'smith'
+    },
+    trackingData: {
+      tags: {
+        tagOne: 'one'
+      }
     }
   };
   server.methods.getEmailDetails(payload, (err, details) => {
@@ -106,6 +111,11 @@ tap.test('getEmailDetails - with yaml and tracking enabled', (assert) => {
         firstName: 'bob',
         lastName: 'smith',
         serviceName: 'test city'
+      },
+      trackingData: {
+        tags: {
+          tagOne: 'one'
+        }
       },
       default1: 'yay default',
     }, 'getEmailDetails sets up details correctly');
