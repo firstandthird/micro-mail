@@ -73,7 +73,11 @@ module.exports = function(payload, options, allDone) {
     },
     trackingData(details, done) {
       if (!details.disableTracking && settings.enableMetrics) {
+        const tagPayload = (details.trackingData) ? details.trackingData.tags : {};
         let tags = `template:${details.template}`;
+        Object.keys(tagPayload).forEach(key => {
+          tags = `${tags},${key}:${tagPayload[key]}`;
+        });
         if (details.pagedata && details.pagedata.slug) {
           tags = `${tags},pagedataSlug:${details.pagedata.slug}`;
         }
