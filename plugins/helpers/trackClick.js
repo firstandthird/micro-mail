@@ -23,7 +23,7 @@ module.exports = function(url, opts, done) {
     tagList.push(opts.tags);
   }
 
-  const allOpts = aug(options.clicks, opts);
+  const allOpts = aug({}, options.clicks, opts);
   delete allOpts.enabled;
 
   allOpts.tags = tagList.join(',');
