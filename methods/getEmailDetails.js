@@ -82,7 +82,7 @@ module.exports = function(payload, options, allDone) {
           tags = `${tags},pagedataSlug:${details.pagedata.slug}`;
         }
 
-        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}/t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
+        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
       }
       delete details.disableTracking; // no need to pass back
       done(null);
