@@ -33,8 +33,8 @@ plugins:
       type: 'open'
     clicks:
       enabled: true
-      type: 'click'
-      tags: 'app:example-app'
+      type: 'email:click'
+      tags: ''
     trackingUrl: '{{ENV.MICRO_METRICS_HOST}}'
   ./plugins/transport:
     _priority: -2
