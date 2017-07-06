@@ -11,7 +11,7 @@ app:
     PAGEDATA_KEY:
     MICROMAIL_API_KEY:
     PAGEDATA_TAG:
-    MICRO_METRICS_HOST: 'http://micro-metrics.docker.gcow.us/'
+    MICRO_METRICS_HOST:
     SMTP_HOST: 'mailhog'
     SMTP_PORT: 1025
     FORCE_COLOR: 1
