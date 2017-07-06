@@ -33,7 +33,9 @@ module.exports = function(url, opts, done) {
     paramStr.push(`${p}=${qs.escape(allOpts[p])}`);
   });
 
-  const link = `${options.trackingUrl}/r/?to=${url}&${paramStr.join('&')}`;
+  const toUrl = qs.escape(url);
+
+  const link = `${options.trackingUrl}r?to=${toUrl}&${paramStr.join('&')}`;
 
   done(null, link);
 };
