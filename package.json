@@ -30,7 +30,7 @@
     "async": "2.1.5",
     "aug": "1.0.2",
     "hapi-api-key": "^1.2.0",
-    "hapi-auto-handler": "1.2.3",
+    "hapi-auto-handler": "1.5.1",
     "hapi-log-response": "^1.2.0",
     "hapi-micro-metrics": "0.5.0",
     "hapi-pagedata": "0.16.1",
