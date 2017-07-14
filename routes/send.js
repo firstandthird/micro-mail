@@ -18,7 +18,8 @@ exports.send = {
         template: Joi.string(),
         subject: Joi.string(),
         pagedata: Joi.string(),
-        trackingData: Joi.object().optional()
+        trackingData: Joi.object().optional(),
+        disableTracking: Joi.bool().optional()
       }).or('text', 'template', 'pagedata')
     }
   },
