@@ -19,7 +19,7 @@ exports.render = {
         subject: Joi.string(),
         pagedata: Joi.string(),
         trackingData: Joi.object().optional(),
-        disableTracking: Joi.bool().optional()
+        disableTracking: Joi.bool().default(false).optional()
       }).or('text', 'template', 'pagedata')
     }
   },

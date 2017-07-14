@@ -3,8 +3,8 @@ const qs = require('querystring');
 
 module.exports = function(url, opts, done) {
   const options = this.options;
-
-  if (!options.clicks || !options.clicks.enabled || !options.trackingUrl) {
+  const settings = this.server.settings.app;
+  if (!settings.enableMetrics || !options.clicks || !options.clicks.enabled || !options.trackingUrl) {
     return done(null, url);
   }
 

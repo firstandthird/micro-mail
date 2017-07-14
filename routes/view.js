@@ -88,11 +88,12 @@ exports.testView = {
       payload(server, request, done) {
         const email = request.params.email;
         const testPath = `${server.settings.app.views.path}/${email}/test.json`;
+        const disableTracking = ( request.query.disableTracking && request.query.disableTracking === 'false' ) ? false : true;
         const payload = {
           template: email,
           data: require(testPath),
           to: 'test@firstandthird.com',
-          disableTracking: true
+          disableTracking
         };
         done(null, payload);
       },

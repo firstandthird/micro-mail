@@ -83,7 +83,11 @@ module.exports = function(payload, options, allDone) {
         }
 
         details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
+      } else {
+        details.data.trackingPixel = '';
+        settings.enableMetrics = false; // Hack to pass to helpers.
       }
+
       delete details.disableTracking; // no need to pass back
       done(null);
     },
