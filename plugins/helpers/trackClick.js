@@ -1,3 +1,5 @@
+'use strict';
+
 const aug = require('aug');
 const qs = require('querystring');
 
