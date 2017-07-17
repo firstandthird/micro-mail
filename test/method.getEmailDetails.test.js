@@ -46,7 +46,8 @@ tap.test('getEmailDetails - with yaml', (assert) => {
       data: {
         firstName: 'bob',
         lastName: 'smith',
-        serviceName: 'test city'
+        serviceName: 'test city',
+        trackingPixel: ''
       },
       default1: 'yay default'
     }, 'getEmailDetails sets up details correctly');
@@ -60,7 +61,8 @@ tap.test('getEmailDetails - with no yaml', (assert) => {
     toEmail: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
-      lastName: 'smith'
+      lastName: 'smith',
+      trackingPixel: ''
     },
     disableTracking: true
   };
@@ -71,7 +73,8 @@ tap.test('getEmailDetails - with no yaml', (assert) => {
       toEmail: 'bob.smith@firstandthird.com',
       data: {
         firstName: 'bob',
-        lastName: 'smith'
+        lastName: 'smith',
+        trackingPixel: ''
       },
       default1: 'yay default'
     }, 'getEmailDetails sets up details with no yaml');
@@ -207,7 +210,8 @@ tap.test('getEmailDetails - with pagedata for data', (assert) => {
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
           data: {
-            firstName: 'bob'
+            firstName: 'bob',
+            trackingPixel: ''
           },
         }, 'getEmailDetails sets up details correctly');
         done();
@@ -270,7 +274,8 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
           data: {
-            firstName: 'bob'
+            firstName: 'bob',
+            trackingPixel: ''
           },
         }, 'getEmailDetails sets up details correctly');
         done();
@@ -333,10 +338,12 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
           toName: 'bob',
           toEmail: 'bob.smith@firstandthird.com',
           data: {
-            firstName: 'bob'
+            firstName: 'bob',
+            trackingPixel: ''
           },
           example: {
-            firstName: 'bob'
+            firstName: 'bob',
+            trackingPixel: ''
           }
         }, 'getEmailDetails sets up details correctly');
         done();

@@ -1,3 +1,5 @@
+'use strict';
+
 const Joi = require('joi');
 const boom = require('boom');
 
@@ -18,7 +20,8 @@ exports.render = {
         template: Joi.string(),
         subject: Joi.string(),
         pagedata: Joi.string(),
-        trackingData: Joi.object().optional()
+        trackingData: Joi.object().optional(),
+        disableTracking: Joi.bool().default(false).optional()
       }).or('text', 'template', 'pagedata')
     }
   },
