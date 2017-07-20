@@ -6,6 +6,8 @@ const qs = require('querystring');
 module.exports = function(url, opts, done) {
   const tmplVars = this.getVariables();
 
+  const getOpts = this.env.filters.opts;
+
   if (!done) {
     done = opts;
     opts = {};
