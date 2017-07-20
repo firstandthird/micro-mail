@@ -4,15 +4,15 @@ const aug = require('aug');
 const qs = require('querystring');
 
 module.exports = function(url, opts, done) {
-  const options = this.options;
-  const settings = this.server.settings.app;
-  if (!settings.enableMetrics || !options.clicks || !options.clicks.enabled || !options.trackingUrl) {
-    return done(null, url);
-  }
+  const tmplVars = this.getVariables();
 
   if (!done) {
     done = opts;
     opts = {};
+  }
+
+  if (tmplVars.disableTracking === true) {
+    return done(null, url);
   }
 
   // Generate Tags

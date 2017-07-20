@@ -8,10 +8,7 @@ exports.register = function(server, options, next) {
       const helpers = require('require-all')(`${__dirname}/helpers`);
 
       Object.keys(helpers).forEach(prop => {
-        const fn = helpers[prop].bind({
-          server: serv,
-          options
-        });
+        const fn = helpers[prop];
         viewManager.registerHelper(prop, fn);
       });
 
