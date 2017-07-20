@@ -17,15 +17,15 @@ module.exports = function(url, opts, done) {
 
   // Generate Tags
   const tagList = [];
-  if (options.clicks.tags) {
-    tagList.push(options.clicks.tags);
+  if (getOpts('clicks').tags) {
+    tagList.push(getOpts('clicks').tags);
   }
 
   if (opts.tags) {
     tagList.push(opts.tags);
   }
 
-  const allOpts = aug({}, options.clicks, opts);
+  const allOpts = aug({}, getOpts('clicks'), opts);
   delete allOpts.enabled;
 
   allOpts.tags = tagList.join(',');
@@ -37,7 +37,7 @@ module.exports = function(url, opts, done) {
 
   const toUrl = qs.escape(url);
 
-  const link = `${options.trackingUrl}r?to=${toUrl}&${paramStr.join('&')}`;
+  const link = `${getOpts('trackingUrl')}r?to=${toUrl}&${paramStr.join('&')}`;
 
   done(null, link);
 };

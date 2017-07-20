@@ -12,6 +12,14 @@ exports.register = function(server, options, next) {
         viewManager.registerHelper(prop, fn);
       });
 
+      viewManager.registerHelper('opts', name => {
+        if (options[name]) {
+          return options[name];
+        }
+
+        return '';
+      });
+
       done();
     }
   });
