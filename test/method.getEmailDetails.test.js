@@ -47,7 +47,8 @@ tap.test('getEmailDetails - with yaml', (assert) => {
         firstName: 'bob',
         lastName: 'smith',
         serviceName: 'test city',
-        trackingPixel: ''
+        trackingPixel: '',
+        disableTracking: true
       },
       default1: 'yay default'
     }, 'getEmailDetails sets up details correctly');
@@ -62,7 +63,8 @@ tap.test('getEmailDetails - with no yaml', (assert) => {
     data: {
       firstName: 'bob',
       lastName: 'smith',
-      trackingPixel: ''
+      trackingPixel: '',
+      disableTracking: true
     },
     disableTracking: true
   };
@@ -74,7 +76,8 @@ tap.test('getEmailDetails - with no yaml', (assert) => {
       data: {
         firstName: 'bob',
         lastName: 'smith',
-        trackingPixel: ''
+        trackingPixel: '',
+        disableTracking: true
       },
       default1: 'yay default'
     }, 'getEmailDetails sets up details with no yaml');
@@ -211,7 +214,8 @@ tap.test('getEmailDetails - with pagedata for data', (assert) => {
           toEmail: 'bob.smith@firstandthird.com',
           data: {
             firstName: 'bob',
-            trackingPixel: ''
+            trackingPixel: '',
+            disableTracking: true
           },
         }, 'getEmailDetails sets up details correctly');
         done();
@@ -275,7 +279,8 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
           toEmail: 'bob.smith@firstandthird.com',
           data: {
             firstName: 'bob',
-            trackingPixel: ''
+            trackingPixel: '',
+            disableTracking: true
           },
         }, 'getEmailDetails sets up details correctly');
         done();
@@ -339,11 +344,13 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
           toEmail: 'bob.smith@firstandthird.com',
           data: {
             firstName: 'bob',
-            trackingPixel: ''
+            trackingPixel: '',
+            disableTracking: true
           },
           example: {
             firstName: 'bob',
-            trackingPixel: ''
+            trackingPixel: '',
+            disableTracking: true
           }
         }, 'getEmailDetails sets up details correctly');
         done();
