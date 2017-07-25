@@ -18,7 +18,7 @@ plugins:
     key: "{{ENV.PAGEDATA_KEY}}"
     hookEndpoint: '/pagedata/hook'
     cacheEndpoint: '/pagedata/cache'
-    tag: "{{ENV.PAGEDATA_TAG}}"
+    status: "{{ENV.PAGEDATA_STATUS}}"
   hapi-micro-metrics:
     _enabled: "{{enableMetrics}}"
     host: "{{ENV.MICRO_METRICS_HOST}}"
