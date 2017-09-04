@@ -1,5 +1,7 @@
 ## Micro Mail
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/firstandthird/micro-mail.svg)](https://greenkeeper.io/)
+
 An app for sending emails.
 
 ### Setup
