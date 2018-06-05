@@ -98,3 +98,23 @@ tap.test('accepts multiple valid submissions and envelope', (assert) => {
     assert.end();
   });
 });
+
+tap.only('accepts headers as param', (assert) => {
+  server.inject({
+    method: 'POST',
+    url: `/send?token=${process.env.MICROMAIL_API_KEY}`,
+    payload: {
+      fromEmail: 'flynn@gmail.com',
+      fromName: 'mikey',
+      to: 'totally_not_putin@absolutely_not_moscow.ru, absolutely_not_comey@fbi.gov',
+      template: 'multipleTo',
+      headers: {
+        'Reply-To': 'noone@example.dev'
+      }
+    }
+  }, (response) => {
+    assert.equal(response.statusCode, 200, 'accepts valid multiple-to submission');
+    //TODO: better lastMessage tests
+    assert.end();
+  });
+});
