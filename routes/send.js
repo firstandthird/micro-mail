@@ -19,7 +19,8 @@ exports.send = {
         subject: Joi.string(),
         pagedata: Joi.string(),
         trackingData: Joi.object().optional(),
-        disableTracking: Joi.bool().default(false).optional()
+        disableTracking: Joi.bool().default(false).optional(),
+        headers: Joi.object().optional()
       }).or('text', 'template', 'pagedata')
     }
   },
