@@ -178,7 +178,6 @@ tap.test('getEmailDetails - with pagedata for data', (assert) => {
         method: 'GET',
         handler(request, reply) {
           assert.equal(request.params.page, 'slug');
-          assert.equal(request.query.tag, 'tag');
           reply(null, {
             content: {
               subject: 'This is a subject to {{data.firstName}}',
@@ -242,7 +241,6 @@ tap.test('getEmailDetails - with pagedata for template', (assert) => {
         method: 'GET',
         handler(request, reply) {
           assert.equal(request.params.page, 'slug');
-          assert.equal(request.query.tag, 'tag');
           reply(null, {
             content: {
               template: 'getEmailDetailsPagedata',
@@ -307,7 +305,6 @@ tap.test('getEmailDetails - with pagedata example data', (assert) => {
         method: 'GET',
         handler(request, reply) {
           assert.equal(request.params.page, 'slug');
-          assert.equal(request.query.tag, 'tag');
           reply(null, {
             content: {
               template: 'getEmailDetailsPagedata',
@@ -377,7 +374,6 @@ tap.test('getEmailDetails - with pagedata requiredData', (assert) => {
         method: 'GET',
         handler(request, reply) {
           assert.equal(request.params.page, 'slug');
-          assert.equal(request.query.tag, 'tag');
           reply(null, {
             content: {
               template: 'getEmailDetailsPagedata',
