@@ -99,7 +99,7 @@ tap.test('accepts multiple valid submissions and envelope', (assert) => {
   });
 });
 
-tap.only('accepts headers as param', (assert) => {
+tap.test('accepts headers as param', (assert) => {
   server.inject({
     method: 'POST',
     url: `/send?token=${process.env.MICROMAIL_API_KEY}`,

@@ -10,8 +10,12 @@ exports.register = function(server, options, next) {
       const viewManager = serv.root.realm.plugins.vision.manager;
       const helpers = require('require-all')(`${__dirname}/helpers`);
       let templHelpers = {};
-      if (fs.statSync(`${tmplPath}/helpers`).isDirectory()) {
-        templHelpers = require('require-all')(`${tmplPath}/helpers`);
+      try {
+        if (fs.statSync(`${tmplPath}/helpers`).isDirectory()) {
+          templHelpers = require('require-all')(`${tmplPath}/helpers`);
+        }
+      } catch (e) {
+        // continue
       }
 
       const allHelpers = Object.assign({}, helpers, templHelpers);
