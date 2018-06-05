@@ -81,8 +81,7 @@ module.exports = function(payload, options, allDone) {
         if (details.pagedata && details.pagedata.slug) {
           tags = `${tags},pagedataSlug:${details.pagedata.slug}`;
         }
-
-        details.data.trackingPixel = `<img src="${settings.ENV.MICRO_METRICS_HOST}t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
+        details.data.trackingPixel = `<img src="${settings.metricsHost}t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
       } else {
         details.data.disableTracking = true;
         details.data.trackingPixel = '';
