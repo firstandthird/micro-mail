@@ -2,15 +2,9 @@
 
 const fs = require('fs');
 
-module.exports = function(req, next) {
+module.exports = function(req) {
   const server = req.server;
   const templateDir = server.settings.app.views.path;
-
-  fs.readdir(templateDir, (err, data) => {
-    if (err) {
-      throw err;
-    }
-
-    next(data);
-  });
+  const data = fs.readdirSync(templateDir);
+  return data;
 };

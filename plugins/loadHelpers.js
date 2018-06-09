@@ -2,12 +2,12 @@
 
 const fs = require('fs');
 
-exports.register = function(server, options, next) {
+const register = function(server, options) {
   server.ext({
     type: 'onPostStart',
-    method(serv, done) {
+    method(serv) {
       const tmplPath = server.settings.app.templatePath;
-      const viewManager = serv.root.realm.plugins.vision.manager;
+      const viewManager = server.realm.parent.plugins.vision.manager;
       const helpers = require('require-all')(`${__dirname}/helpers`);
       let templHelpers = {};
       try {
@@ -22,7 +22,7 @@ exports.register = function(server, options, next) {
 
       Object.keys(allHelpers).forEach(prop => {
         const fn = allHelpers[prop];
-        viewManager.registerHelper(prop, fn);
+        return viewManager.registerHelper(prop, fn);
       });
 
       viewManager.registerHelper('opts', name => {
@@ -32,14 +32,14 @@ exports.register = function(server, options, next) {
 
         return '';
       });
-
-      done();
     }
   });
-
-  next();
 };
 
-exports.register.attributes = {
-  name: 'app-helpers'
+
+exports.plugin = {
+  name: 'helpers',
+  once: true,
+  pkg: require('../package.json'),
+  register
 };

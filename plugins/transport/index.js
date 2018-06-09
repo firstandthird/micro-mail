@@ -1,8 +1,8 @@
 'use strict';
 const nodemailer = require('nodemailer');
-exports.register = function(server, options, next) {
+const register = function(server, options) {
   if (!options.smtp || !options.smtp.host || !options.smtp.port) {
-    return next(new Error('must pass in smtp host and port'));
+    throw new Error('must pass in smtp host and port');
   }
   const transportOptions = {
     host: options.smtp.host,
@@ -17,9 +17,11 @@ exports.register = function(server, options, next) {
   const transporter = nodemailer.createTransport(transportOptions);
 
   server.decorate('server', 'transport', transporter);
-  next();
 };
 
-exports.register.attributes = {
-  name: 'transport'
+exports.plugin = {
+  name: 'transport',
+  once: true,
+  pkg: require('../../package.json'),
+  register
 };

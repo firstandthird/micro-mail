@@ -1,6 +1,3 @@
-'use strict';
-
-
 const obj2html = function(obj) {
   if (!obj) {
     return '';
@@ -31,37 +28,23 @@ const viewTemplate = function(mailObj, data) {
 exports.view = {
   path: '/view/{email}',
   method: 'GET',
-  handler: {
-    autoInject: {
-      payload(server, request, done) {
-        const email = request.params.email;
-        const payload = {
-          template: email,
-          data: request.query,
-          to: 'test@firstandthird.com',
-          disableTracking: true
-        };
-        done(null, payload);
-      },
-      details(server, payload, done) {
-        server.methods.getEmailDetails(payload, done);
-      },
-      content(server, details, done) {
-        server.methods.getEmailContent(details.template, details.data, done);
-      },
-      mailObj(server, details, content, done) {
-        server.methods.getMailObject(details, content, done);
-      },
-      tmpl(mailObj, details, done) {
-        done(null, viewTemplate(mailObj, details.data));
-      },
-      reply(request, details, tmpl, done) {
-        if (request.query.json) {
-          return done(null, details);
-        }
-        done(null, tmpl);
-      }
+  handler: async (request, h) => {
+    const server = request.server;
+    const email = request.params.email;
+    const payload = {
+      template: email,
+      data: request.query,
+      to: 'test@firstandthird.com',
+      disableTracking: true
+    };
+    const details = await server.methods.getEmailDetails(payload);
+    const content = await server.methods.getEmailContent(details.template, details.data);
+    const mailObj = await server.methods.getMailObject(details, content);
+    const tmpl = viewTemplate(mailObj, details.data);
+    if (request.query.json) {
+      return details;
     }
+    return tmpl;
   }
 };
 
@@ -83,74 +66,46 @@ const testViewTemplate = function(mailObj, data) {
 exports.testView = {
   path: '/view/test/{email}',
   method: 'GET',
-  handler: {
-    autoInject: {
-      payload(server, request, done) {
-        const email = request.params.email;
-        const testPath = `${server.settings.app.views.path}/${email}/test.json`;
-        const disableTracking = (request.query.disableTracking !== 'false');
-        const payload = {
-          template: email,
-          data: require(testPath),
-          to: 'test@firstandthird.com',
-          disableTracking
-        };
-        done(null, payload);
-      },
-      details(server, payload, done) {
-        server.methods.getEmailDetails(payload, done);
-      },
-      content(server, details, done) {
-        server.methods.getEmailContent(details.template, details.data, done);
-      },
-      mailObj(server, details, content, done) {
-        server.methods.getMailObject(details, content, done);
-      },
-      tmpl(mailObj, details, done) {
-        done(null, testViewTemplate(mailObj, details.data));
-      },
-      reply(request, details, tmpl, done) {
-        if (request.query.json) {
-          return done(null, details);
-        }
-        done(null, tmpl);
-      }
+  handler: async(request, h) => {
+    const server = request.server;
+    const email = request.params.email;
+    const testPath = `${server.settings.app.views.path}/${email}/test.json`;
+    const disableTracking = (request.query.disableTracking !== 'false');
+    const payload = {
+      template: email,
+      data: require(testPath),
+      to: 'test@firstandthird.com',
+      disableTracking
+    };
+    const details = await server.methods.getEmailDetails(payload);
+    const content = await server.methods.getEmailContent(details.template, details.data);
+    const mailObj = await server.methods.getMailObject(details, content);
+    const tmpl = testViewTemplate(mailObj, details.data);
+    if (request.query.json) {
+      return details;
     }
+    return tmpl;
   }
 };
 
 exports.viewPagedata = {
   path: '/view/pagedata/{slug}',
   method: 'GET',
-  handler: {
-    autoInject: {
-      payload(server, request, done) {
-        const slug = request.params.slug;
-        const payload = {
-          pagedata: slug,
-          to: 'test@firstandthird.com',
-          disableTracking: true
-        };
-        done(null, payload);
-      },
-      details(server, payload, done) {
-        server.methods.getEmailDetails(payload, { useExampleData: true }, done);
-      },
-      content(server, details, done) {
-        server.methods.getEmailContent(details.template, details.data, done);
-      },
-      mailObj(server, details, content, done) {
-        server.methods.getMailObject(details, content, done);
-      },
-      tmpl(mailObj, details, done) {
-        done(null, viewTemplate(mailObj, details.data));
-      },
-      reply(request, details, tmpl, done) {
-        if (request.query.json) {
-          return done(null, details);
-        }
-        done(null, tmpl);
-      }
+  handler: async(request, h) => {
+    const server = request.server;
+    const slug = request.params.slug;
+    const payload = {
+      pagedata: slug,
+      to: 'test@firstandthird.com',
+      disableTracking: true
+    };
+    const details = await server.methods.getEmailDetails(payload);
+    const content = await server.methods.getEmailContent(details.template, details.data);
+    const mailObj = await server.methods.getMailObject(details, content);
+    const tmpl = viewTemplate(mailObj, details.data);
+    if (request.query.json) {
+      return details;
     }
+    return tmpl;
   }
 };

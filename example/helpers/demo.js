@@ -1,5 +1,4 @@
-module.exports = (name = 'john', done) => {
+module.exports = (name = 'john') => {
   const out = `Hello there ${name}`;
-
-  done(null, out);
+  return out;
 };

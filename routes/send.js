@@ -1,4 +1,3 @@
-'use strict';
 const Joi = require('joi');
 
 exports.send = {
@@ -24,68 +23,49 @@ exports.send = {
       }).or('text', 'template', 'pagedata')
     }
   },
-  handler: {
-    autoInject: {
-      payload(server, request, done) {
-        const payload = request.payload;
-        if (request.query.test) {
-          const testPath = `${server.settings.app.views.path}/${request.payload.template}/test.json`;
-          payload.data = require(testPath);
-        }
-        done(null, payload);
-      },
-      details(server, payload, done) {
-        server.methods.getEmailDetails(payload, done);
-      },
-      content(server, details, done) {
-        server.methods.getEmailContent(details.template, details.data, done);
-      },
-      mailObj(server, details, content, done) {
-        server.methods.getMailObject(details, content, done);
-      },
-      send(server, mailObj, details, done) {
-        server.methods.sendMail(mailObj, details.sendIndividual, (err, result) => {
-          // log email send
-          const logObj = {
-            template: details.template,
-            toEmail: mailObj.to,
-            result
-          };
-
-          if (details.uuid) {
-            logObj.uuid = details.uuid;
-          }
-
-          if (details.pagedata) {
-            logObj.pagedata = details.pagedata;
-          }
-
-          const stat = (err) ? 'error' : 'success';
-          if (err) {
-            logObj.err = err;
-          }
-          server.log(['email', 'send', stat], logObj);
-          done(err, result);
-        });
-      },
-      track(server, details, send, done) {
-        if (server.settings.app.enableMetrics) {
-          const trackingTags = (details.trackingData) ? details.trackingData.tags : {};
-          const tags = Object.assign({}, { template: details.template }, trackingTags);
-          if (details.pagedata && details.pagedata) {
-            tags.pagedataSlug = details.pagedata;
-          }
-          server.track('email.send', 1, tags, { toEmail: details.to, uuid: details.uuid });
-        }
-        done(null);
-      },
-      reply(send, done) {
-        done(null, {
-          status: 'ok',
-          message: 'Email delivered.',
-          result: send
-        });
-      }
+  handler: async (request, h) => {
+    const server = request.server;
+    const payload = request.payload;
+    if (request.query.test) {
+      const testPath = `${server.settings.app.views.path}/${request.payload.template}/test.json`;
+      payload.data = require(testPath);
     }
+    const details = await server.methods.getEmailDetails(payload);
+    const content = await server.methods.getEmailContent(details.template, details.data);
+    const mailObj = await server.methods.getMailObject(details, content);
+    let stat = 'success';
+    const logObj = {
+      template: details.template,
+      toEmail: mailObj.to,
+    };
+    let send;
+    try {
+      send = await server.methods.sendMail(mailObj, details.sendIndividual);
+      logObj.result = send;
+    } catch (err) {
+      stat = 'error';
+      logObj.err = err;
+    }
+    // log email send
+    if (details.uuid) {
+      logObj.uuid = details.uuid;
+    }
+    if (details.pagedata) {
+      logObj.pagedata = details.pagedata;
+    }
+    server.log(['email', 'send', stat], logObj);
+    if (server.settings.app.enableMetrics) {
+      const trackingTags = (details.trackingData) ? details.trackingData.tags : {};
+      const tags = Object.assign({}, { template: details.template }, trackingTags);
+      if (details.pagedata && details.pagedata) {
+        tags.pagedataSlug = details.pagedata;
+      }
+      server.track('email.send', 1, tags, { toEmail: details.to, uuid: details.uuid });
+    }
+    return {
+      status: 'ok',
+      message: 'Email delivered.',
+      result: send
+    };
   }
 };

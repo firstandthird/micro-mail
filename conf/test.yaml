@@ -2,7 +2,6 @@ port: 8080
 enableMetrics: "true"
 plugins:
   hapi-api-key:
-    _priority: -1
     strategy:
       name: 'apikey'
       mode: true
@@ -14,7 +13,6 @@ plugins:
     host: 'http://localhost:3000'
     key: 'dummy'
   ./plugins/transport:
-    _priority: -2
     smtp:
       host: "localhost"
       port: 8888

@@ -1,20 +1,17 @@
-'use strict';
-
 const aug = require('aug');
 const qs = require('querystring');
 
-module.exports = function(url, opts, done) {
+module.exports = function(url, opts) {
   const tmplVars = this.getVariables();
 
   const getOpts = this.env.filters.opts;
 
-  if (!done) {
-    done = opts;
+  if (!opts) {
     opts = {};
   }
 
   if (tmplVars.disableTracking === true) {
-    return done(null, url);
+    return url;
   }
 
   // Generate Tags
@@ -33,13 +30,10 @@ module.exports = function(url, opts, done) {
   allOpts.tags = tagList.join(',');
 
   const paramStr = [];
-  Object.keys(allOpts).forEach(p => {
-    paramStr.push(`${p}=${qs.escape(allOpts[p])}`);
-  });
-
+  Object.keys(allOpts).forEach(p => paramStr.push(`${p}=${qs.escape(allOpts[p])}`));
   const toUrl = qs.escape(url);
 
   const link = `${getOpts('trackingUrl')}r?to=${toUrl}&${paramStr.join('&')}`;
 
-  done(null, link);
+  return link;
 };
