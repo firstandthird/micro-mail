@@ -4,7 +4,7 @@ envVars:
   apiKey: '{{getEnv("MICROMAIL_API_KEY")}}'
   pagedata:
     host: "{{getEnv('PAGEDATA_HOST', '')}}"
-    key: "{{getEnv('PAGEDATA_KEY', '')}}"
+    key: "{{getEnv('PAGEDATA_KEY', 'dev')}}"
     status: "{{getEnv('PAGEDATA_STATUS', '')}}"
   smtp:
     host: "{{getEnv('SMTP_HOST')}}"
