@@ -28,7 +28,7 @@ const viewTemplate = function(mailObj, data) {
 exports.view = {
   path: '/view/{email}',
   method: 'GET',
-  async handler (request, h) => {
+  async handler (request, h) {
     const server = request.server;
     const email = request.params.email;
     const payload = {
@@ -66,7 +66,7 @@ const testViewTemplate = function(mailObj, data) {
 exports.testView = {
   path: '/view/test/{email}',
   method: 'GET',
-  async handler(request, h) => {
+  async handler(request, h) {
     const server = request.server;
     const email = request.params.email;
     const testPath = `${server.settings.app.views.path}/${email}/test.json`;
@@ -91,7 +91,7 @@ exports.testView = {
 exports.viewPagedata = {
   path: '/view/pagedata/{slug}',
   method: 'GET',
-  async handler(request, h) => {
+  async handler(request, h) {
     const server = request.server;
     const slug = request.params.slug;
     const payload = {

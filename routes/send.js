@@ -23,7 +23,7 @@ exports.send = {
       }).or('text', 'template', 'pagedata')
     }
   },
-  async handler (request, h) => {
+  async handler (request, h) {
     const server = request.server;
     const payload = request.payload;
     if (request.query.test) {
