@@ -1,34 +1,35 @@
 templatePath: "{{CWD}}/templates"
-enableMetrics: "{{(ENV.MICRO_METRICS_HOST) ? true : false}}"
-metricsHost: '{{ ENV.MICRO_METRICS_HOST | "" }}'
+enableMetrics: "{{envVars.enableMetrics}}"
+metricsHost: '{{ envVars.metricsHost }}'
 plugins:
   vision:
   inert:
+  hapi-route-loader:
+    _dependencies:
+      - 'hapi-api-key'
   hapi-api-key:
-    _priority: -1
+    _dependencies:
+      - './plugins/loadHelpers'
+      - './plugins/transport'
     strategy:
       name: 'apikey'
       mode: true
       apiKeys:
-        '{{ENV.MICROMAIL_API_KEY}}':
+        '{{envVars.apiKey}}':
           name: 'micromail-api'
   hapi-pagedata:
-    _enabled: "{{(ENV.PAGEDATA_HOST) ? true : false}}"
-    verbose: true
-    host: "{{ENV.PAGEDATA_HOST}}"
-    key: "{{ENV.PAGEDATA_KEY}}"
-    hookEndpoint: '/pagedata/hook'
-    cacheEndpoint: '/pagedata/cache'
-    status: "{{ENV.PAGEDATA_STATUS}}"
+    _enabled: "{{envExists('PAGEDATA_HOST')}}"
+    host: "{{envVars.pagedata.host}}"
+    key: "{{envVars.pagedata.key}}"
+    status: "{{envVars.pagedata.status}}"
   hapi-micro-metrics:
     _enabled: "{{enableMetrics}}"
-    host: "{{ENV.MICRO_METRICS_HOST}}"
+    host: "{{envVars.metricsHost}}"
     verbose: true
-  hapi-auto-handler:
-    _priority: -1
   hapi-log-response:
   ./plugins/loadHelpers:
-    _priority: -2
+    _dependencies:
+      - 'vision'
     opens:
       enabled: true
       type: 'open'
@@ -36,14 +37,15 @@ plugins:
       enabled: true
       type: 'email.click'
       tags: ''
-    trackingUrl: '{{ENV.MICRO_METRICS_HOST}}'
+    trackingUrl: '{{envVars.metricsHost}}'
   ./plugins/transport:
-    _priority: -2
+    _dependencies:
+      - 'vision'
     smtp:
-      host: "{{ENV.SMTP_HOST}}"
-      port: "{{ENV.SMTP_PORT}}"
-      user: "{{ENV.SMTP_USER}}"
-      pass: "{{ENV.SMTP_PASS}}"
+      host: "{{envVars.smtp.host}}"
+      port: "{{envVars.smtp.port}}"
+      user: "{{envVars.smtp.user}}"
+      pass: "{{envVars.smtp.pass}}"
 views:
   engines:
     njk: "vision-nunjucks"

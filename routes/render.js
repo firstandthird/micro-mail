@@ -1,7 +1,6 @@
 'use strict';
 
 const Joi = require('joi');
-const boom = require('boom');
 
 exports.render = {
   path: '/render',
@@ -25,31 +24,16 @@ exports.render = {
       }).or('text', 'template', 'pagedata')
     }
   },
-  handler: {
-    autoInject: {
-      payload(server, request, done) {
-        const payload = request.payload || request.query;
-        if (request.query.test) {
-          const testPath = `${server.settings.app.views.path}/${request.payload.template}/test.json`;
-          payload.data = require(testPath);
-        }
-        done(null, payload);
-      },
-      details(server, payload, done) {
-        server.methods.getEmailDetails(payload, done);
-      },
-      content(server, details, done) {
-        server.methods.getEmailContent(details.template, details.data, done);
-      },
-      mailObj(server, details, content, reply, done) {
-        server.methods.getMailObject(details, content, (err, data) => {
-          if (err) {
-            return reply(boom.badRequest(err));
-          }
-          reply(null, data.html);
-          done();
-        });
-      }
+  async handler(request, h) {
+    const server = request.server;
+    const payload = request.payload || request.query;
+    if (request.query.test) {
+      const testPath = `${server.settings.app.views.path}/${request.payload.template}/test.json`;
+      payload.data = require(testPath);
     }
+    const details = await server.methods.getEmailDetails(payload);
+    const content = await server.methods.getEmailContent(details.template, details.data);
+    const data = await server.methods.getMailObject(details, content);
+    return data;
   }
 };

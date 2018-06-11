@@ -5,22 +5,15 @@ const path = require('path');
 
 let rapptor;
 let server;
-tap.beforeEach((done) => {
+tap.beforeEach(async () => {
   rapptor = new Rapptor();
-  rapptor.start((err, returned) => {
-    if (err) {
-      return done(err);
-    }
-    server = returned;
-    server.settings.app.views.path = path.join(__dirname, 'emails');
-    done();
-  });
+  await rapptor.start();
+  server = rapptor.server;
+  server.settings.app.views.path = path.join(__dirname, 'emails');
 });
 
-tap.afterEach((done) => {
-  rapptor.stop(() => {
-    done();
-  });
+tap.afterEach(async () => {
+  await rapptor.stop();
 });
 
 tap.test('plugin/transport - decorate', (assert) => {

@@ -1,6 +1,6 @@
 env:
-  - SMTP_HOST=localhost SMTP_PORT=8888 SMTP_USER=user SMTP_PASS=pass PAGEDATA_HOST=http://localhost:8080 API_KEY=key MICROMAIL_API_KEY=abcd PAGEDATA_STATUS=draft
+  - PAGEDATA_KEY=dev SMTP_HOST=localhost SMTP_PORT=8888 SMTP_USER=user SMTP_PASS=pass PAGEDATA_HOST=http://localhost:8080 API_KEY=key MICROMAIL_API_KEY=abcd PAGEDATA_STATUS=draft
 language: node_js
 node_js:
+  - "9"
   - "8"
-  - "6"

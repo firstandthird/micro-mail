@@ -1,4 +1,3 @@
-'use strict';
 const tap = require('tap');
 const Rapptor = require('rapptor');
 const SMTPServer = require('smtp-server').SMTPServer;
@@ -8,7 +7,7 @@ let rapptor;
 let server;
 let smtpServer;
 let lastMessage;
-tap.beforeEach((done) => {
+tap.beforeEach(async () => {
   rapptor = new Rapptor();
   lastMessage = '';
   const onData = (stream, session, callback) => {
@@ -32,33 +31,18 @@ tap.beforeEach((done) => {
     closeTimeout: 60 * 1000,
     onData
   });
-  smtpServer.listen(8888, 'localhost', (smtpErr) => {
-    if (smtpErr) {
-      return done(smtpErr);
-    }
-    rapptor.start((err, returned) => {
-      if (err) {
-        return done(err);
-      }
-      server = returned;
-      server.settings.app.views.path = path.join(__dirname, 'emails');
-      setTimeout(() => {
-        done();
-      }, 200);
-    });
-  });
+  smtpServer.listen(8888, 'localhost');
+  await rapptor.start();
+  server = rapptor.server;
+  server.settings.app.views.path = path.join(__dirname, 'emails');
 });
 
-tap.afterEach((done) => {
-  rapptor.stop(() => {
-    smtpServer.close(() => {
-      done();
-    });
-  });
+tap.afterEach(async () => {
+  await rapptor.stop();
 });
 
-tap.test('accepts one valid submission and envelope', (assert) => {
-  server.inject({
+tap.test('accepts one valid submission and envelope', async (assert) => {
+  const response = await server.inject({
     method: 'POST',
     url: `/send?token=${process.env.MICROMAIL_API_KEY}`,
     payload: {
@@ -73,17 +57,17 @@ tap.test('accepts one valid submission and envelope', (assert) => {
         serviceName: 'tcp'
       }
     }
-  }, (response) => {
-    assert.equal(response.statusCode, 200, 'accepts valid single submission');
-    assert.notEqual(lastMessage.indexOf('Subject: Heads up'), -1);
-    assert.notEqual(lastMessage.indexOf('some text general'), -1);
-    assert.notEqual(lastMessage.indexOf('To: totally_not_putin@absolutely_not_moscow.ru'), -1);
-    assert.end();
   });
+  assert.equal(response.statusCode, 200, 'accepts valid single submission');
+  assert.notEqual(lastMessage.indexOf('Subject: Heads up'), -1);
+  assert.notEqual(lastMessage.indexOf('some text general'), -1);
+  assert.notEqual(lastMessage.indexOf('To: totally_not_putin@absolutely_not_moscow.ru'), -1);
+  await new Promise((resolve) => smtpServer.close(() => resolve()));
+  assert.end();
 });
 
-tap.test('accepts multiple valid submissions and envelope', (assert) => {
-  server.inject({
+tap.test('accepts multiple valid submissions and envelope', async (assert) => {
+  const response = await server.inject({
     method: 'POST',
     url: `/send?token=${process.env.MICROMAIL_API_KEY}`,
     payload: {
@@ -92,15 +76,15 @@ tap.test('accepts multiple valid submissions and envelope', (assert) => {
       to: 'totally_not_putin@absolutely_not_moscow.ru, absolutely_not_comey@fbi.gov',
       template: 'multipleTo'
     }
-  }, (response) => {
-    assert.equal(response.statusCode, 200, 'accepts valid multiple-to submission');
-    //TODO: better lastMessage tests
-    assert.end();
   });
+  assert.equal(response.statusCode, 200, 'accepts valid multiple-to submission');
+  //TODO: better lastMessage tests
+  await new Promise((resolve) => smtpServer.close(() => resolve()));
+  assert.end();
 });
 
-tap.test('accepts headers as param', (assert) => {
-  server.inject({
+tap.test('accepts headers as param', async (assert) => {
+  const response = await server.inject({
     method: 'POST',
     url: `/send?token=${process.env.MICROMAIL_API_KEY}`,
     payload: {
@@ -112,9 +96,9 @@ tap.test('accepts headers as param', (assert) => {
         'Reply-To': 'noone@example.dev'
       }
     }
-  }, (response) => {
-    assert.equal(response.statusCode, 200, 'accepts valid multiple-to submission');
-    //TODO: better lastMessage tests
-    assert.end();
   });
+  assert.equal(response.statusCode, 200, 'accepts valid multiple-to submission');
+  //TODO: better lastMessage tests
+  await new Promise((resolve) => smtpServer.close(() => resolve()));
+  assert.end();
 });

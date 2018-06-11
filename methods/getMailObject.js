@@ -9,7 +9,7 @@ const schema = Joi.object().keys({
   html: Joi.optional(),
   text: Joi.optional()
 });
-module.exports = function(details, content, allDone) {
+module.exports = function(details, content) {
   let from = details.from || details.fromEmail;
   if (details.fromName) {
     from = `"${details.fromName}" <${from}>`;
@@ -28,10 +28,11 @@ module.exports = function(details, content, allDone) {
   if (details.headers) {
     mailObj.headers = details.headers;
   }
-  Joi.validate(mailObj, schema, (validationErr) => {
+
+  return Joi.validate(mailObj, schema, (validationErr) => {
     if (validationErr) {
-      return allDone(validationErr);
+      throw validationErr;
     }
-    return allDone(null, mailObj);
+    return mailObj;
   });
 };

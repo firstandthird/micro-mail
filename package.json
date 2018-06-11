@@ -5,7 +5,7 @@
   "scripts": {
     "start": "rapptor",
     "dev": "npm install && npm prune && nodemon -x npm start",
-    "test": "npm run lint && TAP_TIMEOUT=45 NODE_ENV=test tap test/*.test.js --cov",
+    "test": "TAP_TIMEOUT=45 NODE_ENV=test tap test/*.test.js --cov",
     "test-one": "NODE_ENV=test tap",
     "lint": "eslint ."
   },
@@ -20,6 +20,9 @@
     "micro",
     "microservice"
   ],
+  "eslintConfig": {
+    "extends": "firstandthird"
+  },
   "author": "First+Third",
   "license": "MIT",
   "bugs": {
@@ -27,34 +30,33 @@
   },
   "homepage": "https://github.com/firstandthird/micro-mail#readme",
   "dependencies": {
-    "async": "2.1.5",
-    "aug": "1.0.2",
-    "hapi-api-key": "^1.2.0",
-    "hapi-auto-handler": "1.5.1",
-    "hapi-log-response": "^1.2.0",
-    "hapi-micro-metrics": "0.5.0",
-    "hapi-pagedata": "^1.1.1",
-    "inert": "4.1.0",
-    "joi": "10.2.2",
+    "aug": "^2.0.0",
+    "hapi-api-key": "^3.2.0",
+    "hapi-log-response": "^4.2.1",
+    "hapi-micro-metrics": "^1.0.0",
+    "hapi-pagedata": "^4.0.0",
+    "inert": "^5.1.0",
+    "joi": "^13.4.0",
     "juice": "4.0.2",
     "lodash": "4.17.4",
     "node-uuid": "^1.4.8",
-    "nodemailer": "2.7.0",
-    "nunjucks": "^3.0.0",
-    "rapptor": "^1.16.0",
+    "nodemailer": "^4.6.5",
+    "nunjucks": "^3.1.3",
+    "p-props": "^1.2.0",
+    "rapptor": "^5.13.0",
     "require-all": "^2.2.0",
-    "varson": "1.0.1",
-    "vision": "^4.1.1",
-    "vision-nunjucks": "^2.1.0",
+    "varson": "^2.0.3",
+    "vision": "^5.3.2",
+    "vision-nunjucks": "^3.0.0",
     "yamljs": "0.2.8"
   },
   "devDependencies": {
-    "eslint": "3.13.1",
-    "eslint-config-firstandthird": "3.2.0",
-    "eslint-plugin-import": "2.2.0",
-    "hapi": "16.1.0",
+    "eslint": "^4.19.1",
+    "eslint-config-firstandthird": "^4.3.0",
+    "eslint-plugin-import": "^2.12.0",
+    "hapi": "^17.5.1",
     "nodemon": "1.11.0",
-    "smtp-server": "1.17.0",
+    "smtp-server": "^3.4.5",
     "tap": "^11.0.0"
   }
 }

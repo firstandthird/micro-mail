@@ -1,0 +1,13 @@
+envVars:
+  enableMetrics: "{{envExists('MICRO_METRICS_HOST')}}"
+  metricsHost: '{{getEnv("MICRO_METRICS_HOST", "")}}'
+  apiKey: '{{getEnv("MICROMAIL_API_KEY")}}'
+  pagedata:
+    host: "{{getEnv('PAGEDATA_HOST', '')}}"
+    key: "{{getEnv('PAGEDATA_KEY', 'dev')}}"
+    status: "{{getEnv('PAGEDATA_STATUS', '')}}"
+  smtp:
+    host: "{{getEnv('SMTP_HOST')}}"
+    port: "{{getEnv('SMTP_PORT')}}"
+    user: "{{getEnv('SMTP_USER')}}"
+    pass: "{{getEnv('SMTP_PASS')}}"
