@@ -37,7 +37,7 @@ tap.afterEach(async () => {
   await rapptor.stop();
 });
 
-tap.test('sendEmail - accepts valid submission and envelope', async(assert) => {
+tap.test('sendEmail - accepts valid submission and envelope', async (assert) => {
   const mailObj = {
     from: 'someone@somewhere.com',
     to: 'nobody@nowhere.com',
@@ -53,7 +53,7 @@ tap.test('sendEmail - accepts valid submission and envelope', async(assert) => {
   assert.end();
 });
 
-tap.test('sendEmail - accepts valid submission', async(assert) => {
+tap.test('sendEmail - accepts valid submission', async (assert) => {
   const mailObj = {
     to: 'nobody@nowhere.com'
   };
@@ -66,7 +66,7 @@ tap.test('sendEmail - accepts valid submission', async(assert) => {
   assert.end();
 });
 
-tap.test('sendEmail - accepts rejects invalid submission without destination', async(assert) => {
+tap.test('sendEmail - accepts rejects invalid submission without destination', async (assert) => {
   const mailObj = {
     from: 'someone@somewhere.com'
   };
@@ -79,7 +79,7 @@ tap.test('sendEmail - accepts rejects invalid submission without destination', a
   }
 });
 
-tap.test('should be able to send multiple destination emails at once as a comma-separated string', async(assert) => {
+tap.test('should be able to send multiple destination emails at once as a comma-separated string', async (assert) => {
   const mailObj = {
     from: 'eagles@nest.com',
     to: 'prey@river.com, fish@lake.com',
@@ -93,7 +93,7 @@ tap.test('should be able to send multiple destination emails at once as a comma-
   assert.end();
 });
 
-tap.test('should be able to send multiple destination emails at once as an array of strings', async(assert) => {
+tap.test('should be able to send multiple destination emails at once as an array of strings', async (assert) => {
   const mailObj = {
     from: 'eagles@nest.com',
     to: ['prey@river.com', 'fish@lake.com'],
@@ -107,7 +107,7 @@ tap.test('should be able to send multiple destination emails at once as an array
   assert.end();
 });
 
-tap.test('will send separate emails to several destinations ', async(assert) => {
+tap.test('will send separate emails to several destinations ', async (assert) => {
   const mailObj = {
     to: 'prey@river.com, vultures@largetree.com, crows@rock.com',
     from: 'emal@example.com',
@@ -124,7 +124,7 @@ tap.test('will send separate emails to several destinations ', async(assert) => 
   assert.end();
 });
 
-tap.test('will return if any email fails and list status for specific emails', async(assert) => {
+tap.test('will return if any email fails and list status for specific emails', async (assert) => {
   const mailObj = {
     to: 'prey@river.com, notanaddress, crows@rock.com',
     from: 'emal@example.com',

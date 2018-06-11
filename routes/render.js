@@ -24,7 +24,7 @@ exports.render = {
       }).or('text', 'template', 'pagedata')
     }
   },
-  handler: async (request, h) => {
+  async handler (request, h) => {
     const server = request.server;
     const payload = request.payload || request.query;
     if (request.query.test) {
