@@ -3,9 +3,9 @@ envVars:
   metricsHost: '{{getEnv("MICRO_METRICS_HOST", "")}}'
   apiKey: '{{getEnv("MICROMAIL_API_KEY")}}'
   pagedata:
-    host: "{{getEnv('PAGEDATA_HOST')}}"
-    key: "{{getEnv('PAGEDATA_KEY')}}"
-    status: "{{getEnv('PAGEDATA_STATUS')}}"
+    host: "{{getEnv('PAGEDATA_HOST', '')}}"
+    key: "{{getEnv('PAGEDATA_KEY', '')}}"
+    status: "{{getEnv('PAGEDATA_STATUS', '')}}"
   smtp:
     host: "{{getEnv('SMTP_HOST')}}"
     port: "{{getEnv('SMTP_PORT')}}"
