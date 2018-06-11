@@ -5,18 +5,18 @@ const path = require('path');
 
 let rapptor;
 let server;
-tap.beforeEach(async() => {
+tap.beforeEach(async () => {
   rapptor = new Rapptor();
   await rapptor.start();
   server = rapptor.server;
   server.settings.app.views.path = path.join(__dirname, 'emails');
 });
 
-tap.afterEach(async() => {
+tap.afterEach(async () => {
   await rapptor.stop();
 });
 
-tap.test('getEmailDetails - with yaml', async(assert) => {
+tap.test('getEmailDetails - with yaml', async (assert) => {
   const payload = {
     template: 'getEmailDetails2',
     toEmail: 'bob.smith@firstandthird.com',
@@ -46,7 +46,7 @@ tap.test('getEmailDetails - with yaml', async(assert) => {
   assert.end();
 });
 
-tap.test('getEmailDetails - with no yaml', async(assert) => {
+tap.test('getEmailDetails - with no yaml', async (assert) => {
   const payload = {
     template: 'no yaml',
     toEmail: 'bob.smith@firstandthird.com',
@@ -73,7 +73,7 @@ tap.test('getEmailDetails - with no yaml', async(assert) => {
   assert.end();
 });
 
-tap.test('getEmailDetails - with yaml and tracking enabled', async(assert) => {
+tap.test('getEmailDetails - with yaml and tracking enabled', async (assert) => {
   const payload = {
     template: 'getEmailDetails2',
     toEmail: 'bob.smith@firstandthird.com',
@@ -115,7 +115,7 @@ tap.test('getEmailDetails - with yaml and tracking enabled', async(assert) => {
   assert.end();
 });
 
-tap.test('getEmailDetails will not validate if missing required fields', async(assert) => {
+tap.test('getEmailDetails will not validate if missing required fields', async (assert) => {
   const payload = {
     template: 'getEmailDetails2',
     toEmail: 'bob.smith@firstandthird.com',
@@ -135,7 +135,7 @@ tap.test('getEmailDetails will not validate if missing required fields', async(a
   }
 });
 
-tap.test('getEmailDetails will not validate if data fields are blank', async(assert) => {
+tap.test('getEmailDetails will not validate if data fields are blank', async (assert) => {
   const payload = {
     template: 'getEmailDetails2',
     toEmail: 'bob.smith@firstandthird.com',
@@ -156,7 +156,7 @@ tap.test('getEmailDetails will not validate if data fields are blank', async(ass
   }
 });
 
-tap.test('getEmailDetails - with pagedata for data', async(assert) => {
+tap.test('getEmailDetails - with pagedata for data', async (assert) => {
   // mock pagedata route for testing, this needs to work with wreck.get:
   const Hapi = require('hapi');
   const pagedataServer = new Hapi.Server({ port: 3000 });
@@ -200,7 +200,7 @@ tap.test('getEmailDetails - with pagedata for data', async(assert) => {
   assert.end();
 });
 
-tap.test('getEmailDetails - with pagedata for template', async(assert) => {
+tap.test('getEmailDetails - with pagedata for template', async (assert) => {
   // mock pagedata route for testing, this needs to work with wreck.get:
   const Hapi = require('hapi');
   const pagedataServer = new Hapi.Server({ port: 3000 });
@@ -245,7 +245,7 @@ tap.test('getEmailDetails - with pagedata for template', async(assert) => {
   assert.end();
 });
 
-tap.test('getEmailDetails - with pagedata example data', async(assert) => {
+tap.test('getEmailDetails - with pagedata example data', async (assert) => {
   // mock pagedata route for testing, this needs to work with wreck.get:
   const Hapi = require('hapi');
   const pagedataServer = new Hapi.Server({ port: 3000 });
@@ -295,7 +295,7 @@ tap.test('getEmailDetails - with pagedata example data', async(assert) => {
   assert.end();
 });
 
-tap.test('getEmailDetails - with pagedata requiredData', async(assert) => {
+tap.test('getEmailDetails - with pagedata requiredData', async (assert) => {
   // mock pagedata route for testing, this needs to work with wreck.get:
   const Hapi = require('hapi');
   const pagedataServer = new Hapi.Server({ port: 3000 });

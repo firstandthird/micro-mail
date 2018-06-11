@@ -6,7 +6,7 @@ const fs = require('fs');
 
 let rapptor;
 let server;
-tap.beforeEach(async() => {
+tap.beforeEach(async () => {
   rapptor = new Rapptor();
   await rapptor.start();
   server = rapptor.server;
@@ -17,7 +17,7 @@ tap.afterEach(async () => {
   await rapptor.stop();
 });
 
-tap.test('getEmailContent - with valid template', async(assert) => {
+tap.test('getEmailContent - with valid template', async (assert) => {
   const data = {
     data: {
       firstName: 'bob',
@@ -44,7 +44,7 @@ tap.test('getEmailContent - with no template', async (assert) => {
   assert.end();
 });
 
-tap.test('should be able to inline css if specified', async(assert) => {
+tap.test('should be able to inline css if specified', async (assert) => {
   const data = {
     inlineCss: true,
     text: '<style>div{color:red;}</style><div/>',
@@ -62,7 +62,7 @@ tap.test('should be able to inline css if specified', async(assert) => {
   assert.end();
 });
 
-tap.test('should also not inline if specified', async(assert) => {
+tap.test('should also not inline if specified', async (assert) => {
   const data = {
     inlineCss: false,
     text: '<style>div{color:red;}</style><div/>',

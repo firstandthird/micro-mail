@@ -37,11 +37,11 @@ tap.beforeEach(async () => {
   server.settings.app.views.path = path.join(__dirname, 'emails');
 });
 
-tap.afterEach(async() => {
+tap.afterEach(async () => {
   await rapptor.stop();
 });
 
-tap.test('accepts one valid submission and envelope', async(assert) => {
+tap.test('accepts one valid submission and envelope', async (assert) => {
   const response = await server.inject({
     method: 'POST',
     url: `/send?token=${process.env.MICROMAIL_API_KEY}`,
@@ -83,7 +83,7 @@ tap.test('accepts multiple valid submissions and envelope', async (assert) => {
   assert.end();
 });
 
-tap.test('accepts headers as param', async(assert) => {
+tap.test('accepts headers as param', async (assert) => {
   const response = await server.inject({
     method: 'POST',
     url: `/send?token=${process.env.MICROMAIL_API_KEY}`,

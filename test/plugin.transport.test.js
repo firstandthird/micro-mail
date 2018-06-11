@@ -5,14 +5,14 @@ const path = require('path');
 
 let rapptor;
 let server;
-tap.beforeEach(async() => {
+tap.beforeEach(async () => {
   rapptor = new Rapptor();
   await rapptor.start();
   server = rapptor.server;
   server.settings.app.views.path = path.join(__dirname, 'emails');
 });
 
-tap.afterEach(async() => {
+tap.afterEach(async () => {
   await rapptor.stop();
 });
 

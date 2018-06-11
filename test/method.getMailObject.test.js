@@ -5,7 +5,7 @@ const path = require('path');
 
 let rapptor;
 let server;
-tap.beforeEach(async() => {
+tap.beforeEach(async () => {
   rapptor = new Rapptor();
   await rapptor.start();
   server = rapptor.server;
@@ -13,11 +13,11 @@ tap.beforeEach(async() => {
 });
 
 
-tap.afterEach(async() => {
+tap.afterEach(async () => {
   await rapptor.stop();
 });
 
-tap.test('getMailObject ', async(assert) => {
+tap.test('getMailObject ', async (assert) => {
   const details = {
     from: 'putin@kremlin.ru',
     fromName: 'crabbe',
@@ -38,7 +38,7 @@ tap.test('getMailObject ', async(assert) => {
   assert.end();
 });
 
-tap.test('getMailObject will not validate if missing required fields', async(assert) => {
+tap.test('getMailObject will not validate if missing required fields', async (assert) => {
   const details = {
     fromName: 'crabbe',
     text: 'we should do it next week they will never see it coming'
@@ -53,7 +53,7 @@ tap.test('getMailObject will not validate if missing required fields', async(ass
   }
 });
 
-tap.test('getMailObject --with headers ', async(assert) => {
+tap.test('getMailObject --with headers ', async (assert) => {
   const details = {
     headers: {
       'the-secret-number': '206'
