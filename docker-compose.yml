@@ -1,6 +1,5 @@
 app:
-  image: 'firstandthird/node:6.10-3-nobuild'
-  command: 'npm run dev'
+  image: 'firstandthird/node:8.9-2-dev' 
   volumes:
     - '.:/home/app/src'
     - './example:/home/app/src/templates'

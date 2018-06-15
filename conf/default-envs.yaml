@@ -9,5 +9,5 @@ envVars:
   smtp:
     host: "{{getEnv('SMTP_HOST')}}"
     port: "{{getEnv('SMTP_PORT')}}"
-    user: "{{getEnv('SMTP_USER')}}"
-    pass: "{{getEnv('SMTP_PASS')}}"
+    user: "{{getEnv('SMTP_USER', '')}}"
+    pass: "{{getEnv('SMTP_PASS', '')}}"
