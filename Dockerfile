@@ -1,4 +1,4 @@
-FROM firstandthird/node:6.10-3-onbuild
+FROM firstandthird/node:8.9-2-onbuild
 
 ENV PORT 8081
 EXPOSE 8081
