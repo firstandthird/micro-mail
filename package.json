@@ -1,6 +1,7 @@
 {
   "name": "micro-mail",
   "version": "1.0.1",
+  "private": true,
   "description": "micro email api",
   "scripts": {
     "start": "rapptor",
