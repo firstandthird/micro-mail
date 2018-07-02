@@ -1,6 +1,6 @@
 {
   "name": "micro-mail",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "micro email api",
   "scripts": {
