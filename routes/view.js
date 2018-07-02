@@ -99,7 +99,7 @@ exports.viewPagedata = {
       to: 'test@firstandthird.com',
       disableTracking: true
     };
-    const details = await server.methods.getEmailDetails(payload);
+    const details = await server.methods.getEmailDetails(payload, { useExampleData: true });
     const content = await server.methods.getEmailContent(details.template, details.data);
     const mailObj = await server.methods.getMailObject(details, content);
     const tmpl = viewTemplate(mailObj, details.data);
