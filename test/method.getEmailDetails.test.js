@@ -6,7 +6,11 @@ const path = require('path');
 let rapptor;
 let server;
 tap.beforeEach(async () => {
-  rapptor = new Rapptor();
+  rapptor = new Rapptor({
+    config: {
+      templatePath: `${__dirname}`
+    }
+  });
   await rapptor.start();
   server = rapptor.server;
   server.settings.app.views.path = path.join(__dirname, 'emails');
@@ -74,6 +78,8 @@ tap.test('getEmailDetails - with no yaml', async (assert) => {
 });
 
 tap.test('getEmailDetails - with yaml and tracking enabled', async (assert) => {
+  // metrics must be on for tracking:
+  server.settings.app.enableMetrics = true;
   const payload = {
     template: 'getEmailDetails2',
     toEmail: 'bob.smith@firstandthird.com',

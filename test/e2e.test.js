@@ -8,7 +8,11 @@ let server;
 let smtpServer;
 let lastMessage;
 tap.beforeEach(async () => {
-  rapptor = new Rapptor();
+  rapptor = new Rapptor({
+    config: {
+      templatePath: `${__dirname}`
+    }
+  });
   lastMessage = '';
   const onData = (stream, session, callback) => {
     stream.on('end', () => callback(null, 'Message queued'));
