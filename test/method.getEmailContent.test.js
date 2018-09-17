@@ -7,7 +7,11 @@ const fs = require('fs');
 let rapptor;
 let server;
 tap.beforeEach(async () => {
-  rapptor = new Rapptor();
+  rapptor = new Rapptor({
+    config: {
+      templatePath: `${__dirname}`
+    }
+  });
   await rapptor.start();
   server = rapptor.server;
   server.settings.app.views.path = path.join(__dirname, 'emails');
