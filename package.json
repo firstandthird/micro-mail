@@ -44,7 +44,7 @@
     "nodemailer": "^4.6.8",
     "nunjucks": "^3.1.3",
     "p-props": "^1.2.0",
-    "rapptor": "^6.0.0",
+    "rapptor": "^7.2.0",
     "require-all": "^3.0.0",
     "varson": "^2.0.3",
     "vision": "^5.4.0",
