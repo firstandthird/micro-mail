@@ -10,7 +10,6 @@ proxy:
 
 app:
   image: 'firstandthird/node:10.10-dev'
-  hostname: 'mail'
   volumes:
     - '.:/home/app/src'
     - './example:/home/app/src/templates'
