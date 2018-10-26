@@ -1,6 +1,6 @@
 proxy:
   image: traefik
-  command: --web --docker --logLevel=DEBUG
+  command: --web --docker --logLevel=WARN
   ports:
     - "80:80"
     - "8080:8080"
@@ -23,7 +23,8 @@ app:
     MICRO_METRICS_HOST:
     SMTP_HOST: 'mailhog'
     SMTP_PORT: 1025
-    FORCE_COLOR: 1
+    LOGR: 'bell,console'
+    LOGR_COLOR: 'true'
   ports:
     - '8081'
   links:

@@ -26,6 +26,17 @@ plugins:
     _enabled: "{{enableMetrics}}"
     host: "{{envVars.metricsHost}}"
     verbose: true
+  ./plugins/loadHelpers:
+    _dependencies:
+      - 'vision'
+    opens:
+      enabled: true
+      type: 'open'
+    clicks:
+      enabled: true
+      type: 'email.click'
+      tags: ''
+    trackingUrl: '{{envVars.metricsHost}}'
   ./plugins/transport:
     _dependencies:
       - 'vision'
