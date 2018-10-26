@@ -33,7 +33,6 @@
   "dependencies": {
     "aug": "^2.0.1",
     "hapi-api-key": "^3.2.1",
-    "hapi-log-response": "^4.7.2",
     "hapi-micro-metrics": "^1.0.0",
     "hapi-pagedata": "^4.0.0",
     "inert": "^5.1.0",

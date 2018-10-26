@@ -26,18 +26,6 @@ plugins:
     _enabled: "{{enableMetrics}}"
     host: "{{envVars.metricsHost}}"
     verbose: true
-  hapi-log-response:
-  ./plugins/loadHelpers:
-    _dependencies:
-      - 'vision'
-    opens:
-      enabled: true
-      type: 'open'
-    clicks:
-      enabled: true
-      type: 'email.click'
-      tags: ''
-    trackingUrl: '{{envVars.metricsHost}}'
   ./plugins/transport:
     _dependencies:
       - 'vision'
