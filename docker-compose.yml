@@ -1,11 +1,21 @@
+proxy:
+  image: traefik
+  command: --web --docker --logLevel=WARN
+  ports:
+    - "80:80"
+    - "8080:8080"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /dev/null:/traefik.toml
+
 app:
-  image: 'firstandthird/node:8.9-2-dev' 
+  image: 'firstandthird/node:10.10-dev'
   volumes:
     - '.:/home/app/src'
     - './example:/home/app/src/templates'
   environment:
+    NODE_ENV: 'dev'
     PORT: 8081
-    VIRTUAL_HOST: 'micromail.*'
     PAGEDATA_HOST:
     PAGEDATA_KEY:
     PAGEDATA_STATUS: 'draft'
@@ -13,11 +23,16 @@ app:
     MICRO_METRICS_HOST:
     SMTP_HOST: 'mailhog'
     SMTP_PORT: 1025
-    FORCE_COLOR: 1
+    LOGR: 'bell,console'
+    LOGR_COLOR: 'true'
   ports:
     - '8081'
   links:
+    - 'proxy:proxy'
     - 'mailhog'
+  labels:
+    - "traefik.frontend.rule=PathPrefix:/"
+    - "traefik.port=8081"
 mailhog:
   image: 'mailhog/mailhog'
   hostname: 'mailhog'

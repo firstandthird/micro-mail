@@ -26,7 +26,6 @@ plugins:
     _enabled: "{{enableMetrics}}"
     host: "{{envVars.metricsHost}}"
     verbose: true
-  hapi-log-response:
   ./plugins/loadHelpers:
     _dependencies:
       - 'vision'

@@ -33,7 +33,6 @@
   "dependencies": {
     "aug": "^2.0.1",
     "hapi-api-key": "^3.2.1",
-    "hapi-log-response": "^4.7.2",
     "hapi-micro-metrics": "^1.0.0",
     "hapi-pagedata": "^4.0.0",
     "inert": "^5.1.0",
@@ -44,7 +43,7 @@
     "nodemailer": "^4.6.8",
     "nunjucks": "^3.1.3",
     "p-props": "^1.2.0",
-    "rapptor": "^6.0.0",
+    "rapptor": "^7.2.0",
     "require-all": "^3.0.0",
     "varson": "^2.0.3",
     "vision": "^5.4.0",
