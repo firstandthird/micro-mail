@@ -57,7 +57,7 @@ exports.send = {
     if (server.settings.app.enableMetrics) {
       const trackingTags = (details.trackingData) ? details.trackingData.tags : {};
       const tags = Object.assign({}, { template: details.template }, trackingTags);
-      if (details.pagedata && details.pagedata) {
+      if (details.pagedata) {
         tags.pagedataSlug = details.pagedata;
       }
       server.track('email.send', 1, tags, { toEmail: details.to, uuid: details.uuid });
