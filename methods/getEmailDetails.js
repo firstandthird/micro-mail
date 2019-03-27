@@ -58,8 +58,8 @@ module.exports = async function(payload, options) {
     Object.keys(tagPayload).forEach(key => {
       tags = `${tags},${key}:${tagPayload[key]}`;
     });
-    if (details.pagedata && details.pagedata.slug) {
-      tags = `${tags},pagedataSlug:${details.pagedata.slug}`;
+    if (details.pagedata) {
+      tags = `${tags},pagedataSlug:${details.pagedata}`;
     }
     details.data.trackingPixel = `<img src="${settings.metricsHost}t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${details.to},uuid:${details.uuid}"></img>`;
   } else {
