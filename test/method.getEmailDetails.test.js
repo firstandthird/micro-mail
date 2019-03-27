@@ -23,7 +23,7 @@ tap.afterEach(async () => {
 tap.test('getEmailDetails - with yaml', async (assert) => {
   const payload = {
     template: 'getEmailDetails2',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       lastName: 'smith'
@@ -37,7 +37,7 @@ tap.test('getEmailDetails - with yaml', async (assert) => {
     fromName: 'Micro Mail',
     fromEmail: 'code@firstandthird.com',
     toName: 'bob smith',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       lastName: 'smith',
@@ -53,7 +53,7 @@ tap.test('getEmailDetails - with yaml', async (assert) => {
 tap.test('getEmailDetails - with no yaml', async (assert) => {
   const payload = {
     template: 'no yaml',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       lastName: 'smith',
@@ -65,7 +65,7 @@ tap.test('getEmailDetails - with no yaml', async (assert) => {
   const details = await server.methods.getEmailDetails(payload);
   assert.deepEqual(details, {
     template: 'no yaml',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       lastName: 'smith',
@@ -82,7 +82,7 @@ tap.test('getEmailDetails - with yaml and tracking enabled', async (assert) => {
   server.settings.app.enableMetrics = true;
   const payload = {
     template: 'getEmailDetails2',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       lastName: 'smith'
@@ -105,7 +105,7 @@ tap.test('getEmailDetails - with yaml and tracking enabled', async (assert) => {
     fromName: 'Micro Mail',
     fromEmail: 'code@firstandthird.com',
     toName: 'bob smith',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       lastName: 'smith',
@@ -124,7 +124,7 @@ tap.test('getEmailDetails - with yaml and tracking enabled', async (assert) => {
 tap.test('getEmailDetails will not validate if missing required fields', async (assert) => {
   const payload = {
     template: 'getEmailDetails2',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       lastName: 'smith'
@@ -144,7 +144,7 @@ tap.test('getEmailDetails will not validate if missing required fields', async (
 tap.test('getEmailDetails will not validate if data fields are blank', async (assert) => {
   const payload = {
     template: 'getEmailDetails2',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       lastName: 'smith',
@@ -182,7 +182,7 @@ tap.test('getEmailDetails - with pagedata for data', async (assert) => {
   await pagedataServer.start();
   const payload = {
     template: 'getEmailDetailsPagedata',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob'
     },
@@ -195,7 +195,7 @@ tap.test('getEmailDetails - with pagedata for data', async (assert) => {
     pagedata: 'slug',
     subject: 'This is a subject to bob',
     toName: 'bob',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       trackingPixel: '',
@@ -227,7 +227,7 @@ tap.test('getEmailDetails - with pagedata for template', async (assert) => {
   await pagedataServer.start();
   const payload = {
     pagedata: 'slug',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob'
     },
@@ -240,7 +240,7 @@ tap.test('getEmailDetails - with pagedata for template', async (assert) => {
     pagedata: 'slug',
     subject: 'This is a subject to bob',
     toName: 'bob',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       trackingPixel: '',
@@ -275,7 +275,7 @@ tap.test('getEmailDetails - with pagedata example data', async (assert) => {
   await pagedataServer.start();
   const payload = {
     pagedata: 'slug',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     disableTracking: true
   };
   const details = await server.methods.getEmailDetails(payload, { useExampleData: true });
@@ -285,7 +285,7 @@ tap.test('getEmailDetails - with pagedata example data', async (assert) => {
     pagedata: 'slug',
     subject: 'This is a subject to bob',
     toName: 'bob',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     data: {
       firstName: 'bob',
       trackingPixel: '',
@@ -295,6 +295,58 @@ tap.test('getEmailDetails - with pagedata example data', async (assert) => {
       firstName: 'bob',
       trackingPixel: '',
       disableTracking: true
+    }
+  }, 'getEmailDetails sets up details correctly');
+  await pagedataServer.stop();
+  assert.end();
+});
+
+tap.test('getEmailDetails - with tracking', async (assert) => {
+  // mock pagedata route for testing, this needs to work with wreck.get:
+  const Hapi = require('hapi');
+  const pagedataServer = new Hapi.Server({ port: 3000 });
+  pagedataServer.route({
+    path: '/api/pages/{page}',
+    method: 'GET',
+    handler(request, h) {
+      assert.equal(request.params.page, 'pagedata-slug');
+      return {
+        content: {
+          template: 'getEmailDetailsPagedata',
+          subject: 'This is a subject to {{data.firstName}}',
+          toName: '{{data.firstName}}',
+          example: {
+            firstName: 'bob'
+          }
+        }
+      };
+    }
+  });
+  await pagedataServer.start();
+  const payload = {
+    pagedata: 'pagedata-slug',
+    to: 'bob.smith@firstandthird.com,john@firstandthird.com',
+    disableTracking: false
+  };
+  const details = await server.methods.getEmailDetails(payload, { useExampleData: true });
+  const trackingPixel = details.data.trackingPixel;
+  delete details.data.trackingPixel;
+  delete details.uuid;
+  assert.contains(trackingPixel, 'template:getEmailDetailsPagedata,pagedataSlug:pagedata-slug');
+  assert.contains(trackingPixel, 'bob.smith@firstandthird.com|john@firstandthird.com');
+
+  assert.deepEqual(details, {
+    default1: 'yay default',
+    template: 'getEmailDetailsPagedata',
+    pagedata: 'pagedata-slug',
+    subject: 'This is a subject to bob',
+    toName: 'bob',
+    to: 'bob.smith@firstandthird.com,john@firstandthird.com',
+    data: {
+      firstName: 'bob'
+    },
+    example: {
+      firstName: 'bob'
     }
   }, 'getEmailDetails sets up details correctly');
   await pagedataServer.stop();
@@ -326,7 +378,7 @@ tap.test('getEmailDetails - with pagedata requiredData', async (assert) => {
   await pagedataServer.start();
   const payload = {
     pagedata: 'slug',
-    toEmail: 'bob.smith@firstandthird.com',
+    to: 'bob.smith@firstandthird.com',
     disableTracking: true
   };
   try {
