@@ -301,7 +301,58 @@ tap.test('getEmailDetails - with pagedata example data', async (assert) => {
   assert.end();
 });
 
-tap.test('getEmailDetails - with tracking', async (assert) => {
+tap.test('getEmailDetails - with tracking and pagedata and array too', async (assert) => {
+  // mock pagedata route for testing, this needs to work with wreck.get:
+  const Hapi = require('hapi');
+  const pagedataServer = new Hapi.Server({ port: 3000 });
+  pagedataServer.route({
+    path: '/api/pages/{page}',
+    method: 'GET',
+    handler(request, h) {
+      assert.equal(request.params.page, 'pagedata-slug');
+      return {
+        content: {
+          template: 'getEmailDetailsPagedata',
+          subject: 'This is a subject to {{data.firstName}}',
+          toName: '{{data.firstName}}',
+          example: {
+            firstName: 'bob'
+          }
+        }
+      };
+    }
+  });
+  await pagedataServer.start();
+  const payload = {
+    pagedata: 'pagedata-slug',
+    to: ['bob.smith@firstandthird.com', 'john@firstandthird.com'],
+    disableTracking: false
+  };
+  const details = await server.methods.getEmailDetails(payload, { useExampleData: true });
+  const trackingPixel = details.data.trackingPixel;
+  delete details.data.trackingPixel;
+  delete details.uuid;
+  assert.contains(trackingPixel, 'template:getEmailDetailsPagedata,pagedataSlug:pagedata-slug');
+  assert.contains(trackingPixel, 'bob.smith@firstandthird.com|john@firstandthird.com');
+
+  assert.deepEqual(details, {
+    default1: 'yay default',
+    template: 'getEmailDetailsPagedata',
+    pagedata: 'pagedata-slug',
+    subject: 'This is a subject to bob',
+    toName: 'bob',
+    to: ['bob.smith@firstandthird.com', 'john@firstandthird.com'],
+    data: {
+      firstName: 'bob'
+    },
+    example: {
+      firstName: 'bob'
+    }
+  }, 'getEmailDetails sets up details correctly');
+  await pagedataServer.stop();
+  assert.end();
+});
+tap.test('getEmailDetails - with tracking and pagedata', async (assert) => {
   // mock pagedata route for testing, this needs to work with wreck.get:
   const Hapi = require('hapi');
   const pagedataServer = new Hapi.Server({ port: 3000 });

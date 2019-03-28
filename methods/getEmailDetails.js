@@ -61,8 +61,8 @@ module.exports = async function(payload, options) {
     if (details.pagedata) {
       tags = `${tags},pagedataSlug:${details.pagedata}`;
     }
-    const trackTo = (details.to) ? details.to.replace(',', '|') : '';
-    details.data.trackingPixel = `<img src="${settings.metricsHost}t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${trackTo},uuid:${details.uuid}"></img>`;
+    const toStr = (Array.isArray(details.to)) ? details.to.join('|') : details.to.replace(',', '|');
+    details.data.trackingPixel = `<img src="${settings.metricsHost}t.gif?type=email.open&value=1&tags=${tags}&fields=toEmail:${toStr},uuid:${details.uuid}"></img>`;
   } else {
     details.data.disableTracking = true;
     details.data.trackingPixel = '';
