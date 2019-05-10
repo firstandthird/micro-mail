@@ -6,7 +6,7 @@
   "scripts": {
     "start": "rapptor",
     "dev": "npm install && npm prune && nodemon -x npm start",
-    "test": "TAP_TIMEOUT=45 NODE_ENV=test tap test/*.test.js --cov",
+    "test": "TAP_TIMEOUT=45 NODE_ENV=test tap --jobs=1 test/*.test.js --cov",
     "test-one": "NODE_ENV=test tap",
     "lint": "eslint ."
   },
