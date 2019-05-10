@@ -59,4 +59,43 @@ if [[ "$CMD" == "mongo" ]]; then
   exit
 fi
 
+if [[ "$CMD" == "update-deps" ]]; then
+  rm -rf ./node_modules
+
+  #rm package-lock.json
+  rm -rf ./package-lock.json
+  
+  docker-compose run --rm app npm install --package-lock
+  exit
+fi
+
+if [[ "$CMD" == "install" ]]; then
+  docker-compose run --rm app npm ci
+  exit
+fi
+
+if [[ "$CMD" == "outdated" ]]; then
+  docker-compose run --rm app npm outdated
+  exit
+fi
+
+if [[ "$CMD" == "npmi" ]]; then
+  SERVICE=$2
+  PKG=$3
+  echo "Installing $PKG inside $SERVICE"
+  docker-compose run --rm $SERVICE npm install $PKG --package-lock
+  exit 0
+fi
+
+if [[ "$CMD" == "help" ]]; then
+  echo "Usage:
+  ./run           Runs default
+    update-deps   Only use when updating / adding packages
+    outdated      List outdated packages
+    install       Does an npm ci. Use this 99% of the time.
+  "
+  exit
+fi
+
+
 docker-compose $CMD $ARGS
