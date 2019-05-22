@@ -37,10 +37,25 @@ exports.view = {
       to: 'test@firstandthird.com',
       disableTracking: true
     };
+
+    server.log(['info', 'view email'], { payload, email });
+
     const details = await server.methods.getEmailDetails(payload);
+
+    server.log(['info', 'view email'], { details });
+
     const content = await server.methods.getEmailContent(details.template, details.data);
+
+    server.log(['info', 'view email'], { content });
+
     const mailObj = await server.methods.getMailObject(details, content);
+
+    server.log(['info', 'view email'], { mailObj });
+
     const tmpl = viewTemplate(mailObj, details.data);
+
+    server.log(['info', 'view email'], { tmpl });
+
     if (request.query.json) {
       return details;
     }
@@ -77,10 +92,25 @@ exports.testView = {
       to: 'test@firstandthird.com',
       disableTracking
     };
+
+    server.log(['info', 'view test'], { email, testPath, disableTracking, payload });
+
     const details = await server.methods.getEmailDetails(payload);
+
+    server.log(['info', 'view test'], { details });
+
     const content = await server.methods.getEmailContent(details.template, details.data);
+
+    server.log(['info', 'view test'], { content });
+
     const mailObj = await server.methods.getMailObject(details, content);
+
+    server.log(['info', 'view test'], { mailObj });
+
     const tmpl = testViewTemplate(mailObj, details.data);
+
+    server.log(['info', 'view test'], { tmpl });
+
     if (request.query.json) {
       return details;
     }

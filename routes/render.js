@@ -27,13 +27,28 @@ exports.render = {
   async handler(request, h) {
     const server = request.server;
     const payload = request.payload || request.query;
+
+    server.log(['info', 'render'], { query: request.query });
+
     if (request.query.test) {
       const testPath = `${server.settings.app.views.path}/${request.payload.template}/test.json`;
       payload.data = require(testPath);
     }
+
+    server.log(['info', 'render'], { payload });
+
     const details = await server.methods.getEmailDetails(payload);
+
+    server.log(['info', 'render'], { details });
+
     const content = await server.methods.getEmailContent(details.template, details.data);
+
+    server.log(['info', 'render'], { content });
+
     const data = await server.methods.getMailObject(details, content);
+
+    server.log(['info', 'render'], { data });
+
     return data;
   }
 };
