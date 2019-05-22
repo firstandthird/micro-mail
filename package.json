@@ -45,7 +45,7 @@
     "require-all": "^3.0.0",
     "varson": "^2.1.0",
     "vision": "^5.4.4",
-    "vision-nunjucks": "^3.2.0",
+    "vision-nunjucks": "^3.2.1",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
