@@ -4,6 +4,7 @@ const juice = require('juice');
 
 module.exports = async function(templateName, data) {
   const server = this;
+  server.log(['info', 'getEmailContent'], { templateName });
   if (templateName) {
     const templatePath = path.join(templateName, 'email.njk');
     server.log(['info', 'getEmailContent'], { templatePath });
