@@ -26,11 +26,17 @@ exports.send = {
   async handler (request, h) {
     const server = request.server;
     const payload = request.payload;
+    const detailOpts = {
+      useExampleData: false
+    };
     if (request.query.test) {
       const testPath = `${server.settings.app.views.path}/${request.payload.template}/test.json`;
       payload.data = require(testPath);
     }
-    const details = await server.methods.getEmailDetails(payload);
+    if (request.query.pagedataTest) {
+      detailOpts.useExampleData = true;
+    }
+    const details = await server.methods.getEmailDetails(payload, detailOpts);
     const content = await server.methods.getEmailContent(details.template, details.data);
     const mailObj = await server.methods.getMailObject(details, content);
     let stat = 'success';
