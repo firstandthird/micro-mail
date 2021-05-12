@@ -39,7 +39,7 @@
     "joi": "^14.3.1",
     "juice": "^5.2.0",
     "node-uuid": "^1.4.8",
-    "nodemailer": "^6.1.1",
+    "nodemailer": "^6.4.16",
     "nunjucks": "^3.2.0",
     "rapptor": "^8.4.1",
     "require-all": "^3.0.0",
